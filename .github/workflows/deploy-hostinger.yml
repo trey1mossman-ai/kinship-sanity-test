@@ -32,16 +32,12 @@ jobs:
           NEXT_PUBLIC_SANITY_PROJECT_ID: u2qzrboc
           NEXT_PUBLIC_SANITY_DATASET: production
 
-      - name: Deploy to Hostinger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy to Hostinger via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./out/
-          server-dir: /home/u921052894/domains/mediumblue-chamois-837591.hostingersite.com/public_html/
-          dangerous-clean-slate: false
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
+          local_path: ./out/*
+          remote_path: /home/u921052894/domains/mediumblue-chamois-837591.hostingersite.com/public_html/
+          sftp_only: true
