@@ -63,13 +63,13 @@ jobs:
       - name: Deploy to Hostinger via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          server: 185.212.71.198
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
           local-dir: ./out/
-          server-dir: /domains/mediumblue-chamois-837591.hostingersite.com/public_html/
+          server-dir: /public_html/
           state-name: .ftp-deploy-sync-state.json
           log-level: verbose
           dangerous-clean-slate: true
