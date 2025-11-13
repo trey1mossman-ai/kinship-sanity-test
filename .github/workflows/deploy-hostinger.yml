@@ -39,7 +39,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./out/
-          server-dir: /public_html/sanity-test/
+          server-dir: /home/u921052894/domains/mediumblue-chamois-837591.hostingersite.com/public_html/
           dangerous-clean-slate: false
           exclude: |
             **/.git*
