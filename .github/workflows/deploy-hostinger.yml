@@ -33,11 +33,12 @@ jobs:
           NEXT_PUBLIC_SANITY_DATASET: production
 
       - name: Deploy to Hostinger via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        uses: easingthemes/ssh-deploy@v5.1.0
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local_path: ./out/*
-          remote_path: /home/u921052894/domains/mediumblue-chamois-837591.hostingersite.com/public_html/
-          sftp_only: true
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.FTP_SERVER }}
+          REMOTE_USER: ${{ secrets.FTP_USERNAME }}
+          REMOTE_PORT: 22
+          SOURCE: out/
+          TARGET: /home/u921052894/domains/mediumblue-chamois-837591.hostingersite.com/public_html/
+          EXCLUDE: "/dist/, /node_modules/"
