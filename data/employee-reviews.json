@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "source": "Employee & Team Recognition",
+    "category": "Staff Excellence",
+    "lastUpdated": "2025-01-23"
+  },
+  "reviews": [
+    {
+      "id": "staff-1",
+      "name": "Wedding Guest",
+      "rating": 5,
+      "quote": "Cassandra was absolutely amazing. She went above and beyond throughout our reception.",
+      "staffMember": "Cassandra",
+      "role": "Event Coordinator",
+      "featured": true
+    },
+    {
+      "id": "staff-2",
+      "name": "Regular Guest",
+      "rating": 5,
+      "quote": "Kristin knows everyone by name and makes the best cocktails. She creates such a warm atmosphere.",
+      "staffMember": "Kristin",
+      "role": "Lead Bartender",
+      "featured": true
+    },
+    {
+      "id": "staff-3",
+      "name": "Visitor",
+      "rating": 5,
+      "quote": "The front desk team was so friendly and helpful. They gave us perfect recommendations for our stay.",
+      "staffMember": "Front Desk Team",
+      "role": "Guest Services",
+      "featured": true
+    },
+    {
+      "id": "staff-4",
+      "name": "Café Guest",
+      "rating": 5,
+      "quote": "The baristas are always patient and helpful with menu questions. Great service every time.",
+      "staffMember": "Barista Team",
+      "role": "Front-of-House",
+      "featured": true
+    },
+    {
+      "id": "staff-5",
+      "name": "Event Host",
+      "rating": 5,
+      "quote": "Cassandra's coordination was flawless. She was kind, flexible, and made our event perfect.",
+      "staffMember": "Cassandra",
+      "role": "Event Coordinator",
+      "featured": true
+    }
+  ]
+}

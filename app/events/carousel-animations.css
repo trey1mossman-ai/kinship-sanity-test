@@ -1,0 +1,196 @@
+/* ===================================================================
+   KINSHIP EVENTS PAGE - HIGH-PERFORMANCE CSS ANIMATIONS
+   Replaces Framer Motion for better performance and smaller bundle
+   =================================================================== */
+
+/* Carousel fade and zoom animation */
+@keyframes carousel-enter {
+  0% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.0);
+  }
+}
+
+@keyframes carousel-zoom {
+  0% {
+    transform: scale(1.0);
+  }
+  100% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes carousel-exit {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Carousel image animation classes */
+.carousel-image-enter {
+  animation: carousel-enter 1.2s cubic-bezier(0.43, 0.13, 0.23, 0.96) forwards,
+             carousel-zoom 5s linear 1.2s forwards;
+  will-change: opacity, transform;
+}
+
+.carousel-image-exit {
+  animation: carousel-exit 1.2s cubic-bezier(0.43, 0.13, 0.23, 0.96) forwards;
+  will-change: opacity;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.carousel-image-active {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Thumbnail hover effects */
+.thumbnail-hover {
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.thumbnail-hover:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+.thumbnail-hover:active {
+  transform: scale(0.98);
+}
+
+/* Lightbox modal animations */
+@keyframes modal-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modal-content-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modal-content-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+.modal-overlay-enter {
+  animation: modal-fade-in 200ms ease-out forwards;
+}
+
+.modal-overlay-exit {
+  animation: modal-fade-out 150ms ease-in forwards;
+}
+
+.modal-content-enter {
+  animation: modal-content-in 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal-content-exit {
+  animation: modal-content-out 150ms ease-in forwards;
+}
+
+/* Performance optimizations */
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+  /* Enable GPU acceleration */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .carousel-image-enter,
+  .carousel-image-exit,
+  .carousel-zoom,
+  .thumbnail-hover,
+  .modal-overlay-enter,
+  .modal-overlay-exit,
+  .modal-content-enter,
+  .modal-content-exit {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Loading skeleton animation */
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-loader {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e0e0e0 50%,
+    #f0f0f0 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+/* Shimmer effect for image loading */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+  pointer-events: none;
+}

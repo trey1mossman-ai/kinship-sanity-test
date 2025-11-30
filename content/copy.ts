@@ -1,0 +1,234 @@
+// Kinship Landing copy - warm, local, adventurous voice
+
+export const content = {
+  site: {
+    name: 'Kinship Landing',
+    tagline: 'Downtown Colorado Springs',
+    description: 'Sleep well. Meet locals. Launch adventures.',
+    longDescription: 'Outrageous hospitality, crafted by locals.',
+  },
+
+  hero: {
+    headline: 'Experience Colorado Springs like a local.',
+    subheadline: 'Sleep well. Meet locals. Launch adventures.',
+  },
+
+  guide: {
+    title: 'Kinship is your guide',
+    description: `More than just a place to crash. We're your basecamp for Colorado adventures, your connection to local culture, and your home in the heart of downtown.`,
+    cta: {
+      rooms: 'See our rooms',
+      events: 'See our events',
+    },
+  },
+
+  homa: {
+    title: 'Homa Café + Bar',
+    description: 'Great coffee. Solid cocktails. Real food. Open to neighbors and travelers alike.',
+    cta: {
+      menu: 'View Menu',
+      visit: 'See Homa',
+    },
+  },
+
+  yard: {
+    title: 'The Yard',
+    description: 'Our outdoor living room. Fire pits, string lights, and space to spread out.',
+    cta: 'Host your event',
+  },
+
+  reviews: {
+    title: 'What travelers say',
+    cta: 'Read all reviews',
+  },
+
+  roomBlocks: {
+    title: 'Room Blocks',
+    subtitle: 'Planning a group stay?',
+    description: 'Wedding parties, family reunions, or team retreats - we\'ve got space for your crew. Book 5+ rooms and unlock group perks.',
+    form: {
+      title: 'Request Room Block',
+      name: 'Your name',
+      email: 'Email address',
+      phone: 'Phone number',
+      checkIn: 'Check-in date',
+      checkOut: 'Check-out date',
+      rooms: 'Number of rooms',
+      notes: 'Tell us about your group',
+      submit: 'Send inquiry',
+    },
+  },
+
+  events: {
+    takeover: {
+      title: 'Take Over Kinship',
+      subtitle: 'Your own private hotel',
+      description: '58 beds. Unique spaces. Custom F&B. Make Kinship yours for weddings, reunions, or epic gatherings.',
+      features: [
+        '29 unique rooms',
+        'Indoor & outdoor event spaces',
+        'Homa Café + Bar exclusive access',
+        'Custom room booking link',
+        'Dedicated event coordinator',
+      ],
+    },
+    host: {
+      title: 'Host an Event',
+      subtitle: 'Gatherings that matter',
+      description: 'From intimate dinners to rooftop parties, we have the space and the vibe.',
+      spaces: [
+        'The Yard - Up to 100 guests',
+        'Homa Café - Up to 50 guests',
+        'Rooftop Deck - Up to 40 guests',
+        'Private Dining - Up to 20 guests',
+      ],
+    },
+    form: {
+      title: 'Start planning',
+      name: 'Your name',
+      email: 'Email address',
+      phone: 'Phone number',
+      date: 'Event date',
+      guests: 'Expected guests',
+      type: 'Event type',
+      notes: 'Tell us your vision',
+      submit: 'Send inquiry',
+    },
+  },
+
+  gallery: {
+    title: 'See Kinship',
+    subtitle: 'Rooms, spaces, and good vibes',
+  },
+
+  footer: {
+    blurb: 'Stay, Gather, Explore Colorado Springs',
+    newsletter: {
+      title: 'Stay in the loop',
+      placeholder: 'Your email',
+      button: 'Subscribe',
+      success: 'Thanks for subscribing!',
+      error: 'Please enter a valid email',
+    },
+    contact: {
+      address: '415 S Nevada Ave, Colorado Springs, CO 80903',
+      phone: '(719) 203-9309',
+      email: 'hello@kinshiplanding.com',
+    },
+    links: {
+      explore: 'Explore',
+      information: 'Information',
+      policies: 'Policies',
+      accessibility: 'Accessibility',
+      press: 'Press',
+    },
+  },
+
+  booking: {
+    badge: 'Book here for best rate',
+    checkIn: 'Check-in',
+    checkOut: 'Check-out',
+    guests: 'Guests',
+    promo: 'Promo code',
+    button: 'Book Now',
+    availability: 'Check Availability',
+  },
+
+  nav: {
+    logo: 'Kinship',
+    rooms: 'Rooms',
+    roomBlocks: 'Room Blocks',
+    events: 'Events',
+    explore: 'Explore',
+    homa: 'Homa Café + Bar',
+    gallery: 'Gallery',
+    reviews: 'Reviews',
+    faq: 'FAQ',
+    contact: 'Contact',
+    bookNow: 'Book Now',
+  },
+
+  press: {
+    title: 'As featured in',
+  },
+
+  stamp: {
+    words: ['STAY', 'GATHER', 'EXPLORE', 'CONNECT', 'ADVENTURE'],
+  },
+
+  // Homepage copy (centralized for consistent voice & tone)
+  home: {
+    hero: {
+      headline: 'Experience Colorado Springs like a local',
+      subhead: 'Sleep well. Meet locals. Launch adventures.',
+      ctas: {
+        primary: 'Book your stay',
+        secondary: 'Explore rooms',
+      },
+      trustPills: {
+        googleLabel: '4.5/5 • 600+ Google reviews',
+        bbbLabel: 'A+ • BBB Accredited',
+      },
+    },
+    why: {
+      title: 'Kinship is Your Guide',
+      body:
+        "It makes a difference landing in a place where you know a friend. Consider us your personal insider guide to exploring the real gems of Colorado Springs. Whether it's hiking, rock climbing or fishing you're after, or you want a taste of the food, arts and culture that are literally steps away from our hotel in downtown Colorado Springs — we'll connect you to an authentic way to experience our city.\n\nSeriously, our favorite thing to do is helping people have an amazing time, and we'll gladly point you in the right direction. Hey, we may even come along with you for the ride!",
+      ctas: {
+        primary: 'Explore rooms',
+        secondary: 'Plan your stay',
+      },
+    },
+    rooms: {
+      title: 'Rooms & Suites',
+      filters: {
+        all: 'All Rooms',
+        private: 'Private Rooms',
+        suites: 'Suites',
+        bunks: 'Bunks',
+      },
+      ctaBook: 'Book',
+    },
+    cafe: {
+      title: 'Homa Café + Bar',
+      description: 'Great coffee. Solid cocktails. Real food. Open to neighbors and travelers alike.',
+      features: [
+        'Local roast coffee from Switchback',
+        'Seasonal menu featuring Colorado ingredients',
+        'Community table and weekly local events',
+      ],
+      cta: 'See Menu',
+    },
+    yard: {
+      title: 'The Yard',
+      description:
+        'Our outdoor living room with string lights and mountain views - perfect for gatherings, retreats, and celebrations.',
+      cta: 'Host your event',
+    },
+    social: {
+      title: 'Guest Reviews',
+    },
+    press: {
+      title: 'As Featured In',
+    },
+    blog: {
+      title: 'Adventure Log',
+      more: 'More stories',
+    },
+    map: {
+      title: 'Location',
+      walkTo: [
+        { name: 'Garden of the Gods', time: 'Drive ~12 min', link: 'https://www.google.com/maps/dir/?api=1&destination=Garden+of+the+Gods+Colorado+Springs+CO' },
+        { name: 'Downtown Dining', time: 'Walk ~5 min', link: '/explore#dining' },
+        { name: 'Switchbacks FC', time: 'Walk ~14 min', link: 'https://www.switchbacksfc.com/' },
+        { name: 'Pikes Peak Highway', time: 'Drive ~27 min', link: 'https://www.google.com/maps/dir/?api=1&destination=Pikes+Peak+Highway+Cascade+CO' },
+        { name: 'Speakeasies', time: 'Walk ~5 min', link: '/explore#speakeasies' },
+        { name: 'Performing Arts and Live Music Venues', time: 'Walk ~5 min', link: '/explore#entertainment' },
+        { name: 'Comedy Shows, Art Classes, and Cooking Classes', time: 'Walk ~5 min', link: '/explore#entertainment' },
+      ],
+      addressTitle: 'Address',
+      addressLines: ['415 S Nevada Ave', 'Colorado Springs, CO 80903'],
+      parkingLink: 'Parking info & directions →',
+    },
+  },
+};

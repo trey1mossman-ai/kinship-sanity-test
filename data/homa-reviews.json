@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "source": "Google Reviews",
+    "totalReviews": 330,
+    "averageRating": 4.6,
+    "lastUpdated": "2025-01-23"
+  },
+  "reviews": [
+    {
+      "id": "homa-1",
+      "name": "L G",
+      "rating": 5,
+      "quote": "SO GOOD!! amazing, fresh, and flavorful food. great atmosphere with lots of seating. and very nice staff!",
+      "fullText": "SO GOOD!! amazing, fresh, and flavorful food. great atmosphere with lots of seating. and very nice staff!",
+      "featured": true
+    },
+    {
+      "id": "homa-2",
+      "name": "Awaz J",
+      "rating": 5,
+      "quote": "Wow! I didn't expect AMAZING food, great service and super cool atmosphere!",
+      "fullText": "Wow! I didn't expect AMAZING food, great service and super cool atmosphere! Would definitely recommend and planning to go back! Update, we went back for breakfast! I cannot say how amazing their breakfast was! Absolutely delicious, we had pancakes and eggs! Let's say I am an egg snob and their eggs were top notch! And service is amazing! Love love this place.",
+      "featured": true
+    },
+    {
+      "id": "homa-3",
+      "name": "Simona K",
+      "rating": 5,
+      "quote": "This place is STUNNING!! The hand pie was to die for.",
+      "fullText": "This place is STUNNING!! It's such a cool spot to hang out in, I'm so surprised it wasn't packed when we went. The interior, the furniture, it's all perfectly designed and just a dream to be in. On top of that, they have amazing customer service and incredible food at really good prices. I got their med bowl and also ate part of a hand pie. The hand pie was to die for. Usually when you get this kind of thing the pastry is hard and not well made. At this place, the pastry was so good I would literally eat an entire plate of pie crust with no toppings. It was so light and just melts in your mouth. The fillings and sauces were amazing too. HIGHLY recommend this place!",
+      "featured": true
+    },
+    {
+      "id": "homa-4",
+      "name": "Samuel D",
+      "rating": 5,
+      "quote": "One of our favorite spots in the Springs! Top notch food, coffee, drinks, and super friendly service.",
+      "fullText": "One of our favorite spots in the Springs! Top notch food, coffee, drinks, and super friendly service. We come fairly often and are on first‑name basis with pretty much all the bartenders. Big shoutout to Kristin for always giving the best hospitality and experience, consistently. Every. Single. Time.",
+      "featured": true
+    },
+    {
+      "id": "homa-5",
+      "name": "Jennifer G",
+      "rating": 5,
+      "quote": "The fried cauliflower bowl was to die for. Great flavors and textures.",
+      "fullText": "Stopped in for lunch and was not disappointed! The fried cauliflower bowl was to die for. Great flavors and textures. It's a cool spot with lots of seating options! Can't wait to try dinner there in the near future.",
+      "featured": true
+    },
+    {
+      "id": "homa-6",
+      "name": "Leo G",
+      "rating": 5,
+      "quote": "The food was really good! The atmosphere is really pretty too.",
+      "fullText": "The food was really good! The atmosphere is really pretty too. We got the usual, Mediterranean salad, hand pies and eggs and they were all delicious!",
+      "featured": false
+    },
+    {
+      "id": "homa-7",
+      "name": "Dior",
+      "rating": 5,
+      "quote": "Great food, atmosphere, excellent service and reasonable prices.",
+      "fullText": "I took myself out for a treat in my birthday. Very sweet lady greeted me at the register and took my order. She helped me pick from the menu wished me happy birthday and periodically cheeked in. Kindness goes a long way. Great food, atmosphere, excellent service and reasonable prices. Highly recommended.",
+      "featured": false
+    },
+    {
+      "id": "homa-8",
+      "name": "Sylvain K",
+      "rating": 5,
+      "quote": "We always love the atmosphere, super cute design. Especially good for kids.",
+      "fullText": "We have been there twice for lunch and always love the atmosphere, super cute design. Especially good for kids with the outdoor space if weather permits. Food is good, not the fastest place though. Overall would recommend.",
+      "featured": false
+    },
+    {
+      "id": "homa-9",
+      "name": "Teresa C",
+      "rating": 5,
+      "quote": "Everything was super fresh and the portions were generous.",
+      "fullText": "We ordered the grain bowl with chicken, sweet potato ginger soup, hand pies, bubbly fruit, and blueberry ginger kombucha. Everything was super fresh and the portions were generous. The greenhouse atmosphere is amazing and it's open late (til 9). Bring some games to enjoy and hang out.",
+      "featured": false
+    },
+    {
+      "id": "homa-10",
+      "name": "Derrick",
+      "rating": 5,
+      "quote": "The menu is very small, but the items served are incredible.",
+      "fullText": "This is a very good eatery. The menu is very small, but the items served are incredible. We ordered two bowls, one was a salad base and the other was a grain base, both bowls had unique and delicious flavors.",
+      "featured": false
+    },
+    {
+      "id": "homa-11",
+      "name": "Lim Y",
+      "rating": 5,
+      "quote": "Some damn good French fries! The club scout sandwich did not disappoint.",
+      "fullText": "Some damn good French fries 🍟 WOW I had the club scout sandwich and it did not disappoint. If you need a quick bite to eat and want some natural lighting Homa is for you. The seating layout is diverse with the option to sit in the open light back room or on swinging chairs. Definitely worth the try 💯.",
+      "featured": false
+    },
+    {
+      "id": "homa-12",
+      "name": "Brian and GayHope M",
+      "rating": 5,
+      "quote": "Great food! The proportions were generous. Atmosphere was quiet and roomy.",
+      "fullText": "Great food! The proportions were generous. Atmosphere was quiet and roomy. Loved the kettle chips! Celi and Cass very friendly and Tryn and Dee prepared delicious food. We will be back!!",
+      "featured": false
+    },
+    {
+      "id": "homa-13",
+      "name": "Matthew N",
+      "rating": 5,
+      "quote": "High quality and healthier than typical. Great kombucha on tap, delicious fries.",
+      "fullText": "A really unique and quality dining experience where you wouldn't expect to find one. This place is the epitome of mid/high end millennial experience. The food is high quality and healthier than typical. Great kombucha on tap, delicious fries, and the seating area is delightful, particularly during our house when you can easily have the place to yourself. I had the pork sandwich and my wife the salmon salad. Both were unique flavor profiles. Would visit again.",
+      "featured": false
+    },
+    {
+      "id": "homa-14",
+      "name": "Tiffani S",
+      "rating": 5,
+      "quote": "Very chill vibe. The menu items all seem to have a unique twist.",
+      "fullText": "Dropped into this place for lunch on a whim after seeing it close by on Google Maps and was very pleasantly surprised. The staff were friendly and gave great customer service. The menu items all seem to have a unique twist and what I ordered was great. Very chill vibe on the inside. If I lived in the Springs I could see myself coming here regularly. Will definitely stop by next time I'm in town.",
+      "featured": false
+    },
+    {
+      "id": "homa-15",
+      "name": "Aleksandra G",
+      "rating": 5,
+      "quote": "I really liked the service, the atmosphere and the delicious caesar with chicken.",
+      "fullText": "I really liked the service, the atmosphere and the delicious caesar with chicken, cheesecake and coffee! My favorite place now 😍☕",
+      "featured": false
+    }
+  ]
+}

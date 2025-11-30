@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "googleRating": 4.5,
+    "googleReviewCountApprox": 600,
+    "bbb": { "rating": "A+", "accreditedSince": "2021-11-01" },
+    "expedia": {
+      "label": "Wonderful",
+      "score": 9.2,
+      "reviewCountApprox": 600,
+      "distribution": {
+        "excellent": 435,
+        "good": 95,
+        "okay": 42,
+        "poor": 17,
+        "terrible": 11
+      }
+    }
+  },
+  "themes": ["Kind staff", "Clean rooms", "Great location", "Delicious café", "Comfortable beds", "Firepit and outdoor seating"],
+  "reviews": [
+    {
+      "source": "Expedia",
+      "name": "Sydnee",
+      "date": "2025-08-31",
+      "rating": 5,
+      "quote": "Aesthetics, kind staff, comfortable bed, convenient onsite parking, excellent restaurant, and great location. Would definitely stay again."
+    },
+    {
+      "source": "Expedia",
+      "name": "Verified traveler",
+      "date": "2025-08-24",
+      "rating": 5,
+      "quote": "Beautiful property with great amenities and restaurants nearby."
+    },
+    {
+      "source": "Expedia",
+      "name": "Jodi",
+      "date": "2025-08-24",
+      "rating": 5,
+      "quote": "Perfect partner stay for two nights."
+    },
+    {
+      "source": "Expedia",
+      "name": "Cindy",
+      "date": "2025-08-03",
+      "rating": 5,
+      "quote": "Wonderful place with a great location, great food, amazing staff. So clean and roomy."
+    },
+    {
+      "source": "Expedia",
+      "name": "Sophie",
+      "date": "2025-08-05",
+      "rating": 5,
+      "quote": "A quick partner stay that checked every box."
+    },
+    {
+      "source": "Expedia",
+      "name": "Thomas",
+      "date": "2025-08-05",
+      "rating": 5,
+      "quote": "Outdoor seating with a firepit, a welcoming café, and a simple, very accommodating room. Everything was next-level terrific."
+    },
+    {
+      "source": "Expedia",
+      "name": "Ernest",
+      "date": "2025-08-14",
+      "rating": 5,
+      "quote": "Relaxing stay and a peaceful atmosphere. Friendly team, beautiful common areas, amazing café, and gorgeous rooms. I would return."
+    }
+  ]
+}

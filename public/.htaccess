@@ -1,0 +1,334 @@
+# =============================================================================
+# KINSHIP LANDING - HOSTINGER PRODUCTION .htaccess
+# Performance-optimized Apache configuration for static Next.js export
+# =============================================================================
+
+# ------------------------------------------------------------------------------
+# | HTTPS Redirect                                                             |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # CRITICAL: Exclude important files from redirects
+    RewriteCond %{REQUEST_URI} !^/robots\.txt$
+    RewriteCond %{REQUEST_URI} !^/sitemap\.xml$
+    RewriteCond %{REQUEST_URI} !^/ai\.txt$
+    RewriteCond %{REQUEST_URI} !^/llms\.txt$
+    
+    # Force HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Remove trailing slashes (optional, for clean URLs)
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# | GZIP Compression                                                           |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_deflate.c>
+    # Enable compression for text-based files
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/atom_xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE font/truetype
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+
+    # Don't compress images (already compressed)
+    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|webp|avif)$ no-gzip dont-vary
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# | Browser Caching - AGGRESSIVE FOR PERFORMANCE                               |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+
+    # IMAGES - 1 year cache (immutable, versioned)
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/avif "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+
+    # FONTS - 1 year cache
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType font/eot "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    ExpiresByType application/x-font-woff "access plus 1 year"
+    ExpiresByType application/x-font-ttf "access plus 1 year"
+
+    # CSS & JAVASCRIPT - 1 year cache (Next.js hashes filenames)
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType application/x-javascript "access plus 1 year"
+
+    # VIDEOS - 1 year cache
+    ExpiresByType video/mp4 "access plus 1 year"
+    ExpiresByType video/webm "access plus 1 year"
+    ExpiresByType video/ogg "access plus 1 year"
+
+    # HTML - Short cache (1 hour) for content updates
+    ExpiresByType text/html "access plus 1 hour"
+
+    # JSON/XML - 1 week cache
+    ExpiresByType application/json "access plus 1 week"
+    ExpiresByType application/xml "access plus 1 week"
+    ExpiresByType text/xml "access plus 1 week"
+
+    # MANIFEST & SERVICE WORKER - No cache
+    ExpiresByType application/manifest+json "access plus 0 seconds"
+    <FilesMatch "^(sw|service-worker)\.js$">
+        ExpiresDefault "access plus 0 seconds"
+    </FilesMatch>
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# | Cache-Control Headers - MAXIMUM PERFORMANCE                                |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_headers.c>
+    # Remove ETags (we use Cache-Control instead)
+    Header unset ETag
+    FileETag None
+
+    # IMAGES - Immutable, public, 1 year
+    <FilesMatch "\.(webp|avif|jpg|jpeg|png|gif|svg|ico)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # FONTS - Immutable, public, 1 year
+    <FilesMatch "\.(woff|woff2|ttf|otf|eot)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # CSS & JS - Immutable, public, 1 year (Next.js versioned)
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # VIDEOS - Public, 1 year
+    <FilesMatch "\.(mp4|webm|ogg)$">
+        Header set Cache-Control "public, max-age=31536000"
+    </FilesMatch>
+
+    # HTML - Public, must-revalidate, short cache
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "public, max-age=3600, must-revalidate"
+    </FilesMatch>
+
+    # Security Headers
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Permissions Policy (formerly Feature Policy)
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+    # CORS for fonts and images (if using CDN)
+    <FilesMatch "\.(woff|woff2|ttf|otf|eot|webp|avif)$">
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# | MIME Types                                                                 |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_mime.c>
+    # Images
+    AddType image/webp .webp
+    AddType image/avif .avif
+    AddType image/svg+xml .svg .svgz
+
+    # Fonts
+    AddType font/woff .woff
+    AddType font/woff2 .woff2
+    AddType font/ttf .ttf
+    AddType font/otf .otf
+    AddType font/eot .eot
+
+    # JavaScript
+    AddType text/javascript .js .mjs
+    AddType application/javascript .js .mjs
+
+    # JSON
+    AddType application/json .json
+    AddType application/manifest+json .webmanifest
+
+    # Video
+    AddType video/mp4 .mp4
+    AddType video/webm .webm
+
+    # Text
+    AddType text/css .css
+    AddType text/html .html .htm
+    AddType text/plain .txt
+
+    # Encoding for compressed files
+    AddEncoding gzip .svgz
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# | Performance Optimizations                                                  |
+# ------------------------------------------------------------------------------
+
+# Disable directory browsing
+Options -Indexes
+
+# Follow symbolic links (if needed)
+Options +FollowSymLinks
+
+# Protect sensitive files
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|sql|git)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Disable server signature
+ServerSignature Off
+
+# ------------------------------------------------------------------------------
+# | Image Optimization Headers                                                 |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_headers.c>
+    # Vary header for image negotiation
+    <FilesMatch "\.(webp|avif|jpg|jpeg|png)$">
+        Header append Vary Accept
+    </FilesMatch>
+
+    # Preconnect hints for external resources (Google Fonts, CDNs)
+    <FilesMatch "\.html$">
+        Header add Link "<https://fonts.googleapis.com>; rel=preconnect; crossorigin"
+        Header add Link "<https://fonts.gstatic.com>; rel=preconnect; crossorigin"
+    </FilesMatch>
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# | Legacy URL Redirects - Old Website Compatibility                         |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Old room-specific URLs → /rooms (Google Search Console errors)
+    RewriteRule ^rooms/luxury-suite-ada/?$ /rooms [R=301,L]
+    RewriteRule ^rooms/camp-deck/?$ /rooms [R=301,L]
+    RewriteRule ^rooms/family-suite/?$ /rooms [R=301,L]
+    RewriteRule ^rooms/junior-suites/?$ /rooms [R=301,L]
+    RewriteRule ^rooms/suites/?$ /rooms [R=301,L]
+    RewriteRule ^rooms/rooms/?$ /rooms [R=301,L]
+    # Catch-all for any other old room URLs
+    RewriteRule ^rooms/[^/]+/?$ /rooms [R=301,L]
+
+    # Old about FAQ → /about
+    RewriteRule ^about/faq/?$ /about [R=301,L]
+
+    # Old HOMA menu → /homa
+    RewriteRule ^homa/our-menu/?$ /homa [R=301,L]
+
+    # Old blog → Community page
+    RewriteRule ^blog/?$ /community [R=301,L]
+    RewriteRule ^blog/.*$ /community [R=301,L]
+
+    # Old event inquiry → Events page
+    RewriteRule ^events/event-inquiry/?$ /events [R=301,L]
+
+    # Old newsletter signup → Homepage (has newsletter section)
+    RewriteRule ^newsletter-sign-up/?$ / [R=301,L]
+
+    # Old privacy policy URL → /privacy
+    RewriteRule ^privacy-policy/?$ /privacy [R=301,L]
+
+    # Other common old patterns
+    RewriteRule ^about-us/?$ /about [R=301,L]
+    RewriteRule ^contact-us/?$ /about [R=301,L]
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# | Next.js Static Export Routing - FIXED FOR GOOGLE CRAWLING                |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # CRITICAL: Don't rewrite actual files and directories
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # CRITICAL: Explicitly allow important files for SEO/crawlers
+    RewriteRule ^robots\.txt$ - [L]
+    RewriteRule ^sitemap\.xml$ - [L]
+    RewriteRule ^ai\.txt$ - [L]
+    RewriteRule ^llms\.txt$ - [L]
+
+    # Serve .html files without extension (Next.js clean URLs)
+    RewriteCond %{REQUEST_FILENAME}.html -f
+    RewriteRule ^(.+)$ $1.html [L]
+
+    # Handle root/index properly
+    RewriteRule ^$ index.html [L]
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# | PRIORITY RESOURCE HINTS (Critical Path Optimization)                      |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_headers.c>
+    # Preload critical hero images (adjust paths as needed)
+    <FilesMatch "index\.html$">
+        # Homepage uses video hero with fallback - no static hero image to preload
+        # Header add Link "</images/HomePage/event image-optimized.webp>; rel=preload; as=image"
+
+        # Critical fonts (if using)
+        # Header add Link "</fonts/utopia-std-display.woff2>; rel=preload; as=font; type=font/woff2; crossorigin"
+    </FilesMatch>
+</IfModule>
+
+# =============================================================================
+# END OF CONFIGURATION
+#
+# FIXES APPLIED:
+# ✅ Removed problematic fallback to index.html that caused redirect loops
+# ✅ Added explicit rules for robots.txt, sitemap.xml, ai.txt, llms.txt
+# ✅ Fixed rewrite conditions to properly check for existing files first
+# ✅ Simplified routing logic to prevent Google crawl errors
+# ✅ Maintained all performance optimizations
+#
+# This configuration now provides:
+# ✅ Google crawler compatibility (no redirect errors)
+# ✅ Aggressive browser caching (1 year for static assets)
+# ✅ GZIP compression for all text-based files
+# ✅ Security headers (XSS, clickjacking protection)
+# ✅ HTTPS enforcement
+# ✅ Clean URL support for Next.js static export
+# =============================================================================

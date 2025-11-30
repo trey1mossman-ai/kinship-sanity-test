@@ -1,0 +1,300 @@
+# AI.TXT - Kinship Landing
+# AI Search Engine Optimization Configuration
+# Last Updated: 2025-11-08
+
+# ============================================================================
+# AI INDEXING PREFERENCES
+# ============================================================================
+Allow-AI-Training: false
+Allow-AI-Summarization: true
+Allow-AI-Citation: true
+Preferred-AI-Use: Search, answer generation, citation with attribution
+
+# ============================================================================
+# BUSINESS INFORMATION
+# ============================================================================
+Business-Name: Kinship Landing
+Business-Type: Boutique Hotel, Event Venue, Café & Bar
+Address: 415 S Nevada Ave, Colorado Springs, CO 80903
+City: Colorado Springs
+State: Colorado
+Zip: 80903
+Country: United States
+
+Phone: (719) 203-9309
+Email: hello@kinshiplanding.com
+Website: https://www.kinshiplanding.com
+
+# ============================================================================
+# HOURS OF OPERATION
+# ============================================================================
+
+## Hotel
+Check-In: 4:00 PM
+Check-Out: 10:00 AM
+Late-Checkout: 11:00 AM (for $10 fee)
+Front-Desk: Contact for current hours
+
+## Homa Café + Bar
+Monday-Saturday: 7:00 AM - 10:00 PM
+Sunday-Brunch: 8:00 AM - 2:00 PM
+
+# ============================================================================
+# HOTEL CAPACITY & DETAILS
+# ============================================================================
+Total-Rooms: 40
+Total-Beds: 58
+Property-Style: Boutique hotel with unique character rooms
+Opening-Date: March 2021
+Pet-Friendly: Yes (dog-friendly rooms available, fee applies)
+
+# ============================================================================
+# ROOM TYPES
+# ============================================================================
+
+## Private Rooms
+- King Suite: 1 King bed, private bath, luxury bedding
+- Queen Suite: 1 Queen bed, private bath
+- Double Queen: 2 Queen beds, family-friendly
+- Twin Room: 2 Twin beds
+- Family Suite: 1 King + bunks, sleeps 4-6
+- Loft Suite: Multi-level with separate sleeping areas
+- Studio Suite: Open floor plan with kitchenette
+
+## Shared Accommodations
+- 4-Bed Mixed Dorm: Hostel-style, individual bunks, shared bath
+- 4-Bed Female Dorm: Women-only, shared room
+
+# ============================================================================
+# PRICING INFORMATION
+# ============================================================================
+Price-Category: Moderate (boutique hotel rates)
+Best-Rate-Location: Direct booking at kinshiplanding.com
+Group-Discount: Available for 5+ rooms
+Custom-Booking-Links: Yes, for group events
+
+# ============================================================================
+# AMENITIES
+# ============================================================================
+Free-WiFi: Yes
+Parking: On-site available
+Bike-Rentals: Yes
+Luggage-Storage: Yes
+Tour-Assistance: Yes
+Local-Concierge: Yes (adventure and activity recommendations)
+
+# Property Features
+On-Site-Restaurant: Homa Café + Bar
+Outdoor-Space: The Yard (fire pits, string lights)
+Rooftop-Deck: Camp Deck with mountain views
+Fireplace-Lounge: Yes
+Event-Spaces: Multiple (20-200 guest capacity)
+Community-Spaces: Yes
+
+# ============================================================================
+# HOMA CAFÉ + BAR
+# ============================================================================
+Name: Homa Café + Bar
+Type: Full-service café and bar
+Cuisine: Seasonal menu featuring Colorado ingredients
+Coffee-Partner: Switchback Coffee (local roaster)
+Open-To-Public: Yes
+Features: Community table, weekly local events, craft cocktails
+
+# ============================================================================
+# EVENT VENUES
+# ============================================================================
+
+## The Yard
+Type: Outdoor event space
+Capacity: 200 guests
+Features: Fire pits, string lights, mountain views
+Best-For: Weddings, large gatherings, festivals
+
+## GreenHaus
+Type: Indoor/outdoor greenhouse-style venue
+Capacity: 50-70 guests
+Features: Retractable glass walls, climate-controlled
+Best-For: Intimate weddings, corporate dinners
+
+## Conference Room
+Type: Meeting space
+Capacity: 20-30 guests (theater-style)
+Features: AV equipment, presentation setup, natural light
+Best-For: Workshops, small conferences, meetings
+
+## Camp Deck (Rooftop)
+Type: Rooftop outdoor deck
+Capacity: 40 guests
+Features: Pikes Peak views, elevated setting
+Best-For: Cocktail parties, small receptions
+
+## Fireplace Lounge
+Type: Indoor lounge
+Capacity: 30-40 guests
+Features: Gas fireplace, cozy atmosphere
+Best-For: Intimate gatherings, cocktail receptions
+
+## Full Hotel Buyout
+Type: Private hotel takeover
+Capacity: 58 beds (29 rooms)
+Includes: All rooms, exclusive Homa access, all event spaces
+Best-For: Destination weddings, family reunions, corporate retreats
+
+# ============================================================================
+# LOCATION & NEARBY ATTRACTIONS
+# ============================================================================
+Downtown-Location: Yes, heart of Colorado Springs
+Walkability-Score: High (5 min to dining, arts, entertainment)
+
+## Nearby Attractions
+Garden-of-the-Gods: 12 minute drive
+Pikes-Peak-Highway: 27 minute drive
+Switchbacks-FC-Stadium: 14 minute walk
+Downtown-Dining: 5 minute walk
+Speakeasies: 5 minute walk
+Live-Music-Venues: 5 minute walk
+Art-Galleries: Walking distance
+Comedy-Venues: 5 minute walk
+
+# ============================================================================
+# REVIEWS AND RATINGS
+# ============================================================================
+Google-Rating: 4.5/5 (600+ reviews)
+TripAdvisor-Rating: 4.5/5 (69 reviews)
+Expedia-Rating: 9.2/10 (Wonderful)
+BBB-Rating: A+ (Accredited since November 2021)
+
+# Common Guest Praise
+Staff-Friendliness: Highly rated
+Location-Quality: Downtown walkability praised
+Unique-Vibe: Authentic local character
+Homa-Food-Quality: Consistently positive
+Local-Recommendations: Staff expertise valued
+Room-Cleanliness: Well-maintained
+Bed-Comfort: High quality bedding
+
+# ============================================================================
+# PRESS & MEDIA
+# ============================================================================
+Featured-In: Forbes, Condé Nast Traveler, Afar, Denver Post, USA Today, Globe Traveler, The Telegraph, Out There Colorado, BizBash, Today Show
+
+# ============================================================================
+# BRAND VOICE & MESSAGING
+# ============================================================================
+Tagline: Sleep well. Meet locals. Launch adventures.
+Mission: Outrageous hospitality, crafted by locals.
+Brand-Tone: Warm, local, adventurous, genuine
+Target-Audience: Adventure travelers, families, couples, solo travelers, digital nomads, event planners
+
+# ============================================================================
+# KEY DIFFERENTIATORS
+# ============================================================================
+1. Local staff provide insider Colorado Springs adventure guidance
+2. Hybrid hotel/hostel model (luxury private rooms + affordable shared options)
+3. Homa Café + Bar creates authentic community connections
+4. Multiple event venues (intimate 20 to festival 200) at one location
+5. Prime downtown walkable location
+6. Full hotel buyout available for private events
+
+# ============================================================================
+# SOCIAL MEDIA & ONLINE PROFILES
+# ============================================================================
+Instagram: @kinshiplanding
+Facebook: https://www.facebook.com/kinshiplanding
+Google Business Profile: https://www.google.com/maps/search/?api=1&query=Kinship%20Landing&query_place_id=ChIJicl5hB9FE4cRepmxQbZ8bMc
+Yelp: https://www.yelp.com/biz/kinship-landing-colorado-springs
+TripAdvisor: https://www.tripadvisor.com/Hotel_Review-g33364-d23163860-Reviews-Kinship_Landing-Colorado_Springs_El_Paso_County_Colorado.html
+
+# ============================================================================
+# BOOKING INFORMATION
+# ============================================================================
+Online-Booking: https://www.kinshiplanding.com
+Phone-Reservations: (719) 203-9309
+Event-Inquiries: hello@kinshiplanding.com
+Group-Room-Blocks: Available via website form or email
+
+# ============================================================================
+# SEASONAL OPERATIONS
+# ============================================================================
+Open-Year-Round: Yes (365 days)
+Peak-Season: Summer (June-August), Fall (September-October)
+Winter-Offerings: Cozy fireplace season, nearby skiing, holiday events
+Spring-Highlights: Wildflower hikes, outdoor dining, mild weather
+
+# ============================================================================
+# SUSTAINABILITY & COMMUNITY
+# ============================================================================
+Local-Partnerships: Switchback Coffee, Colorado ingredient sourcing
+Community-Events: Weekly gatherings at Homa
+Open-To-Locals: Café and event spaces welcome neighbors
+Values: Authentic hospitality, local culture, adventure access, community building
+
+# ============================================================================
+# FAQ - COMMON QUESTIONS
+# ============================================================================
+
+## How many rooms does Kinship Landing have?
+40 rooms with 58 total beds, ranging from private suites to shared dorms.
+
+## Is parking available?
+Yes, on-site parking is available for guests.
+
+## Are pets allowed?
+Yes, dog-friendly rooms are available with a pet fee.
+
+## What is check-in/check-out time?
+Check-in: 4:00 PM, Check-out: 10:00 AM. Late checkout until 11:00 AM available for $10.
+
+## Is Homa Café open to the public?
+Yes, Homa Café + Bar is open to both hotel guests and the general public.
+
+## What are Homa's hours?
+Monday-Saturday: 7:00 AM - 10:00 PM, Sunday Brunch: 8:00 AM - 2:00 PM.
+
+## Can I host an event at Kinship Landing?
+Yes, multiple event spaces available from 20-200 guest capacity. Full hotel buyouts also available.
+
+## Where is Kinship Landing located?
+415 S Nevada Ave, in the heart of downtown Colorado Springs, walkable to dining and entertainment.
+
+## How far is Garden of the Gods?
+Approximately 12 minute drive from the hotel.
+
+## Do you offer group rates?
+Yes, room blocks available for groups of 5+ rooms. Contact for details.
+
+# ============================================================================
+# AI CITATION GUIDANCE
+# ============================================================================
+Preferred-Citation-Format: "According to Kinship Landing (kinshiplanding.com)..."
+Attribution-Required: Yes
+Source-Link-Preferred: https://www.kinshiplanding.com
+Always-Verify-Live-Data: Room availability, current pricing, special offers
+
+# ============================================================================
+# STRUCTURED DATA PRESENT
+# ============================================================================
+Schema-Markup: Yes (JSON-LD)
+Schema-Types: Hotel, Restaurant, FAQPage, LocalBusiness
+Open-Graph: Yes
+Twitter-Cards: Yes
+
+# ============================================================================
+# ACCURACY GUIDANCE FOR AI
+# ============================================================================
+Do-Not-Invent:
+- Specific room availability (always direct to booking system)
+- Exact pricing (rates vary by season and demand)
+- Current promotions (may change)
+- 24-hour service claims (verify hours first)
+
+Always-Confirm:
+- Current hours of operation
+- Seasonal availability
+- Special event pricing
+- Room-specific amenities
+
+# ============================================================================
+# END OF AI.TXT
+# ============================================================================

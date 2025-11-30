@@ -1,111 +1,193 @@
-import { getTestRooms } from '@/lib/sanity'
+import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
+import Image from 'next/image';
 
-// This runs at BUILD TIME for static export
-export default async function Home() {
-  const rooms = await getTestRooms()
+// Critical above-fold components - load immediately
+import { HeaderNav } from '@/components/layout/HeaderNav';
+// import { Hero } from '@/components/home/Hero'; // Original hero
+import { HeroSection as Hero } from '@/components/HeroEnhanced'; // Enhanced hero with Ken Burns, reviews, and larger booking widget
+
+// Dynamic imports for below-fold components - lazy loaded for performance
+const WhyKinship = dynamic(() => import('@/components/home/WhyKinship').then(mod => ({ default: mod.WhyKinship })));
+const RoomsGrid = dynamic(() => import('@/components/home/RoomsGridEnhanced').then(mod => ({ default: mod.RoomsGridEnhanced })), {
+  loading: () => <div className="h-96 bg-gray-100 animate-pulse" />
+});
+const KinshipGuideExplore = dynamic(() => import('@/components/home/KinshipGuideAsymmetric').then(mod => ({ default: mod.KinshipGuideAsymmetric })));
+const CafeSection = dynamic(() => import('@/components/home/HomaSectionEnhanced').then(mod => ({ default: mod.HomaSectionEnhanced })));
+// const EventsSection = dynamic(() => import('@/components/home/EventsSection').then(mod => ({ default: mod.EventsSection })));
+const EventsSection = dynamic(() => import('@/components/home/EventsSectionDynamic').then(mod => ({ default: mod.EventsSectionDynamic })));
+const PressAndReviews = dynamic(() => import('@/components/home/PressAndReviews').then(mod => ({ default: mod.PressAndReviews })));
+const MapBlock = dynamic(() => import('@/components/home/MapBlock').then(mod => ({ default: mod.MapBlock })));
+const Newsletter = dynamic(() => import('@/components/sections/Newsletter').then(mod => ({ default: mod.Newsletter })));
+const Footer = dynamic(() => import('@/components/Footer').then(mod => ({ default: mod.Footer })));
+const ScrollTop = dynamic(() => import('@/components/ScrollTop').then(mod => ({ default: mod.ScrollTop })));
+const CallToBook = dynamic(() => import('@/components/CallToBook').then(mod => ({ default: mod.CallToBook })));
+const FAQSection = dynamic(() => import('@/components/home/FAQ/FAQAccordion').then(mod => ({ default: mod.FAQAccordion })));
+
+// Lightweight components can stay as regular imports
+import { SectionDivider } from '@/components/home/SectionDivider';
+import { MuralSection } from '@/components/home/MuralSection';
+import { SubtleDivider } from '@/components/home/SubtleDivider';
+// ScrollEffectsWrapper removed for performance - adds unnecessary Framer Motion weight
+// import { ScrollEffectsWrapper } from '@/components/home/ScrollEffectsWrapper';
+
+// Data imports
+import reviewsData from '@/data/reviews.seed.json';
+import { faqs } from '@/components/home/FAQ/faq-data';
+import { buildFaqJsonLd } from '@/components/home/FAQ/faq-jsonld';
+
+export const metadata: Metadata = {
+  title: 'Experience Colorado Springs like a local | Kinship Landing',
+  description: 'Your guide to insider adventures and authentic experiences in downtown Colorado Springs. Boutique hotel with local connections and mountain views.',
+  keywords: 'Colorado Springs hotel, boutique hotel, downtown hotel, local experiences, Kinship Landing, Pikes Peak, Garden of the Gods',
+  openGraph: {
+    title: 'Experience Colorado Springs like a local | Kinship Landing',
+    description: 'Your guide to insider adventures and authentic experiences in downtown Colorado Springs. Boutique hotel with local connections.',
+    url: 'https://kinshiplanding.com',
+    siteName: 'Kinship Landing',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: '/images/Rooms Page:section/King Suite/CityKingSuite-RichardSeldomridge (3)-optimized.webp',
+        width: 1920,
+        height: 1280,
+        alt: 'Kinship Landing Hotel with Colorado Springs mountain views',
+        type: 'image/webp',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Experience Colorado Springs like a local | Kinship Landing',
+    description: 'Your guide to insider adventures and authentic experiences in downtown Colorado Springs.',
+    images: ['/images/Rooms Page:section/King Suite/CityKingSuite-RichardSeldomridge (3)-optimized.webp'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: 'https://kinshiplanding.com',
+  },
+  verification: {
+    google: '0oV-MEhRaBJ_PHbTZGXfXwVhT0tQZHq9pzACjYYzfaQ',
+  },
+};
+
+export default function HomePage() {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Hotel",
+    "name": "Kinship Landing",
+    "description": "Boutique adventure hotel in downtown Colorado Springs",
+    "url": "https://kinshiplanding.com",
+    "telephone": "+1-719-203-9309",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "415 S Nevada Ave",
+      "addressLocality": "Colorado Springs",
+      "addressRegion": "CO",
+      "postalCode": "80903",
+      "addressCountry": "US"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": reviewsData.meta.googleRating,
+      "reviewCount": reviewsData.meta.googleReviewCountApprox
+    },
+    "amenityFeature": [
+      { "@type": "LocationFeatureSpecification", "name": "Parking" },
+      { "@type": "LocationFeatureSpecification", "name": "Restaurant" },
+      { "@type": "LocationFeatureSpecification", "name": "Bar/Lounge" },
+      { "@type": "LocationFeatureSpecification", "name": "Free Wi‑Fi" },
+      { "@type": "LocationFeatureSpecification", "name": "WheelchairAccessible" }
+    ],
+    "checkinTime": "16:00",
+    "checkoutTime": "10:00",
+    "petsAllowed": true
+  };
+
+  const faqJsonLd = buildFaqJsonLd(
+    faqs,
+    'https://kinshiplanding.com'
+  );
 
   return (
-    <main className="min-h-screen p-8 bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-3 text-gray-900">
-            Sanity + Hostinger Test
-          </h1>
-          <p className="text-xl text-gray-600 mb-2">
-            Static export fetched from Sanity at build time
-          </p>
-          <div className="inline-block bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold">
-            ✓ Ready for Hostinger deployment
-          </div>
-        </div>
+    <>
+      <HeaderNav />
+      <Hero />
 
-        {rooms.length === 0 ? (
-          <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-8 text-center">
-            <p className="text-yellow-800 text-lg">
-              No rooms found. Create one in Sanity Studio, then rebuild this site.
-            </p>
-          </div>
-        ) : (
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {rooms.map((room: any) => (
-              <div
-                key={room._id}
-                className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
-              >
-                {room.imageUrl && (
-                  <div className="relative h-56 overflow-hidden">
-                    <img
-                      src={room.imageUrl}
-                      alt={room.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
+      <main id="main-content">
+        {/* 1. Kinship is Your Guide + Stay Gather Explore */}
+        <KinshipGuideExplore />
 
-                <div className="p-6">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                    {room.name}
-                  </h2>
+        {/* 2. Find Your Perfect Room */}
+        <SectionDivider />
+        <RoomsGrid />
 
-                  <div className="mb-4">
-                    <span className="text-4xl font-bold text-green-600">
-                      ${room.price}
-                    </span>
-                    <span className="text-gray-500 ml-2">/night</span>
-                  </div>
+        {/* 3. Events & Gatherings (with venue spaces) */}
+        <SectionDivider />
+        <EventsSection />
 
-                  {room.description && (
-                    <p className="text-gray-600 mb-4 line-clamp-3">
-                      {room.description}
-                    </p>
-                  )}
+        {/* 4. HOMA section */}
+        <SectionDivider />
+        <CafeSection />
 
-                  {room.features && room.features.length > 0 && (
-                    <div>
-                      <h3 className="font-semibold text-gray-900 mb-2 text-sm uppercase tracking-wide">
-                        Features
-                      </h3>
-                      <ul className="space-y-1">
-                        {room.features.slice(0, 4).map((feature: string, i: number) => (
-                          <li key={i} className="text-sm text-gray-600 flex items-center">
-                            <svg className="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
-                            {feature}
-                          </li>
-                        ))}
-                        {room.features.length > 4 && (
-                          <li className="text-sm text-gray-400 italic">
-                            +{room.features.length - 4} more
-                          </li>
-                        )}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        {/* 5. As Featured In + Guest Reviews (combined) */}
+        <SectionDivider />
+        <PressAndReviews reviewData={reviewsData} />
 
-        <div className="mt-16 bg-blue-50 border-2 border-blue-200 rounded-xl p-8">
-          <h3 className="font-bold text-blue-900 text-xl mb-4">
-            📦 Deployment Workflow:
-          </h3>
-          <ol className="list-decimal list-inside space-y-3 text-blue-800">
-            <li>Edit content in Sanity Studio (http://localhost:3333)</li>
-            <li>Publish changes</li>
-            <li>Run <code className="bg-blue-100 px-2 py-1 rounded">npm run build</code> (fetches Sanity data)</li>
-            <li>Upload <code className="bg-blue-100 px-2 py-1 rounded">out/</code> folder to Hostinger via FTP</li>
-            <li>Site is live with updated content!</li>
-          </ol>
-        </div>
+        {/* 6. Newsletter signup */}
+        <SectionDivider />
+        <Newsletter />
 
-        <div className="mt-8 text-center text-gray-500 text-sm">
-          <p>Built: {new Date().toLocaleString()}</p>
-          <p className="mt-1">Data fetched from Sanity at build time</p>
-        </div>
-      </div>
-    </main>
-  )
+        {/* 7. Visual Break - WoodWall Detail */}
+        <section className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden">
+          <Image
+            src="/images/About/WoodWall-SamStarr.webp"
+            alt="Kinship Landing interior craftsmanship detail"
+            fill
+            className="object-cover"
+            quality={75}
+            sizes="100vw"
+          />
+        </section>
+
+        {/* 8. FAQs */}
+        <FAQSection />
+
+        {/* 9. Location Map */}
+        <MapBlock />
+      </main>
+
+      <Footer />
+      
+      {/* Sticky Buttons */}
+      <ScrollTop />
+      <CallToBook />
+
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData)
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqJsonLd)
+        }}
+      />
+    </>
+  );
 }

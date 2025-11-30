@@ -1,0 +1,115 @@
+/* EXACT KINSHIP LANDING TYPOGRAPHY 
+   Discovered from https://www.kinshiplanding.com
+   DO NOT SUBSTITUTE - THESE ARE THE EXACT PRODUCTION FONTS */
+
+/* Font @imports have been moved to globals.css to comply with CSS import order rules */
+/* ===== GOOGLE FONTS ===== */
+/* Hind - Sans Serif - Body Text */
+/* Source Serif Pro - Serif - Possible Headings */
+/* Montserrat - Sans Serif - Navigation/CTAs */
+/* ===== ADOBE FONTS (TYPEKIT) ===== */
+/* Europa, Utopia Std Display, Zeitung */
+
+/* ===== CSS CUSTOM PROPERTIES ===== */
+:root {
+  /* Primary Fonts from Live Site */
+  --font-heading-primary: "utopia-std-display", "Source Serif Pro", Georgia, serif;
+  --font-body-primary: "europa", "Hind", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-nav-primary: "Montserrat", "europa", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  
+  /* Weights */
+  --font-weight-normal: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-light: 300;
+  
+  /* Letter Spacing (from live site inspection) */
+  --letter-spacing-heading: -0.01em;
+  --letter-spacing-body: 0;
+  --letter-spacing-nav: 0.06em;
+  --letter-spacing-button: 0.04em;
+  
+  /* Line Heights (from live site inspection) */
+  --line-height-heading: 1.2;
+  --line-height-body: 1.6;
+  --line-height-nav: 1.4;
+}
+
+/* ===== BASE TYPOGRAPHY SETUP ===== */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+
+body {
+  font-family: var(--font-body-primary);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-body);
+  letter-spacing: var(--letter-spacing-body);
+}
+
+/* ===== HEADING TYPOGRAPHY ===== */
+h1, h2, h3, h4, h5, h6,
+.font-heading {
+  font-family: var(--font-heading-primary);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-heading);
+  font-feature-settings: "kern" 1, "liga" 1, "dlig" 1;
+}
+
+h1 { font-weight: var(--font-weight-bold); }
+h2 { font-weight: var(--font-weight-semibold); }
+h3 { font-weight: var(--font-weight-semibold); }
+
+/* ===== BODY TYPOGRAPHY ===== */
+p, li, .font-body {
+  font-family: var(--font-body-primary);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-body);
+  letter-spacing: var(--letter-spacing-body);
+}
+
+/* ===== NAVIGATION & BUTTONS ===== */
+nav, 
+.btn, 
+.btn-primary, 
+.btn-ghost,
+.pill,
+.booking button,
+.font-nav {
+  font-family: var(--font-nav-primary);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-nav);
+  line-height: var(--line-height-nav);
+  text-transform: uppercase;
+}
+
+/* Button specific */
+.btn-primary,
+.btn-ghost,
+button {
+  font-family: var(--font-nav-primary);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-button);
+}
+
+/* ===== UTILITY CLASSES ===== */
+.font-heading { font-family: var(--font-heading-primary) !important; }
+.font-body { font-family: var(--font-body-primary) !important; }
+.font-nav { font-family: var(--font-nav-primary) !important; }
+
+.tracking-kinship-tight { letter-spacing: var(--letter-spacing-heading) !important; }
+.tracking-kinship-nav { letter-spacing: var(--letter-spacing-nav) !important; }
+.tracking-kinship-button { letter-spacing: var(--letter-spacing-button) !important; }
+
+.leading-kinship-heading { line-height: var(--line-height-heading) !important; }
+.leading-kinship-body { line-height: var(--line-height-body) !important; }
+.leading-kinship-nav { line-height: var(--line-height-nav) !important; }
+
+.font-light { font-weight: var(--font-weight-light) !important; }
+.font-normal { font-weight: var(--font-weight-normal) !important; }
+.font-semibold { font-weight: var(--font-weight-semibold) !important; }
+.font-bold { font-weight: var(--font-weight-bold) !important; }
