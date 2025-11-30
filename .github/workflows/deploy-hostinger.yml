@@ -70,11 +70,12 @@ jobs:
           set ftp:ssl-allow yes;
           set ftp:ssl-force yes;
           set ftp:ssl-protect-data yes;
-          set net:timeout 30;
-          set net:max-retries 3;
-          set net:reconnect-interval-base 5;
+          set net:timeout 120;
+          set net:max-retries 5;
+          set net:reconnect-interval-base 10;
+          set mirror:parallel-transfer-count 2;
           open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ftp.mediumblue-chamois-837591.hostingersite.com;
-          mirror --reverse --delete --verbose --exclude .git/ --exclude node_modules/ ./out/ /home/u921052894/domains/mediumblue-chamois-837591.hostingersite.com/public_html/;
+          mirror --reverse --delete --verbose --parallel=2 --exclude .git/ --exclude node_modules/ ./out/ /home/u921052894/domains/mediumblue-chamois-837591.hostingersite.com/public_html/;
           quit;
           "
 
