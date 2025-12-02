@@ -60,18 +60,25 @@ jobs:
           find . -name "*ftp-deploy-sync*" -delete
           echo "State files cleaned"
 
-      - name: Deploy to Hostinger via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./out/
-          server-dir: ./public_html/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
+      - name: Deploy to Hostinger via FTPS using lftp
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
+
+          lftp -c "
+          set ssl:verify-certificate no;
+          set ftp:ssl-allow yes;
+          set ftp:ssl-force yes;
+          set ftp:ssl-protect-data yes;
+          set net:timeout 30;
+          set net:max-retries 3;
+          set net:reconnect-interval-base 5;
+          open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} 185.212.71.198;
+          mirror --reverse --delete --verbose --exclude .git/ --exclude node_modules/ ./out/ /public_html/;
+          quit;
+          "
+
+          echo "Deployment completed!"
 
       - name: Verify Deployment
         if: always()
