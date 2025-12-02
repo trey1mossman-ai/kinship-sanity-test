@@ -60,19 +60,14 @@ jobs:
           find . -name "*ftp-deploy-sync*" -delete
           echo "State files cleaned"
 
-      - name: Deploy to Hostinger via FTPS
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy to Hostinger via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ftp.mediumblue-chamois-837591.hostingersite.com
+          server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
-          port: 21
           local-dir: ./out/
-          server-dir: /domains/mediumblue-chamois-837591.hostingersite.com/public_html/
-          state-name: .ftp-deploy-sync-state.json
-          log-level: verbose
-          dangerous-clean-slate: true
+          server-dir: ./public_html/
           exclude: |
             **/.git*
             **/.git*/**
