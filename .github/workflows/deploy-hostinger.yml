@@ -73,8 +73,8 @@ jobs:
           set net:timeout 30;
           set net:max-retries 3;
           set net:reconnect-interval-base 5;
-          open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} 185.212.71.198;
-          mirror --reverse --delete --verbose --exclude .git/ --exclude node_modules/ ./out/ /public_html/;
+          open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} 217.21.77.19;
+          mirror --reverse --delete --verbose --exclude .git/ --exclude node_modules/ ./out/ /home/u921052894/domains/mediumblue-chamois-837591.hostingersite.com/public_html/;
           quit;
           "
 
