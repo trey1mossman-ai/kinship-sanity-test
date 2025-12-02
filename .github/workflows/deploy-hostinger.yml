@@ -60,25 +60,23 @@ jobs:
           find . -name "*ftp-deploy-sync*" -delete
           echo "State files cleaned"
 
-      - name: Deploy to Hostinger via FTPS using lftp
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y lftp
-
-          lftp -c "
-          set ssl:verify-certificate no;
-          set ftp:ssl-allow yes;
-          set ftp:ssl-force yes;
-          set ftp:ssl-protect-data yes;
-          set net:timeout 60;
-          set net:max-retries 5;
-          set net:reconnect-interval-base 10;
-          open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ftp.mediumblue-chamois-837591.hostingersite.com;
-          mirror --reverse --verbose --only-newer --exclude .git/ --exclude node_modules/ ./out/ /home/u921052894/domains/mediumblue-chamois-837591.hostingersite.com/public_html/;
-          quit;
-          "
-
-          echo "Deployment completed!"
+      - name: Deploy to Hostinger via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp.mediumblue-chamois-837591.hostingersite.com
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          local-dir: ./out/
+          server-dir: /home/u921052894/domains/mediumblue-chamois-837591.hostingersite.com/public_html/
+          state-name: .ftp-deploy-sync-state.json
+          log-level: verbose
+          dangerous-clean-slate: true
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
 
       - name: Verify Deployment
         if: always()
