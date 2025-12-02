@@ -69,7 +69,7 @@ jobs:
           protocol: ftps
           port: 21
           local-dir: ./out/
-          server-dir: /home/u921052894/domains/mediumblue-chamois-837591.hostingersite.com/public_html/
+          server-dir: /domains/mediumblue-chamois-837591.hostingersite.com/public_html/
           state-name: .ftp-deploy-sync-state.json
           log-level: verbose
           dangerous-clean-slate: true
