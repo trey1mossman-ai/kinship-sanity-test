@@ -1,6 +1,11 @@
 name: Deploy to Hostinger via Git
 
 on:
+  # Trigger on push to main (code changes)
+  push:
+    branches:
+      - main
+
   # Trigger on webhook from Sanity (when client publishes content)
   repository_dispatch:
     types: [sanity-publish]
