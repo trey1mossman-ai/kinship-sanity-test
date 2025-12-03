@@ -37,6 +37,9 @@ import reviewsData from '@/data/reviews.seed.json';
 import { faqs } from '@/components/home/FAQ/faq-data';
 import { buildFaqJsonLd } from '@/components/home/FAQ/faq-jsonld';
 
+// Sanity data fetching
+import { getHomepage } from '@/lib/sanity/queries';
+
 export const metadata: Metadata = {
   title: 'Experience Colorado Springs like a local | Kinship Landing',
   description: 'Your guide to insider adventures and authentic experiences in downtown Colorado Springs. Boutique hotel with local connections and mountain views.',
@@ -83,7 +86,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Fetch homepage data from Sanity (with fallback to defaults)
+  const homepageData = await getHomepage();
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Hotel",
@@ -128,7 +134,10 @@ export default function HomePage() {
 
       <main id="main-content">
         {/* 1. Kinship is Your Guide + Stay Gather Explore */}
-        <KinshipGuideExplore />
+        <KinshipGuideExplore
+          title={homepageData?.whyKinshipTitle}
+          body={homepageData?.whyKinshipBody}
+        />
 
         {/* 2. Find Your Perfect Room */}
         <SectionDivider />
@@ -166,7 +175,10 @@ export default function HomePage() {
         <FAQSection />
 
         {/* 9. Location Map */}
-        <MapBlock />
+        <MapBlock
+          title={homepageData?.mapSectionTitle}
+          nearbyAttractions={homepageData?.nearbyAttractions}
+        />
       </main>
 
       <Footer />

@@ -5,7 +5,28 @@ import { motion } from 'framer-motion';
 import { content } from '@/content/copy';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
 
-export function MapBlock() {
+interface NearbyAttraction {
+  name: string;
+  time: string;
+  link?: string;
+}
+
+interface MapBlockProps {
+  title?: string;
+  nearbyAttractions?: NearbyAttraction[];
+}
+
+export function MapBlock({ title, nearbyAttractions }: MapBlockProps) {
+  // Use Sanity data if provided, otherwise fall back to hardcoded content
+  const mapTitle = title || content.home.map.title;
+  const locations = nearbyAttractions && nearbyAttractions.length > 0
+    ? nearbyAttractions.map(attr => ({
+        name: attr.name,
+        time: attr.time,
+        link: attr.link
+      }))
+    : content.home.map.walkTo;
+
   return (
     <section className="py-12 md:py-16" style={{ backgroundColor: KINSHIP_COLORS.white }}>
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -20,7 +41,7 @@ export function MapBlock() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          {content.home.map.title}
+          {mapTitle}
         </motion.h2>
 
         <div className="grid lg:grid-cols-2 gap-8">
@@ -68,7 +89,7 @@ export function MapBlock() {
                 Convenience to Everything
               </h3>
               <div className="space-y-2">
-                {content.home.map.walkTo.map((location) => {
+                {locations.map((location) => {
                   const isClickable = location.link;
                   const isExternal = isClickable && location.link.startsWith('http');
                   const ItemWrapper = isClickable ? (isExternal ? 'a' : Link) : 'div';

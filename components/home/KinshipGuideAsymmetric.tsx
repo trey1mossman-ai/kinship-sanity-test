@@ -6,7 +6,29 @@ import Link from 'next/link';
 import { welcomeReveal, viewportConfig } from '@/lib/utils/animations';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
 
-export function KinshipGuideAsymmetric() {
+// Default content for fallback
+const defaultContent = {
+  title: 'Kinship is Your Guide',
+  body: `It makes a difference landing in a place where you know a friend. Consider us your insider guide to exploring the real gems of Colorado Springs.
+
+Whether you're excited for an immersion into the local food, arts, and culture scene just steps from our front door, or you are planning to go play outside at our nearby hiking, biking, or outdoor experiences on Pikes Peak, we'll connect you to an authentic way to experience our beloved Colorado Springs area.
+
+One of our favorite things to do is help you have an amazing time, and we'll gladly point you in the right direction. Hey, we may even come along with you for the ride!`
+};
+
+interface KinshipGuideAsymmetricProps {
+  title?: string;
+  body?: string;
+}
+
+export function KinshipGuideAsymmetric({ title, body }: KinshipGuideAsymmetricProps) {
+  // Use Sanity data if provided, otherwise fall back to defaults
+  const guideTitle = title || defaultContent.title;
+  const guideBody = body || defaultContent.body;
+
+  // Split body into paragraphs
+  const paragraphs = guideBody.split('\n\n').filter(p => p.trim());
+
   return (
     <section
       className="relative py-12 md:py-16 overflow-hidden"
@@ -41,38 +63,21 @@ export function KinshipGuideAsymmetric() {
                 lineHeight: '1.1',
               }}
             >
-              Kinship is Your Guide
+              {guideTitle}
             </h2>
-            <p
-              className="text-base md:text-lg leading-relaxed mb-3"
-              style={{
-                fontFamily: KINSHIP_FONTS.body,
-                color: KINSHIP_COLORS.greenDark,
-                opacity: 0.9,
-              }}
-            >
-              It makes a difference landing in a place where you know a friend. Consider us your insider guide to exploring the real gems of Colorado Springs.
-            </p>
-            <p
-              className="text-base md:text-lg leading-relaxed mb-3"
-              style={{
-                fontFamily: KINSHIP_FONTS.body,
-                color: KINSHIP_COLORS.greenDark,
-                opacity: 0.9,
-              }}
-            >
-              Whether you're excited for an immersion into the local food, arts, and culture scene just steps from our front door, or you are planning to go play outside at our nearby hiking, biking, or outdoor experiences on Pikes Peak, we'll connect you to an authentic way to experience our beloved Colorado Springs area.
-            </p>
-            <p
-              className="text-base md:text-lg leading-relaxed mb-6"
-              style={{
-                fontFamily: KINSHIP_FONTS.body,
-                color: KINSHIP_COLORS.greenDark,
-                opacity: 0.9,
-              }}
-            >
-              One of our favorite things to do is help you have an amazing time, and we'll gladly point you in the right direction. Hey, we may even come along with you for the ride!
-            </p>
+            {paragraphs.map((paragraph, index) => (
+              <p
+                key={index}
+                className={`text-base md:text-lg leading-relaxed ${index === paragraphs.length - 1 ? 'mb-6' : 'mb-3'}`}
+                style={{
+                  fontFamily: KINSHIP_FONTS.body,
+                  color: KINSHIP_COLORS.greenDark,
+                  opacity: 0.9,
+                }}
+              >
+                {paragraph}
+              </p>
+            ))}
 
             {/* Three CTAs - Full Width on Mobile */}
             <div className="flex gap-2 sm:gap-3 w-full">
