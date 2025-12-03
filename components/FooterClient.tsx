@@ -3,29 +3,13 @@
 import Link from 'next/link';
 import { SiteSettings } from '@/lib/sanity/getSiteData';
 
-interface FooterProps {
+interface FooterClientProps {
   variant?: 'default' | 'homa';
-  siteSettings?: SiteSettings;
+  siteSettings: SiteSettings;
 }
 
-// Default site settings for backward compatibility
-const defaultSettings: SiteSettings = {
-  siteName: 'Kinship Landing',
-  tagline: 'Stay. Gather. Explore.',
-  phone: '(719) 203-9309',
-  email: 'hello@kinshiplanding.com',
-  address: {
-    street: '415 S Nevada Ave',
-    city: 'Colorado Springs',
-    state: 'CO',
-    zip: '80903'
-  },
-  googleMapsUrl: 'https://www.google.com/maps/place/415+S+Nevada+Ave,+Colorado+Springs,+CO+80903',
-  bookingUrl: 'https://hotels.cloudbeds.com/en/reservation/BPdPxa',
-};
-
-export function Footer({ variant = 'default', siteSettings = defaultSettings }: FooterProps) {
-  const { phone, email, address, siteName } = siteSettings;
+export function FooterClient({ variant = 'default', siteSettings }: FooterClientProps) {
+  const { phone, email, address } = siteSettings;
   const fullAddress = `${address.street}, ${address.city}, ${address.state} ${address.zip}`;
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
 
@@ -258,7 +242,7 @@ export function Footer({ variant = 'default', siteSettings = defaultSettings }: 
           <div className="py-8 sm:py-10">
             <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-3 sm:gap-4 text-xs sm:text-sm text-center">
               <p style={{ color: '#aec69a' }}>
-                © {new Date().getFullYear()} {siteName}. All rights reserved.
+                © {new Date().getFullYear()} {siteSettings.siteName}. All rights reserved.
               </p>
               <p style={{ color: '#aec69a' }}>
                 Crafted with care in Colorado Springs by{' '}
