@@ -1,0 +1,81 @@
+# Robots.txt - Kinship Landing
+# Last Updated: 2025-11-08
+
+# ============================================================================
+# DEFAULT - Allow all standard search engines
+# ============================================================================
+User-agent: *
+Allow: /
+
+# IMPORTANT: Do NOT block /_next/static/
+# Google needs CSS/JS access for proper rendering and SEO
+
+# ============================================================================
+# AI SEARCH BOTS - Allowed (Non-Training, Citation & Search Only)
+# ============================================================================
+
+# OpenAI ChatGPT Search
+User-agent: GPTBot
+Allow: /
+Crawl-delay: 1
+
+# Anthropic Claude Search
+User-agent: anthropic-ai
+User-agent: Claude-Web
+Allow: /
+Crawl-delay: 1
+
+# Perplexity AI Search
+User-agent: PerplexityBot
+Allow: /
+Crawl-delay: 1
+
+# Google Gemini Search (Bard)
+User-agent: Google-InspectionTool
+Allow: /
+
+# ============================================================================
+# AI TRAINING BOTS - BLOCKED (Model Training Prevention)
+# ============================================================================
+
+# Google Extended (Gemini AI Training)
+User-agent: Google-Extended
+Disallow: /
+
+# Common Crawl (AI Training Datasets)
+User-agent: CCBot
+Disallow: /
+
+# Meta/Facebook AI Training
+User-agent: FacebookBot
+Disallow: /
+
+# Bytespider (TikTok/ByteDance AI Training)
+User-agent: Bytespider
+Disallow: /
+
+# Anthropic AI Training Crawler
+User-agent: anthropic-ai-training
+Disallow: /
+
+# OpenAI Training Crawler
+User-agent: OAI-SearchBot
+Disallow: /
+
+# Omgili Bot (Content Aggregation)
+User-agent: omgili
+User-agent: omgilibot
+Disallow: /
+
+# ============================================================================
+# SITEMAPS
+# ============================================================================
+Sitemap: https://www.kinshiplanding.com/sitemap.xml
+
+# ============================================================================
+# POLICY SUMMARY
+# ============================================================================
+# ✅ Allow: Standard search engines (Google, Bing, etc.)
+# ✅ Allow: AI search bots for citation & answer generation (ChatGPT, Claude, Perplexity)
+# ❌ Block: AI training bots that use content for model training
+# ✅ Allow: All static assets (CSS, JS, images) for proper rendering
