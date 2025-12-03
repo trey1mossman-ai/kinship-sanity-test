@@ -1,4 +1,4 @@
-name: Deploy to Hostinger
+name: Deploy to Hostinger via Git
 
 on:
   # Trigger on webhook from Sanity (when client publishes content)
@@ -18,10 +18,11 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - name: Checkout code
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          ref: main
+          fetch-depth: 0  # Full history needed for deploy branch
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -32,59 +33,131 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build static site (fetches Sanity data)
+      - name: Build static site
         run: npm run build
         env:
-          # Sanity project details (public, safe to commit)
           NEXT_PUBLIC_SANITY_PROJECT_ID: u2qzrboc
           NEXT_PUBLIC_SANITY_DATASET: production
 
-      - name: Verify build output
+      - name: Verify build output exists
         run: |
-          echo "📦 Build completed. Checking output..."
-          echo "Contents of out folder:"
-          ls -la out/
-          echo "---"
-          echo "Total files in out:"
-          find out -type f | wc -l
-          echo "---"
-          echo "Total out size:"
-          du -sh out/
+          if [ ! -d "out" ]; then
+            echo "❌ ERROR: /out directory does not exist!"
+            exit 1
+          fi
+          echo "✅ Build output exists"
+          echo "📊 Total files: $(find out -type f | wc -l)"
+          echo "📊 Total size: $(du -sh out | cut -f1)"
 
-      - name: Clean ALL state files (FORCE fresh upload)
+      - name: Clean state files (remove unnecessary build artifacts)
         run: |
-          echo "🧹 Cleaning state files to force upload..."
-          rm -f .ftp-deploy-sync-state.json
-          rm -f ./out/.ftp-deploy-sync-state.json
-          rm -f ./.ftp-deploy-sync-state.json
-          find . -name "*ftp-deploy-sync*" -delete
-          echo "State files cleaned"
+          find out -name '*.build-manifest.json' -delete
+          find out -name '*.app-build-manifest.json' -delete
+          echo "✅ Cleaned state files"
 
-      - name: Deploy to Hostinger via FTPS using lftp
+      - name: Create .htaccess for Hostinger
         run: |
-          sudo apt-get update
-          sudo apt-get install -y lftp
+          cat > out/.htaccess << 'EOF'
+          # Kinship Landing - Apache Configuration for Hostinger
 
-          lftp -c "
-          set ssl:verify-certificate no;
-          set ftp:ssl-allow yes;
-          set ftp:ssl-force yes;
-          set ftp:ssl-protect-data yes;
-          set net:timeout 30;
-          set net:max-retries 3;
-          set net:reconnect-interval-base 5;
-          open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} 217.21.77.19;
-          mirror --reverse --delete --verbose --exclude .git/ --exclude node_modules/ ./out/ /;
-          quit;
-          "
+          # Enable Gzip compression
+          <IfModule mod_deflate.c>
+            AddOutputFilterByType DEFLATE text/html text/css text/javascript
+            AddOutputFilterByType DEFLATE application/javascript application/json
+          </IfModule>
 
-          echo "Deployment completed!"
+          # Handle Next.js static export routing
+          <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteBase /
 
-      - name: Verify Deployment
-        if: always()
+            # Serve existing files and directories as-is
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+
+            # For requests without extension, try adding .html
+            RewriteCond %{REQUEST_FILENAME}.html -f
+            RewriteRule ^(.*)$ $1.html [L]
+
+            # If still not found and it's not a file request, serve index.html
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule ^(.*)$ /index.html [L]
+          </IfModule>
+
+          # Cache static assets
+          <IfModule mod_expires.c>
+            ExpiresActive On
+            ExpiresByType image/webp "access plus 1 year"
+            ExpiresByType image/avif "access plus 1 year"
+            ExpiresByType image/jpeg "access plus 1 year"
+            ExpiresByType image/png "access plus 1 year"
+            ExpiresByType text/css "access plus 1 month"
+            ExpiresByType application/javascript "access plus 1 month"
+          </IfModule>
+
+          # Security headers
+          <IfModule mod_headers.c>
+            Header set X-Content-Type-Options "nosniff"
+            Header set X-Frame-Options "SAMEORIGIN"
+          </IfModule>
+          EOF
+          echo "✅ .htaccess created with routing and caching rules"
+
+      - name: Deploy to deploy branch
         run: |
-          echo "🔍 Deployment attempt completed"
-          echo "Check the logs above for:"
-          echo "1. Number of files uploaded"
-          echo "2. Any error messages"
-          echo "3. Final upload directory"
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Save the out directory to temp location
+          echo "📦 Saving build output..."
+          cp -r out /tmp/out-deploy
+
+          # Fetch and checkout deploy branch
+          echo "🔄 Switching to deploy branch..."
+          git fetch origin deploy
+          git checkout deploy
+
+          # Remove all files except .git directory
+          echo "🧹 Cleaning deploy branch..."
+          find . -maxdepth 1 ! -name '.git' ! -name '.' -exec rm -rf {} +
+
+          # Copy new build files
+          echo "📋 Copying new build..."
+          cp -r /tmp/out-deploy/* .
+          cp -r /tmp/out-deploy/.* . 2>/dev/null || true
+
+          # Show what's being deployed
+          echo "📊 Files to deploy:"
+          ls -la
+          echo ""
+          echo "Total files: $(find . -type f ! -path './.git/*' | wc -l)"
+          echo "Total size: $(du -sh . | cut -f1)"
+
+          # Commit and push
+          git add -A
+          if git diff --staged --quiet; then
+            echo "ℹ️  No changes to deploy"
+          else
+            TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+            git commit -m "Deploy: $TIMESTAMP"
+            git push origin deploy
+            echo "✅ Successfully deployed to 'deploy' branch"
+          fi
+
+      - name: Deployment Summary
+        run: |
+          echo ""
+          echo "================================================"
+          echo "🚀 DEPLOYMENT COMPLETE"
+          echo "================================================"
+          echo ""
+          echo "📍 Branch: deploy"
+          echo "🔗 View: https://github.com/trey1mossman-ai/kinship-sanity-test/tree/deploy"
+          echo ""
+          echo "⏳ NEXT STEPS:"
+          echo "1. Hostinger will auto-pull within 1-5 minutes"
+          echo "2. Check site: https://mediumblue-chamois-837591.hostingersite.com/"
+          echo ""
+          echo "================================================"
