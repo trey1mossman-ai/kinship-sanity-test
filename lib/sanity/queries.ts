@@ -212,7 +212,10 @@ export interface EventSpace {
   name: string
   slug: string
   description: string
-  capacity?: number
+  capacity?: {
+    seated?: number
+    standing?: number
+  }
   features?: string[]
   idealFor?: string[]
   heroImage?: string
