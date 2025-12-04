@@ -6,27 +6,40 @@ import { useEffect, useState } from 'react';
 import { ReviewCarousel } from './ReviewCarousel';
 import { KINSHIP_COLORS } from '@/lib/config/brand';
 
+interface PressMention {
+  _id: string;
+  publication: string;
+  logoUrl?: string;
+}
+
 interface PressAndReviewsProps {
   reviewData: {
     meta: any;
     themes: string[];
     reviews: any[];
   };
+  pressMentions?: PressMention[];
 }
 
-export function PressAndReviews({ reviewData }: PressAndReviewsProps) {
-  const press = [
-    { name: 'Forbes', src: '/press/Forbes.jpg' },
-    { name: 'TODAY', src: '/press/today-show.webp' },
-    { name: 'Denver Post', src: '/press/denverpostlogo-grey.webp' },
-    { name: 'USA Today', src: '/press/USA Today.jpg' },
-    { name: 'Condé Nast Traveler', src: '/press/conde nast traveler.jpg' },
-    { name: 'AFAR', src: '/press/Afar.jpg' },
-    { name: 'Globe Traveler', src: '/press/Globe Traveler.jpg' },
-    { name: 'The Telegraph', src: '/press/The Telegraph.jpg' },
-    { name: 'Out There Colorado', src: '/press/out there colorado.jpg' },
-    { name: 'BizBash', src: '/press/bizbash.jpg' },
-  ];
+// Fallback press data in case Sanity is unavailable
+const fallbackPress = [
+  { name: 'Forbes', src: '/press/Forbes.jpg' },
+  { name: 'TODAY', src: '/press/today-show.webp' },
+  { name: 'Denver Post', src: '/press/denverpostlogo-grey.webp' },
+  { name: 'USA Today', src: '/press/USA Today.jpg' },
+  { name: 'Condé Nast Traveler', src: '/press/conde nast traveler.jpg' },
+  { name: 'AFAR', src: '/press/Afar.jpg' },
+  { name: 'Globe Traveler', src: '/press/Globe Traveler.jpg' },
+  { name: 'The Telegraph', src: '/press/The Telegraph.jpg' },
+  { name: 'Out There Colorado', src: '/press/out there colorado.jpg' },
+  { name: 'BizBash', src: '/press/bizbash.jpg' },
+];
+
+export function PressAndReviews({ reviewData, pressMentions }: PressAndReviewsProps) {
+  // Use Sanity data if available, otherwise fallback to hardcoded
+  const press = pressMentions && pressMentions.length > 0
+    ? pressMentions.map(p => ({ name: p.publication, src: p.logoUrl || '' }))
+    : fallbackPress;
 
   const [currentIndex, setCurrentIndex] = useState(0);
 

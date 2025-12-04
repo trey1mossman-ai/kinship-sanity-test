@@ -38,7 +38,7 @@ import { faqs } from '@/components/home/FAQ/faq-data';
 import { buildFaqJsonLd } from '@/components/home/FAQ/faq-jsonld';
 
 // Sanity data fetching
-import { getHomepage } from '@/lib/sanity/queries';
+import { getHomepage, getPressMentions } from '@/lib/sanity/queries';
 
 export const metadata: Metadata = {
   title: 'Experience Colorado Springs like a local | Kinship Landing',
@@ -88,7 +88,10 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   // Fetch homepage data from Sanity (with fallback to defaults)
-  const homepageData = await getHomepage();
+  const [homepageData, pressMentions] = await Promise.all([
+    getHomepage(),
+    getPressMentions()
+  ]);
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -153,7 +156,7 @@ export default async function HomePage() {
 
         {/* 5. As Featured In + Guest Reviews (combined) */}
         <SectionDivider />
-        <PressAndReviews reviewData={reviewsData} />
+        <PressAndReviews reviewData={reviewsData} pressMentions={pressMentions} />
 
         {/* 6. Newsletter signup */}
         <SectionDivider />
