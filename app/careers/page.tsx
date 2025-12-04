@@ -3,13 +3,21 @@ import Image from 'next/image';
 import { HeaderNav } from '@/components/layout/HeaderNav';
 import { Footer } from '@/components/Footer';
 import { ScrollEffectsWrapper } from '@/components/home/ScrollEffectsWrapper';
+import { getCareersPage } from '@/lib/sanity/queries';
 
 export const metadata: Metadata = {
   title: 'Careers | Kinship Landing',
   description: 'Join the Kinship Landing team in Colorado Springs. Work-life balance, career growth, and outrageous hospitality await.',
 };
 
-export default function CareersPage() {
+export default async function CareersPage() {
+  const careersData = await getCareersPage();
+
+  // Use Sanity data with fallbacks
+  const heroTitle = careersData?.heroTitle || "Let's Work Together!";
+  const heroSubtitle = careersData?.heroSubtitle || 'Careers at Kinship Landing & Homa Cafe and Bar';
+  const introText = careersData?.introText || 'Do you crave the freedom to use your hospitality superpowers to make a lasting impact? We are a values-driven startup that is fueled by courage, trust, generosity, community and adventure.';
+
   return (
     <ScrollEffectsWrapper>
       <HeaderNav />
@@ -38,7 +46,7 @@ export default function CareersPage() {
                 textShadow: 'rgba(0, 0, 0, 0.4) 0px 4px 8px',
               }}
             >
-              Let's Work Together!
+              {heroTitle}
             </h1>
             <p
               className="text-xl md:text-2xl text-white max-w-3xl mx-auto mb-8"
@@ -47,7 +55,7 @@ export default function CareersPage() {
                 textShadow: 'rgba(0, 0, 0, 0.4) 0px 2px 4px'
               }}
             >
-              Careers at Kinship Landing & Homa Cafe and Bar
+              {heroSubtitle}
             </p>
           </div>
         </section>
@@ -71,7 +79,7 @@ export default function CareersPage() {
                 color: '#667C58'
               }}
             >
-              Do you crave the freedom to use your hospitality superpowers to make a lasting impact? We are a values-driven startup that is fueled by courage, trust, generosity, community and adventure.
+              {introText}
             </p>
           </div>
         </section>
