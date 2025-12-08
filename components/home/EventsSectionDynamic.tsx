@@ -8,17 +8,23 @@ import { KINSHIP_COLORS } from '@/lib/config/brand';
 
 interface EventsSectionDynamicProps {
   title?: string;
-  description?: string;
+  subtitle?: string;
+  ctaText?: string;
+  ctaUrl?: string;
 }
 
 // Fallback values (from current hardcoded text)
 const fallbackTitle = 'Gather Together';
-const fallbackDescription = 'Unique spaces for unforgettable events';
+const fallbackSubtitle = 'Unique spaces for unforgettable events';
+const fallbackCtaText = 'Learn More';
+const fallbackCtaUrl = '/events';
 
-export function EventsSectionDynamic({ title, description }: EventsSectionDynamicProps) {
+export function EventsSectionDynamic({ title, subtitle, ctaText, ctaUrl }: EventsSectionDynamicProps) {
   // Use Sanity data if available, otherwise fallback to hardcoded
   const displayTitle = title || fallbackTitle;
-  const displayDescription = description || fallbackDescription;
+  const displaySubtitle = subtitle || fallbackSubtitle;
+  const displayCtaText = ctaText || fallbackCtaText;
+  const displayCtaUrl = ctaUrl || fallbackCtaUrl;
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -127,7 +133,7 @@ export function EventsSectionDynamic({ title, description }: EventsSectionDynami
             {displayTitle}
           </h2>
           <p className="text-lg mb-6" style={{ color: KINSHIP_COLORS.greenDark, opacity: 0.7 }}>
-            {displayDescription}
+            {displaySubtitle}
           </p>
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -136,14 +142,14 @@ export function EventsSectionDynamic({ title, description }: EventsSectionDynami
             transition={{ delay: 0.2 }}
           >
             <Link
-              href="/events/"
+              href={displayCtaUrl}
               className="inline-flex items-center justify-center px-8 py-3 text-base font-semibold text-white transition-all duration-300 hover:scale-105"
               style={{
                 backgroundColor: KINSHIP_COLORS.green,
                 clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
               }}
             >
-              Learn More
+              {displayCtaText}
             </Link>
           </motion.div>
         </motion.div>
@@ -589,7 +595,7 @@ export function EventsSectionDynamic({ title, description }: EventsSectionDynami
       {/* Mobile-only CTA below events */}
       <div className="sm:hidden max-w-[1400px] mx-auto px-4 mt-12 text-center">
         <Link
-          href="/events"
+          href={displayCtaUrl}
           className="inline-flex items-center gap-2 px-6 py-2.5 font-semibold transition-all duration-300"
           style={{
             backgroundColor: KINSHIP_COLORS.green,
@@ -604,7 +610,7 @@ export function EventsSectionDynamic({ title, description }: EventsSectionDynami
             e.currentTarget.style.transform = 'scale(1)';
           }}
         >
-          Book Your Event
+          {displayCtaText}
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
@@ -615,14 +621,14 @@ export function EventsSectionDynamic({ title, description }: EventsSectionDynami
     {/* Desktop CTA below Conference Room - OUTSIDE section to clear overflow */}
     <div className="hidden sm:block w-full px-4 py-8 sm:py-10 md:py-12 text-center" style={{ backgroundColor: KINSHIP_COLORS.latte }}>
       <Link
-        href="/events/"
+        href={displayCtaUrl}
         className="inline-flex items-center justify-center px-8 py-3 text-base font-semibold text-white transition-all duration-300 hover:scale-105"
         style={{
           backgroundColor: KINSHIP_COLORS.green,
           clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
         }}
       >
-        Learn More
+        {displayCtaText}
       </Link>
     </div>
     </>
