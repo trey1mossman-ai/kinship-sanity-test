@@ -6,8 +6,33 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { welcomeReveal, staggerContainer, staggerItem, viewportConfig } from '@/lib/utils/animations';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
+import type { Homepage } from '@/lib/sanity/queries';
 
-export function HomaSectionEnhanced() {
+interface HomaSectionEnhancedProps {
+  sanityData?: Homepage | null;
+}
+
+// Fallback values
+const defaults = {
+  paragraph1: "Anchoring the public first floor of Kinship Landing is Homa, our craft café and bar. We took fresh, locally sourced ingredients and combined them with our favorite globally inspired dishes to offer nutrient dense and delightfully delicious food and drinks to fuel your adventures from sunrise to late night.",
+  paragraph2: "Designed for the hungry and the healthy alike, locals, hotel guests, and old friends gather and enjoy hearty sandwiches, flavorful whole grain or salad bowls, small bites like our signature hand pies, fresh soups, and entrees or brunch and breakfast packed full of yummy goodness. Share it all with a pint of local craft beer, freshly roasted coffee, in house custom cocktails, or the perfect glass of wine, kombucha, or an ice-oat milk latte.",
+  promoTitle: "Join HOMA Homies & Get $5!",
+  promoDescription: "Sign up for our loyalty program and get $5 instantly. Earn points, exclusive specials, and unlock in-room ordering coming soon!",
+  promoUrl: "https://www.toasttab.com/kinship-landing-homa-415-south-nevada-avenue/rewardsSignup",
+  ctaText: "View Menu",
+  ctaUrl: "/homa#menu"
+};
+
+export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
+  // Use Sanity data if provided, otherwise use fallback defaults
+  const desc1 = sanityData?.homaParagraph1 || defaults.paragraph1;
+  const desc2 = sanityData?.homaParagraph2 || defaults.paragraph2;
+  const promoTitle = sanityData?.homaPromoTitle || defaults.promoTitle;
+  const promoDescription = sanityData?.homaPromoDescription || defaults.promoDescription;
+  const promoUrl = sanityData?.homaPromoUrl || defaults.promoUrl;
+  const ctaText = sanityData?.homaCtaText || defaults.ctaText;
+  const ctaUrl = sanityData?.homaCtaUrl || defaults.ctaUrl;
+
   const [hoveredImage, setHoveredImage] = useState<number | null>(null);
 
   const homaImages = [
@@ -72,12 +97,12 @@ export function HomaSectionEnhanced() {
                   opacity: 0.9,
                 }}
               >
-                Anchoring the public first floor of Kinship Landing is Homa, our craft café and bar. We took fresh, locally sourced ingredients and combined them with our favorite globally inspired dishes to offer nutrient dense and delightfully delicious food and drinks to fuel your adventures from sunrise to late night.
+                {desc1}
               </p>
 
               {/* HOMA Homies Promo Callout - Clickable */}
               <a
-                href="https://www.toasttab.com/kinship-landing-homa-415-south-nevada-avenue/rewardsSignup"
+                href={promoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block p-4 border-2 my-3 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg cursor-pointer"
@@ -94,7 +119,7 @@ export function HomaSectionEnhanced() {
                     color: KINSHIP_COLORS.greenDark,
                   }}
                 >
-                  Join HOMA Homies & Get $5!
+                  {promoTitle}
                 </p>
                 <p
                   className="text-xs md:text-sm"
@@ -104,7 +129,7 @@ export function HomaSectionEnhanced() {
                     opacity: 0.9,
                   }}
                 >
-                  Sign up for our loyalty program and get $5 instantly. Earn points, exclusive specials, and unlock in-room ordering coming soon!
+                  {promoDescription}
                 </p>
               </a>
 
@@ -116,13 +141,13 @@ export function HomaSectionEnhanced() {
                   opacity: 0.9,
                 }}
               >
-                Designed for the hungry and the healthy alike, locals, hotel guests, and old friends gather and enjoy hearty sandwiches, flavorful whole grain or salad bowls, small bites like our signature hand pies, fresh soups, and entrees or brunch and breakfast packed full of yummy goodness. Share it all with a pint of local craft beer, freshly roasted coffee, in house custom cocktails, or the perfect glass of wine, kombucha, or an ice-oat milk latte.
+                {desc2}
               </p>
             </motion.div>
 
             {/* CTAs */}
             <motion.div variants={staggerItem} className="flex flex-wrap gap-3 items-center">
-              <Link href="/homa#menu">
+              <Link href={ctaUrl}>
                 <motion.button
                   className="px-6 py-3 sm:px-8 sm:py-4 font-semibold text-white transition-all duration-300"
                   style={{
@@ -135,7 +160,7 @@ export function HomaSectionEnhanced() {
                   }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  View Menu
+                  {ctaText}
                 </motion.button>
               </Link>
 
@@ -195,12 +220,12 @@ export function HomaSectionEnhanced() {
                 opacity: 0.9,
               }}
             >
-              Anchoring the public first floor of Kinship Landing is Homa, our craft café and bar. We took fresh, locally sourced ingredients and combined them with our favorite globally inspired dishes to offer nutrient dense and delightfully delicious food and drinks to fuel your adventures from sunrise to late night.
+              {desc1}
             </motion.p>
 
             {/* HOMA Homies Promo Callout - Mobile - Clickable */}
             <motion.a
-              href="https://www.toasttab.com/kinship-landing-homa-415-south-nevada-avenue/rewardsSignup"
+              href={promoUrl}
               target="_blank"
               rel="noopener noreferrer"
               variants={staggerItem}
@@ -218,7 +243,7 @@ export function HomaSectionEnhanced() {
                   color: KINSHIP_COLORS.greenDark,
                 }}
               >
-                Join HOMA Homies & Get $5!
+                {promoTitle}
               </p>
               <p
                 className="text-xs md:text-sm"
@@ -228,7 +253,7 @@ export function HomaSectionEnhanced() {
                   opacity: 0.9,
                 }}
               >
-                Sign up for our loyalty program and get $5 instantly. Earn points, exclusive specials, and unlock in-room ordering coming soon!
+                {promoDescription}
               </p>
             </motion.a>
           </motion.div>
@@ -384,7 +409,7 @@ export function HomaSectionEnhanced() {
                 opacity: 0.9,
               }}
             >
-              Designed for the hungry and the healthy alike, locals, hotel guests, and old friends gather and enjoy hearty sandwiches, flavorful whole grain or salad bowls, small bites like our signature hand pies, fresh soups, and entrees or brunch and breakfast packed full of yummy goodness. Share it all with a pint of local craft beer, freshly roasted coffee, in house custom cocktails, or the perfect glass of wine, kombucha, or an ice-oat milk latte.
+              {desc2}
             </motion.p>
           </motion.div>
 
@@ -426,7 +451,7 @@ export function HomaSectionEnhanced() {
             className="order-6 lg:hidden"
           >
             <motion.div variants={staggerItem} className="flex flex-wrap gap-3 justify-center items-center">
-              <Link href="/homa#menu">
+              <Link href={ctaUrl}>
                 <motion.button
                   className="px-6 py-3 sm:px-8 sm:py-4 font-semibold text-white transition-all duration-300"
                   style={{
@@ -439,7 +464,7 @@ export function HomaSectionEnhanced() {
                   }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  View Menu
+                  {ctaText}
                 </motion.button>
               </Link>
 

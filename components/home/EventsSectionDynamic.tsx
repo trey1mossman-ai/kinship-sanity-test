@@ -6,7 +6,19 @@ import Link from 'next/link';
 import { useRef, useState, useEffect } from 'react';
 import { KINSHIP_COLORS } from '@/lib/config/brand';
 
-export function EventsSectionDynamic() {
+interface EventsSectionDynamicProps {
+  title?: string;
+  description?: string;
+}
+
+// Fallback values (from current hardcoded text)
+const fallbackTitle = 'Gather Together';
+const fallbackDescription = 'Unique spaces for unforgettable events';
+
+export function EventsSectionDynamic({ title, description }: EventsSectionDynamicProps) {
+  // Use Sanity data if available, otherwise fallback to hardcoded
+  const displayTitle = title || fallbackTitle;
+  const displayDescription = description || fallbackDescription;
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -112,10 +124,10 @@ export function EventsSectionDynamic() {
             className="text-5xl md:text-6xl font-bold mb-3"
             style={{ color: KINSHIP_COLORS.greenDark }}
           >
-            Gather Together
+            {displayTitle}
           </h2>
           <p className="text-lg mb-6" style={{ color: KINSHIP_COLORS.greenDark, opacity: 0.7 }}>
-            Unique spaces for unforgettable events
+            {displayDescription}
           </p>
           <motion.div
             initial={{ opacity: 0, y: 10 }}

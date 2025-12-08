@@ -36,6 +36,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'hotels.cloudbeds.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+      },
     ],
   },
   async headers() {

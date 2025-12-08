@@ -60,9 +60,42 @@ export const roomsQuery = `*[_type == "room" && isActive == true] | order(displa
   hasFireplace,
   displayOrder,
   isActive,
+  homepageGroup,
+  maxOccupancy,
   "heroImage": heroImage.asset->url,
   "gallery": gallery[].asset->url
 }`
+
+// Homepage room interface (simplified for homepage display)
+export interface HomepageRoom {
+  _id: string
+  name: string
+  slug: string
+  shortDescription?: string
+  description: string
+  heroImage: string
+  gallery?: string[]
+  features?: string[]
+  maxOccupancy?: number
+  homepageGroup?: 'king' | 'queen' | 'family' | 'campDeck'
+}
+
+// Fetch rooms for homepage display
+export async function getHomepageRooms(): Promise<HomepageRoom[]> {
+  const query = `*[_type == "room" && isActive == true] | order(displayOrder asc) {
+    _id,
+    name,
+    "slug": slug.current,
+    shortDescription,
+    description,
+    "heroImage": heroImage.asset->url,
+    "gallery": gallery[].asset->url,
+    features,
+    maxOccupancy,
+    homepageGroup
+  }`
+  return client.fetch(query)
+}
 
 // Fetch all rooms from Sanity
 export async function getRooms(): Promise<RoomTeaser[]> {
@@ -149,104 +182,326 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
 // HOMEPAGE
 // ============================================
 export interface Homepage {
-  heroHeadline: string
-  heroSubheadline: string
-  heroCta?: { text: string; url: string }
-  whyKinshipTitle: string
-  whyKinshipBody: string
-  roomsSectionTitle: string
-  roomsSectionSubtitle?: string
-  cafeSectionTitle: string
-  cafeSectionDescription: string
-  cafeFeatures?: string[]
-  eventsSectionTitle: string
-  eventsSectionDescription?: string
-  pressSectionTitle: string
-  reviewsSectionTitle: string
+  // Hero
+  heroTitle?: string
+  heroSubtitle?: string
+  heroImageUrl?: string
+  heroVideo?: string
+  heroCtaText?: string
+  heroCtaUrl?: string
+
+  // Guide Section (Kinship is Your Guide)
+  guideTitle?: string
+  guideParagraph1?: string
+  guideParagraph2?: string
+  guideParagraph3?: string
+  guideCta1Text?: string
+  guideCta1Url?: string
+  guideCta2Text?: string
+  guideCta2Url?: string
+  guideCta3Text?: string
+  guideCta3Url?: string
+
+  // Rooms Section
+  roomsSectionTitle?: string
+  roomsCtaText?: string
+  roomsCtaUrl?: string
+
+  // Events Section
+  eventsSectionTitle?: string
+  eventsSectionSubtitle?: string
+  eventsCtaText?: string
+  eventsCtaUrl?: string
+
+  // HOMA Café Section
+  homaParagraph1?: string
+  homaParagraph2?: string
+  homaPromoTitle?: string
+  homaPromoDescription?: string
+  homaPromoUrl?: string
+  homaCtaText?: string
+  homaCtaUrl?: string
+
+  // Press & Reviews
+  pressSectionTitle?: string
+  reviewsSectionTitle?: string
   googleRating?: string
   googleReviewCount?: string
-  mapSectionTitle: string
-  nearbyAttractions?: Array<{ name: string; time: string }>
+
+  // Newsletter
+  newsletterTitle?: string
+  newsletterDescription?: string
+  newsletterButtonText?: string
+  newsletterDisclaimer?: string
+
+  // Map Section
+  mapSectionTitle?: string
+  mapSubtitle?: string
+  nearbyAttractions?: Array<{ _key: string; name: string; time: string; link?: string }>
+  mapCtaText?: string
+  mapCtaUrl?: string
+
+  // SEO
+  seoTitle?: string
+  seoDescription?: string
 }
 
 export async function getHomepage(): Promise<Homepage | null> {
   const query = `*[_type == "homepage"][0] {
-    heroHeadline,
-    heroSubheadline,
-    heroCta,
-    whyKinshipTitle,
-    whyKinshipBody,
+    // Hero
+    heroTitle,
+    heroSubtitle,
+    "heroImageUrl": heroImage.asset->url,
+    heroVideo,
+    heroCtaText,
+    heroCtaUrl,
+
+    // Guide Section
+    guideTitle,
+    guideParagraph1,
+    guideParagraph2,
+    guideParagraph3,
+    guideCta1Text,
+    guideCta1Url,
+    guideCta2Text,
+    guideCta2Url,
+    guideCta3Text,
+    guideCta3Url,
+
+    // Rooms Section
     roomsSectionTitle,
-    roomsSectionSubtitle,
-    cafeSectionTitle,
-    cafeSectionDescription,
-    cafeFeatures,
+    roomsCtaText,
+    roomsCtaUrl,
+
+    // Events Section
     eventsSectionTitle,
-    eventsSectionDescription,
+    eventsSectionSubtitle,
+    eventsCtaText,
+    eventsCtaUrl,
+
+    // HOMA Section
+    homaParagraph1,
+    homaParagraph2,
+    homaPromoTitle,
+    homaPromoDescription,
+    homaPromoUrl,
+    homaCtaText,
+    homaCtaUrl,
+
+    // Press & Reviews
     pressSectionTitle,
     reviewsSectionTitle,
     googleRating,
     googleReviewCount,
+
+    // Newsletter
+    newsletterTitle,
+    newsletterDescription,
+    newsletterButtonText,
+    newsletterDisclaimer,
+
+    // Map Section
     mapSectionTitle,
-    nearbyAttractions
+    mapSubtitle,
+    nearbyAttractions,
+    mapCtaText,
+    mapCtaUrl,
+
+    // SEO
+    seoTitle,
+    seoDescription
   }`
   return client.fetch(query)
 }
 
 // ============================================
-// EVENTS PAGE & SPACES
+// EVENTS PAGE (Complete - all content editable)
 // ============================================
 export interface EventsPage {
+  // Hero
   heroTitle: string
   heroSubtitle?: string
-  takeoverTitle: string
+  heroImage?: string
+
+  // Gatherings
+  gatheringsTitle?: string
+  gatheringsDescription?: string
+  gatheringsCtaText?: string
+  gatheringsCtaUrl?: string
+  gatheringsGallery?: string[]
+
+  // Weddings
+  weddingsTitle?: string
+  weddingsDescription?: string
+  weddingsDescription2?: string
+  weddingsCtaText?: string
+  weddingsCtaUrl?: string
+  weddingsInfoDeckText?: string
+  weddingsInfoDeckUrl?: string
+  weddingsGallery?: string[]
+
+  // Meetings & Retreats
+  meetingsTitle?: string
+  meetingsDescription?: string
+  meetingsDescription2?: string
+  meetingsDescription3?: string
+  meetingsNote?: string
+  meetingsCtaText?: string
+  meetingsCtaUrl?: string
+  meetingsGallery?: string[]
+
+  // Room Blocks
+  roomBlocksTitle?: string
+  roomBlocksDescription?: string
+  roomBlocksDescription2?: string
+  roomBlocksDescription3?: string
+  roomBlocksCtaText?: string
+  roomBlocksCtaUrl?: string
+  roomBlocksGallery?: string[]
+
+  // Takeover
+  takeoverTitle?: string
   takeoverSubtitle?: string
-  takeoverDescription: string
+  takeoverDescription?: string
+  takeoverDescription2?: string
   takeoverFeatures?: string[]
+  takeoverCtaText?: string
+  takeoverCtaUrl?: string
+  takeoverGallery?: string[]
+
+  // GreenHaus Venue
+  greenhausTitle?: string
+  greenhausDescription?: string
+  greenhausCapacity?: string
+  greenhausFeatures?: string[]
+  greenhausGallery?: string[]
+
+  // Yard Venue
+  yardTitle?: string
+  yardDescription?: string
+  yardCapacity?: string
+  yardFeatures?: string[]
+  yardGallery?: string[]
+
+  // Conference Room Venue
+  conferenceRoomTitle?: string
+  conferenceRoomDescription?: string
+  conferenceRoomCapacity?: string
+  conferenceRoomFeatures?: string[]
+  conferenceRoomGallery?: string[]
+
+  // Fireplace Venue
+  fireplaceTitle?: string
+  fireplaceDescription?: string
+  fireplaceCapacity?: string
+  fireplaceFeatures?: string[]
+  fireplaceGallery?: string[]
+
+  // Camp Deck Venue
+  campDeckTitle?: string
+  campDeckDescription?: string
+  campDeckCapacity?: string
+  campDeckFeatures?: string[]
+  campDeckGallery?: string[]
+
+  // Contact
   inquiryEmail?: string
   inquiryPhone?: string
-}
-
-export interface EventSpace {
-  _id: string
-  name: string
-  slug: string
-  description: string
-  capacity?: {
-    seated?: number
-    standing?: number
-  }
-  features?: string[]
-  idealFor?: string[]
-  heroImage?: string
-  gallery?: string[]
+  bookingUrl?: string
 }
 
 export async function getEventsPage(): Promise<EventsPage | null> {
   const query = `*[_type == "eventsPage"][0] {
+    // Hero
     heroTitle,
     heroSubtitle,
+    "heroImage": heroImage.asset->url,
+
+    // Gatherings
+    gatheringsTitle,
+    gatheringsDescription,
+    gatheringsCtaText,
+    gatheringsCtaUrl,
+    "gatheringsGallery": gatheringsGallery[].asset->url,
+
+    // Weddings
+    weddingsTitle,
+    weddingsDescription,
+    weddingsDescription2,
+    weddingsCtaText,
+    weddingsCtaUrl,
+    weddingsInfoDeckText,
+    weddingsInfoDeckUrl,
+    "weddingsGallery": weddingsGallery[].asset->url,
+
+    // Meetings
+    meetingsTitle,
+    meetingsDescription,
+    meetingsDescription2,
+    meetingsDescription3,
+    meetingsNote,
+    meetingsCtaText,
+    meetingsCtaUrl,
+    "meetingsGallery": meetingsGallery[].asset->url,
+
+    // Room Blocks
+    roomBlocksTitle,
+    roomBlocksDescription,
+    roomBlocksDescription2,
+    roomBlocksDescription3,
+    roomBlocksCtaText,
+    roomBlocksCtaUrl,
+    "roomBlocksGallery": roomBlocksGallery[].asset->url,
+
+    // Takeover
     takeoverTitle,
     takeoverSubtitle,
     takeoverDescription,
+    takeoverDescription2,
     takeoverFeatures,
-    inquiryEmail,
-    inquiryPhone
-  }`
-  return client.fetch(query)
-}
+    takeoverCtaText,
+    takeoverCtaUrl,
+    "takeoverGallery": takeoverGallery[].asset->url,
 
-export async function getEventSpaces(): Promise<EventSpace[]> {
-  const query = `*[_type == "eventSpace" && isActive == true] | order(displayOrder asc) {
-    _id,
-    name,
-    "slug": slug.current,
-    description,
-    capacity,
-    features,
-    idealFor,
-    "heroImage": heroImage.asset->url,
-    "gallery": gallery[].asset->url
+    // GreenHaus
+    greenhausTitle,
+    greenhausDescription,
+    greenhausCapacity,
+    greenhausFeatures,
+    "greenhausGallery": greenhausGallery[].asset->url,
+
+    // Yard
+    yardTitle,
+    yardDescription,
+    yardCapacity,
+    yardFeatures,
+    "yardGallery": yardGallery[].asset->url,
+
+    // Conference Room
+    conferenceRoomTitle,
+    conferenceRoomDescription,
+    conferenceRoomCapacity,
+    conferenceRoomFeatures,
+    "conferenceRoomGallery": conferenceRoomGallery[].asset->url,
+
+    // Fireplace
+    fireplaceTitle,
+    fireplaceDescription,
+    fireplaceCapacity,
+    fireplaceFeatures,
+    "fireplaceGallery": fireplaceGallery[].asset->url,
+
+    // Camp Deck
+    campDeckTitle,
+    campDeckDescription,
+    campDeckCapacity,
+    campDeckFeatures,
+    "campDeckGallery": campDeckGallery[].asset->url,
+
+    // Contact
+    inquiryEmail,
+    inquiryPhone,
+    bookingUrl
   }`
   return client.fetch(query)
 }
@@ -566,24 +821,4 @@ export async function getAccessibilityPage(): Promise<AccessibilityPage | null> 
   return client.fetch(query)
 }
 
-// ============================================
-// PRESS MENTIONS
-// ============================================
-export interface PressMention {
-  _id: string
-  publication: string
-  quote?: string
-  url?: string
-  logoUrl?: string
-}
-
-export async function getPressMentions(): Promise<PressMention[]> {
-  const query = `*[_type == "pressMention" && isActive == true] | order(displayOrder asc) {
-    _id,
-    publication,
-    quote,
-    url,
-    "logoUrl": logo.asset->url
-  }`
-  return client.fetch(query)
-}
+// Press mentions are now part of Homepage.pressLogos - no separate document type

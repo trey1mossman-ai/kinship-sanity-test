@@ -4,23 +4,29 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { content } from '@/content/copy';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
+import type { Homepage } from '@/lib/sanity/queries';
 
-interface NearbyAttraction {
-  name: string;
-  time: string;
-  link?: string;
-}
+// Fallback values
+const defaults = {
+  title: 'Location',
+  subtitle: 'Convenience to Everything',
+  ctaText: 'Book Your Stay',
+  ctaUrl: 'https://hotels.cloudbeds.com/reservation/4nfQ6E'
+};
 
 interface MapBlockProps {
-  title?: string;
-  nearbyAttractions?: NearbyAttraction[];
+  sanityData?: Homepage | null;
 }
 
-export function MapBlock({ title, nearbyAttractions }: MapBlockProps) {
+export function MapBlock({ sanityData }: MapBlockProps) {
   // Use Sanity data if provided, otherwise fall back to hardcoded content
-  const mapTitle = title || content.home.map.title;
-  const locations = nearbyAttractions && nearbyAttractions.length > 0
-    ? nearbyAttractions.map(attr => ({
+  const mapTitle = sanityData?.mapSectionTitle || defaults.title;
+  const mapSubtitle = sanityData?.mapSubtitle || defaults.subtitle;
+  const ctaText = sanityData?.mapCtaText || defaults.ctaText;
+  const ctaUrl = sanityData?.mapCtaUrl || defaults.ctaUrl;
+
+  const locations = sanityData?.nearbyAttractions && sanityData.nearbyAttractions.length > 0
+    ? sanityData.nearbyAttractions.map(attr => ({
         name: attr.name,
         time: attr.time,
         link: attr.link
@@ -86,7 +92,7 @@ export function MapBlock({ title, nearbyAttractions }: MapBlockProps) {
                   color: KINSHIP_COLORS.greenDark
                 }}
               >
-                Convenience to Everything
+                {mapSubtitle}
               </h3>
               <div className="space-y-2">
                 {locations.map((location) => {
@@ -135,7 +141,7 @@ export function MapBlock({ title, nearbyAttractions }: MapBlockProps) {
             {/* Book Your Stay CTA */}
             <div className="mt-6">
               <a
-                href="https://hotels.cloudbeds.com/reservation/4nfQ6E"
+                href={ctaUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block px-6 py-2.5 font-semibold text-white transition-all hover:brightness-110"
@@ -144,7 +150,7 @@ export function MapBlock({ title, nearbyAttractions }: MapBlockProps) {
                   clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                 }}
               >
-                Book Your Stay
+                {ctaText}
               </a>
             </div>
           </motion.div>

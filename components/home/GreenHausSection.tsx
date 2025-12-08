@@ -4,17 +4,41 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export function GreenHausSection() {
+// Props interface for Sanity data
+interface GreenHausSectionProps {
+  sanityData?: {
+    name?: string;
+    description?: string;
+    heroImage?: string;
+    gallery?: string[];
+    capacity?: { seated?: number; standing?: number };
+    features?: string[];
+    idealFor?: string[];
+  };
+}
+
+// Fallback images (used when Sanity data not provided)
+const FALLBACK_IMAGES = [
+  '/images/events-page/GreenHaus/Greenhaus-SamStarrMedia (1).webp',
+  '/images/events-page/GreenHaus/Greenhaus5-SamStarr.webp',
+  '/images/events-page/GreenHaus/Greenhaus-RichardSeldomridge (4).webp',
+  '/images/events-page/GreenHaus/Greenhaus-GregCeo.webp',
+  '/images/events-page/GreenHaus/aligarciaphotography-2.webp',
+];
+
+export function GreenHausSection({ sanityData }: GreenHausSectionProps) {
   const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string; images: string[]; index: number } | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const galleryImages = [
-    '/images/events-page/GreenHaus/Greenhaus-SamStarrMedia (1).webp',
-    '/images/events-page/GreenHaus/Greenhaus5-SamStarr.webp',
-    '/images/events-page/GreenHaus/Greenhaus-RichardSeldomridge (4).webp',
-    '/images/events-page/GreenHaus/Greenhaus-GregCeo.webp',
-    '/images/events-page/GreenHaus/aligarciaphotography-2.webp',
-  ];
+  // Use Sanity data with fallbacks
+  const venueName = sanityData?.name || 'GreenHaus';
+  const venueDescription = sanityData?.description || 'A truly one-of-a-kind venue in Colorado Springs a greenhouse flooded with light in the heart of downtown. A beautiful backdrop for events, weddings, retreats, and gatherings.';
+  const venueCapacity = sanityData?.capacity?.standing || 80;
+
+  // Use Sanity gallery if available, otherwise fallback
+  const galleryImages = (sanityData?.gallery && sanityData.gallery.length > 0)
+    ? sanityData.gallery
+    : FALLBACK_IMAGES;
 
   // Auto-advance carousel every 5 seconds
   useEffect(() => {
@@ -52,14 +76,14 @@ export function GreenHausSection() {
               className="text-2xl sm:text-3xl md:text-4xl font-bold"
               style={{ fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif', color: '#667C58' }}
             >
-              GreenHaus
+              {venueName}
             </h2>
 
             <p
               className="text-sm sm:text-base md:text-lg leading-relaxed"
               style={{ fontFamily: '"europa", "Hind", system-ui, sans-serif', color: '#667C58', opacity: 0.9 }}
             >
-              A truly one-of-a-kind venue in Colorado Springs a greenhouse flooded with light in the heart of downtown. A beautiful backdrop for events, weddings, retreats, and gatherings.
+              {venueDescription}
             </p>
 
             {/* Features */}
@@ -69,7 +93,7 @@ export function GreenHausSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 <span className="text-xs sm:text-sm md:text-base" style={{ fontFamily: '"europa", "Hind", system-ui, sans-serif', color: '#667C58' }}>
-                  Up to 80 Guests
+                  Up to {venueCapacity} Guests
                 </span>
               </div>
               <div className="flex items-center gap-2 sm:gap-3">

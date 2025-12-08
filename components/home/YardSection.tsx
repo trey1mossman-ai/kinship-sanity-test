@@ -4,22 +4,46 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export function YardSection() {
+// Props interface for Sanity data
+interface YardSectionProps {
+  sanityData?: {
+    name?: string;
+    description?: string;
+    heroImage?: string;
+    gallery?: string[];
+    capacity?: { seated?: number; standing?: number };
+    features?: string[];
+    idealFor?: string[];
+  };
+}
+
+// Fallback images (used when Sanity data not provided)
+const FALLBACK_IMAGES = [
+  '/images/events-page/The Yard/IMG_1494.webp',
+  '/images/events-page/The Yard/DSC_6966.webp',
+  '/images/events-page/The Yard/D85A8970.webp',
+  '/images/events-page/The Yard/IMG_1487 (1).webp',
+  '/images/events-page/The Yard/Yard, AshleeKayPhotography.webp',
+  '/images/events-page/The Yard/Yard2, SamStarr.webp',
+  '/images/events-page/The Yard/Yard3, SamStarr.webp',
+  '/images/events-page/The Yard/Yard7, SamStarr.webp',
+  '/images/events-page/The Yard/D85A8921.webp',
+  '/images/events-page/The Yard/4DE0F411-7D69-45F5-90C2-98BF3C106C00_1_201_a.webp',
+];
+
+export function YardSection({ sanityData }: YardSectionProps) {
   const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string; images: string[]; index: number } | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const galleryImages = [
-    '/images/events-page/The Yard/IMG_1494.webp',
-    '/images/events-page/The Yard/DSC_6966.webp',
-    '/images/events-page/The Yard/D85A8970.webp',
-    '/images/events-page/The Yard/IMG_1487 (1).webp',
-    '/images/events-page/The Yard/Yard, AshleeKayPhotography.webp',
-    '/images/events-page/The Yard/Yard2, SamStarr.webp',
-    '/images/events-page/The Yard/Yard3, SamStarr.webp',
-    '/images/events-page/The Yard/Yard7, SamStarr.webp',
-    '/images/events-page/The Yard/D85A8921.webp',
-    '/images/events-page/The Yard/4DE0F411-7D69-45F5-90C2-98BF3C106C00_1_201_a.webp',
-  ];
+  // Use Sanity data with fallbacks
+  const venueName = sanityData?.name || 'The Yard';
+  const venueDescription = sanityData?.description || 'Our expansive outdoor event space wraps around the hotel, offering flexible areas for ceremonies, receptions, and private gatherings under the Colorado sky.';
+  const venueCapacity = sanityData?.capacity?.standing || 200;
+
+  // Use Sanity gallery if available, otherwise fallback
+  const galleryImages = (sanityData?.gallery && sanityData.gallery.length > 0)
+    ? sanityData.gallery
+    : FALLBACK_IMAGES;
 
   // Auto-advance carousel every 5 seconds
   useEffect(() => {
@@ -57,16 +81,14 @@ export function YardSection() {
               className="text-2xl sm:text-3xl md:text-4xl font-bold"
               style={{ fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif', color: '#667C58' }}
             >
-              The Yard
+              {venueName}
             </h2>
 
             <p
               className="text-sm sm:text-base md:text-lg leading-relaxed"
               style={{ fontFamily: '"europa", "Hind", system-ui, sans-serif', color: '#667C58', opacity: 0.9 }}
             >
-              Our outdoor living room with string lights and mountain views perfect for gatherings,
-              retreats, and celebrations. Fire pits, yard games, and that sweet Colorado sunshine make
-              The Yard the ideal space for casual get-togethers or memorable outdoor events.
+              {venueDescription}
             </p>
 
             {/* Features */}

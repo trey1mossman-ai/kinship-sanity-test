@@ -10,7 +10,7 @@ import { HeroSection as Hero } from '@/components/HeroEnhanced'; // Enhanced her
 
 // Dynamic imports for below-fold components - lazy loaded for performance
 const WhyKinship = dynamic(() => import('@/components/home/WhyKinship').then(mod => ({ default: mod.WhyKinship })));
-const RoomsGrid = dynamic(() => import('@/components/home/RoomsGridEnhanced').then(mod => ({ default: mod.RoomsGridEnhanced })), {
+const RoomsGrid = dynamic(() => import('@/components/home/RoomsGridSanity').then(mod => ({ default: mod.RoomsGridSanity })), {
   loading: () => <div className="h-96 bg-gray-100 animate-pulse" />
 });
 const KinshipGuideExplore = dynamic(() => import('@/components/home/KinshipGuideAsymmetric').then(mod => ({ default: mod.KinshipGuideAsymmetric })));
@@ -38,7 +38,7 @@ import { faqs } from '@/components/home/FAQ/faq-data';
 import { buildFaqJsonLd } from '@/components/home/FAQ/faq-jsonld';
 
 // Sanity data fetching
-import { getHomepage, getPressMentions } from '@/lib/sanity/queries';
+import { getHomepage, getHomepageRooms } from '@/lib/sanity/queries';
 
 export const metadata: Metadata = {
   title: 'Experience Colorado Springs like a local | Kinship Landing',
@@ -88,9 +88,10 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   // Fetch homepage data from Sanity (with fallback to defaults)
-  const [homepageData, pressMentions] = await Promise.all([
+  // Press mentions are now included in homepageData.pressLogos
+  const [homepageData, homepageRooms] = await Promise.all([
     getHomepage(),
-    getPressMentions()
+    getHomepageRooms()
   ]);
 
   const structuredData = {
@@ -133,34 +134,52 @@ export default async function HomePage() {
   return (
     <>
       <HeaderNav />
-      <Hero />
+      <Hero
+        headline={homepageData?.heroTitle}
+        subheadline={homepageData?.heroSubtitle}
+        heroVideoUrl={homepageData?.heroVideo}
+        heroImageUrl={homepageData?.heroImageUrl}
+      />
 
       <main id="main-content">
         {/* 1. Kinship is Your Guide + Stay Gather Explore */}
         <KinshipGuideExplore
-          title={homepageData?.whyKinshipTitle}
-          body={homepageData?.whyKinshipBody}
+          sanityData={homepageData}
         />
 
         {/* 2. Find Your Perfect Room */}
         <SectionDivider />
-        <RoomsGrid />
+        <RoomsGrid
+          rooms={homepageRooms}
+          sectionTitle={homepageData?.roomsSectionTitle}
+          ctaText={homepageData?.roomsCtaText}
+          ctaUrl={homepageData?.roomsCtaUrl}
+        />
 
         {/* 3. Events & Gatherings (with venue spaces) */}
         <SectionDivider />
-        <EventsSection />
+        <EventsSection
+          title={homepageData?.eventsSectionTitle}
+          subtitle={homepageData?.eventsSectionSubtitle}
+          ctaText={homepageData?.eventsCtaText}
+          ctaUrl={homepageData?.eventsCtaUrl}
+        />
 
         {/* 4. HOMA section */}
         <SectionDivider />
-        <CafeSection />
+        <CafeSection sanityData={homepageData} />
 
         {/* 5. As Featured In + Guest Reviews (combined) */}
         <SectionDivider />
-        <PressAndReviews reviewData={reviewsData} pressMentions={pressMentions} />
+        <PressAndReviews
+          reviewData={reviewsData}
+          pressSectionTitle={homepageData?.pressSectionTitle}
+          reviewsSectionTitle={homepageData?.reviewsSectionTitle}
+        />
 
         {/* 6. Newsletter signup */}
         <SectionDivider />
-        <Newsletter />
+        <Newsletter sanityData={homepageData} />
 
         {/* 7. Visual Break - WoodWall Detail */}
         <section className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden">
@@ -179,8 +198,7 @@ export default async function HomePage() {
 
         {/* 9. Location Map */}
         <MapBlock
-          title={homepageData?.mapSectionTitle}
-          nearbyAttractions={homepageData?.nearbyAttractions}
+          sanityData={homepageData}
         />
       </main>
 

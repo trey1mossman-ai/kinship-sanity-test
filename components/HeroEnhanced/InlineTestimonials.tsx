@@ -4,22 +4,47 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import reviewsData from '@/data/reviews.seed.json';
 import { KINSHIP_FONTS } from '@/lib/config/brand';
-import { content } from '@/content/copy';
+
+// Review structure matching Sanity featuredReviews
+interface Review {
+  quote: string;
+  author?: string;
+  name?: string;  // Fallback field from JSON data
+  source?: string;
+  rating: number;
+}
+
+interface InlineTestimonialsProps {
+  tagline?: string;
+  reviews?: Review[];  // From Sanity featuredReviews
+}
+
+// Fallback tagline from website content
+const fallbackTagline = 'Sleep well. Meet locals. Launch adventures.';
 
 /**
  * InlineTestimonials Component
  * Purpose: Replace marketing tagline with authentic guest voices
  * Brilliant UX: Let guests speak instead of marketing copy
  * Brand: Clean, minimal, authentic proof of "sleep well, meet locals, launch adventures"
+ *
+ * Data source priority:
+ * 1. Sanity featuredReviews (if provided)
+ * 2. Fallback to reviews.seed.json
  */
-export function InlineTestimonials() {
+export function InlineTestimonials({ tagline, reviews }: InlineTestimonialsProps) {
+  // Use Sanity tagline if provided, otherwise fallback
+  const displayTagline = tagline || fallbackTagline;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showingOriginal, setShowingOriginal] = useState(true);
 
-  // Get the most impactful 5-star reviews that prove our value prop
-  const powerReviews = reviewsData.reviews
-    .filter(review => review.rating === 5)
-    .slice(0, 4); // Just the best 4 for rotation
+  // Use Sanity reviews if provided, otherwise fallback to JSON file
+  const powerReviews: Review[] = reviews && reviews.length > 0
+    ? reviews.filter(review => review.rating === 5).slice(0, 4)
+    : reviewsData.reviews
+        .filter(review => review.rating === 5)
+        .slice(0, 4)
+        .map(r => ({ ...r, author: r.name })); // Map name to author for consistency
 
   // Show original tagline for 4 seconds, then start testimonial rotation
   useEffect(() => {
@@ -60,7 +85,7 @@ export function InlineTestimonials() {
               textShadow: 'rgba(0, 0, 0, 0.3) 0px 2px 4px',
             }}
           >
-            {content.home.hero.subhead}
+            {displayTagline}
           </p>
         </div>
       </div>
@@ -88,7 +113,7 @@ export function InlineTestimonials() {
                 textShadow: 'rgba(0, 0, 0, 0.3) 0px 2px 4px',
               }}
             >
-              {content.home.hero.subhead}
+              {displayTagline}
             </p>
           </motion.div>
         ) : (
@@ -119,7 +144,7 @@ export function InlineTestimonials() {
                 textShadow: 'rgba(0, 0, 0, 0.2) 0px 1px 2px',
               }}
             >
-              – {currentReview.name}
+              – {currentReview.author || currentReview.name}
             </p>
           </motion.div>
         )}

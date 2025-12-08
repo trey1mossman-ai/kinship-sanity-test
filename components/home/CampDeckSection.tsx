@@ -5,16 +5,38 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export function CampDeckSection() {
+// Props interface for Sanity data
+interface CampDeckSectionProps {
+  sanityData?: {
+    name?: string;
+    description?: string;
+    heroImage?: string;
+    gallery?: string[];
+    capacity?: { seated?: number; standing?: number };
+    features?: string[];
+    idealFor?: string[];
+  };
+}
+
+// Fallback images (used when Sanity data not provided)
+const FALLBACK_IMAGES = [
+  '/images/Rooms Page:section/Camp Deck/CampDeck-SamStarrMedia (7).webp',
+  '/images/Rooms Page:section/Camp Deck/CampDeck-SamStarrMedia (17).webp',
+  '/images/Rooms Page:section/Camp Deck/Kinship Landing-67.webp',
+];
+
+export function CampDeckSection({ sanityData }: CampDeckSectionProps) {
   const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string; images: string[]; index: number } | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Camp Deck images for events page
-  const galleryImages = [
-    '/images/Rooms Page:section/Camp Deck/CampDeck-SamStarrMedia (7).webp',
-    '/images/Rooms Page:section/Camp Deck/CampDeck-SamStarrMedia (17).webp',
-    '/images/Rooms Page:section/Camp Deck/Kinship Landing-67.webp',
-  ];
+  // Use Sanity data with fallbacks
+  const venueName = sanityData?.name || 'Camp Deck';
+  const venueDescription = sanityData?.description || 'A truly unique overnight experience our outdoor camping deck offers mountain views, private restroom access, and hammock hooks for the ultimate urban camping adventure. Flat turf camping area perfect for bringing your own tent and sleeping gear while staying in the heart of downtown Colorado Springs.';
+
+  // Use Sanity gallery if available, otherwise fallback
+  const galleryImages = (sanityData?.gallery && sanityData.gallery.length > 0)
+    ? sanityData.gallery
+    : FALLBACK_IMAGES;
 
   // Auto-advance carousel every 5 seconds
   useEffect(() => {
@@ -52,17 +74,14 @@ export function CampDeckSection() {
               className="text-2xl sm:text-3xl md:text-4xl font-bold"
               style={{ fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif', color: '#667C58' }}
             >
-              Camp Deck
+              {venueName}
             </h2>
 
             <p
               className="text-sm sm:text-base md:text-lg leading-relaxed"
               style={{ fontFamily: '"europa", "Hind", system-ui, sans-serif', color: '#667C58', opacity: 0.9 }}
             >
-              A truly unique overnight experience our outdoor camping deck offers mountain views,
-              private restroom access, and hammock hooks for the ultimate urban camping adventure.
-              Flat turf camping area perfect for bringing your own tent and sleeping gear while staying
-              in the heart of downtown Colorado Springs.
+              {venueDescription}
             </p>
 
             {/* Features */}

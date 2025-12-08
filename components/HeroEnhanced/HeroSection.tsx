@@ -7,16 +7,41 @@ import { InlineTestimonials } from './InlineTestimonials';
 import { KINSHIP_FONTS } from '@/lib/config/brand';
 import { content } from '@/content/copy';
 
+// Review structure matching Sanity featuredReviews
+interface Review {
+  quote: string;
+  author?: string;
+  source?: string;
+  rating: number;
+}
+
+interface HeroSectionProps {
+  headline?: string;
+  subheadline?: string;
+  reviews?: Review[];  // From Sanity featuredReviews
+  heroVideoUrl?: string;  // From Sanity heroVideo
+  heroImageUrl?: string;  // From Sanity heroImage (fallback while video loads)
+}
+
+// Fallback headline (matches current hardcoded value)
+const fallbackHeadline = 'Experience Colorado Springs like a local';
+
 /**
  * Enhanced HeroSection Component
  * Purpose: Create a welcoming first impression that makes guests feel understood
  * Mobile-first: Stacked layout on mobile, side-by-side on desktop
  * Structure: Background layer -> Content layer (text + booking) + minimal review strip
  */
-export function HeroSection() {
-  // Hero video with fallback image
-  const heroVideo = 'https://storage.googleapis.com/msgsndr/ZSnKlb7yt1OZGmrCwL7T/media/68defb5cd6c63ec71789ef67.mp4';
-  const heroImageFallback = '/images/HomePage/event image-optimized.webp';
+// Fallback media (current hardcoded values)
+const fallbackVideoUrl = 'https://storage.googleapis.com/msgsndr/ZSnKlb7yt1OZGmrCwL7T/media/68defb5cd6c63ec71789ef67.mp4';
+const fallbackImageUrl = '/images/HomePage/event image-optimized.webp';
+
+export function HeroSection({ headline, subheadline, reviews, heroVideoUrl, heroImageUrl }: HeroSectionProps) {
+  // Format headline: insert line break after "Colorado" for display
+  const displayHeadline = (headline || fallbackHeadline).replace('Colorado Springs', 'Colorado\nSprings');
+  // Hero video with fallback image - use Sanity values or fallbacks
+  const heroVideo = heroVideoUrl || fallbackVideoUrl;
+  const heroImageFallback = heroImageUrl || fallbackImageUrl;
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden">
@@ -58,12 +83,12 @@ export function HeroSection() {
                   }}
                 >
                   <span style={{ whiteSpace: 'pre-line' }}>
-                    {'Experience Colorado\nSprings like a local'}
+                    {displayHeadline}
                   </span>
                 </h1>
 
                 {/* Rotating Testimonials - Replace tagline with authentic guest voices */}
-                <InlineTestimonials />
+                <InlineTestimonials tagline={subheadline} reviews={reviews} />
 
               </motion.div>
 

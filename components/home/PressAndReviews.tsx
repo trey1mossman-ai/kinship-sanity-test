@@ -6,20 +6,21 @@ import { useEffect, useState } from 'react';
 import { ReviewCarousel } from './ReviewCarousel';
 import { KINSHIP_COLORS } from '@/lib/config/brand';
 
-interface PressMention {
-  _id: string;
-  publication: string;
-  logoUrl?: string;
-}
-
 interface PressAndReviewsProps {
   reviewData: {
     meta: any;
     themes: string[];
     reviews: any[];
   };
-  pressMentions?: PressMention[];
+  pressSectionTitle?: string;
+  reviewsSectionTitle?: string;
 }
+
+// Fallback values
+const defaults = {
+  pressSectionTitle: 'As Featured In',
+  reviewsSectionTitle: 'Guest Reviews'
+};
 
 // Fallback press data in case Sanity is unavailable
 const fallbackPress = [
@@ -35,11 +36,13 @@ const fallbackPress = [
   { name: 'BizBash', src: '/press/bizbash.jpg' },
 ];
 
-export function PressAndReviews({ reviewData, pressMentions }: PressAndReviewsProps) {
-  // Use Sanity data if available, otherwise fallback to hardcoded
-  const press = pressMentions && pressMentions.length > 0
-    ? pressMentions.map(p => ({ name: p.publication, src: p.logoUrl || '' }))
-    : fallbackPress;
+export function PressAndReviews({ reviewData, pressSectionTitle, reviewsSectionTitle }: PressAndReviewsProps) {
+  // Use Sanity data if provided, otherwise use fallback defaults
+  const pressTitle = pressSectionTitle || defaults.pressSectionTitle;
+  const reviewsTitle = reviewsSectionTitle || defaults.reviewsSectionTitle;
+
+  // Always use fallback press logos (images need separate handling in Sanity)
+  const press = fallbackPress;
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -83,7 +86,7 @@ export function PressAndReviews({ reviewData, pressMentions }: PressAndReviewsPr
             className="text-lg md:text-xl font-bold uppercase tracking-wider mb-4 text-center"
             style={{ color: KINSHIP_COLORS.greenDark }}
           >
-            As Featured In
+            {pressTitle}
           </h3>
 
           {/* Auto-scrolling carousel container - responsive logo count */}
@@ -152,7 +155,7 @@ export function PressAndReviews({ reviewData, pressMentions }: PressAndReviewsPr
                 className="text-lg md:text-xl font-bold"
                 style={{ color: KINSHIP_COLORS.greenDark }}
               >
-                Guest Reviews
+                {reviewsTitle}
               </h2>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>

@@ -2,8 +2,26 @@
 
 import { useState } from 'react';
 import { content } from '@/content/copy';
+import type { Homepage } from '@/lib/sanity/queries';
 
-export function Newsletter() {
+interface NewsletterProps {
+  sanityData?: Homepage | null;
+}
+
+// Fallback values
+const defaults = {
+  title: 'Join the adventure',
+  description: 'Follow us on Instagram and sign-up for our newsletter to get the latest updates, local recommendations and special offers (no spam, we promise!)',
+  buttonText: 'Subscribe',
+  disclaimer: 'We respect your privacy. Unsubscribe at any time.'
+};
+
+export function Newsletter({ sanityData }: NewsletterProps) {
+  // Use Sanity data if provided, otherwise use fallback defaults
+  const title = sanityData?.newsletterTitle || defaults.title;
+  const description = sanityData?.newsletterDescription || defaults.description;
+  const buttonText = sanityData?.newsletterButtonText || defaults.buttonText;
+  const disclaimer = sanityData?.newsletterDisclaimer || defaults.disclaimer;
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -81,11 +99,11 @@ export function Newsletter() {
         <div className="max-w-2xl mx-auto text-center">
           {/* Heading */}
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold mb-4 text-kinship-slate">
-            Join the adventure
+            {title}
           </h2>
 
           <p className="text-kinship-slate/80 mb-8">
-            Follow us on Instagram and sign-up for our newsletter to get the latest updates, local recommendations and special offers (no spam, we promise!)
+            {description}
           </p>
 
           {/* Newsletter Form */}
@@ -166,7 +184,7 @@ export function Newsletter() {
                 }}
                 disabled={isLoading || !email}
               >
-                {isLoading ? 'Subscribing...' : content.footer.newsletter.button}
+                {isLoading ? 'Subscribing...' : buttonText}
               </button>
             </div>
           </form>
@@ -185,7 +203,7 @@ export function Newsletter() {
           )}
 
           <p className="text-xs text-kinship-slate/60 mt-4">
-            We respect your privacy. Unsubscribe at any time.
+            {disclaimer}
           </p>
         </div>
       </div>

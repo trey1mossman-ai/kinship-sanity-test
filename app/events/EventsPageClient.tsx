@@ -51,6 +51,8 @@ interface EventsPageClientProps {
 export function EventsPageClient({ eventsData }: EventsPageClientProps) {
   // Use Sanity data with fallbacks
   const heroTitle = eventsData?.heroTitle || 'Meetings & Events';
+  const heroSubtitle = eventsData?.heroSubtitle || '';
+  const heroImage = eventsData?.heroImage || '/images/events-page/amyzach-29.webp';
   const [activeFilter, setActiveFilter] = useState<EventFilter>('all');
   const [selectedGatheringsImage, setSelectedGatheringsImage] = useState<{ src: string; alt: string; images: string[]; index: number } | null>(null);
   const [selectedWeddingImage, setSelectedWeddingImage] = useState<{ src: string; alt: string; images: string[]; index: number } | null>(null);
@@ -58,7 +60,8 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
   const [selectedTakeoversImage, setSelectedTakeoversImage] = useState<{ src: string; alt: string; images: string[]; index: number } | null>(null);
   const [selectedRoomBlocksImage, setSelectedRoomBlocksImage] = useState<{ src: string; alt: string; images: string[]; index: number } | null>(null);
 
-  const gatheringsImages = [
+  // Fallback images for each section (used when Sanity data is empty)
+  const FALLBACK_GATHERINGS = [
     '/images/events-page/Gatherings/0B1A0328-optimized.webp',
     '/images/events-page/Gatherings/Greenhaus-ErinWinterPhotography-8506.webp',
     '/images/events-page/Gatherings/Greenhaus-RichardSeldomridge (2).webp',
@@ -69,7 +72,7 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
     '/images/events-page/GreenHaus/Greenhaus-RichardSeldomridge.webp',
   ];
 
-  const weddingImages = [
+  const FALLBACK_WEDDINGS = [
     '/images/events-page/Weddings/8F8A1146-optimized.webp',
     '/images/events-page/Weddings/8F8A7820.webp',
     '/images/events-page/Weddings/D85A8377-optimized.webp',
@@ -80,7 +83,7 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
     '/images/events-page/Weddings/kinship-57_nB2.webp',
   ];
 
-  const meetingsImages = [
+  const FALLBACK_MEETINGS = [
     '/images/events-page/Meetings:Retreats/Kinship-4G3A9437-1 (1).webp',
     '/images/events-page/Meetings:Retreats/FireplaceDrinks2, SamStarr (1).webp',
     '/images/events-page/Meetings:Retreats/GetOutsideEvent6 26-SamStarrMedia (3) (1).webp',
@@ -93,18 +96,25 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
     '/images/events-page/Meetings:Retreats/samantha baldwin 13 (1).webp',
   ];
 
-  const takeoversImages = [
+  const FALLBACK_TAKEOVERS = [
     '/images/events-page/Make Kinship Yours/HotelCheckIn, SamStarr.webp',
     '/images/events-page/Make Kinship Yours/HomaNightlife-GregCeo.webp',
     '/images/events-page/Make Kinship Yours/DSCF8615.webp',
   ];
 
-  const roomBlocksImages = [
+  const FALLBACK_ROOMBLOCKS = [
     '/images/events-page/Room Blocks/MountainDoubleQueenSuite-AshleeKay (19).webp',
     '/images/events-page/Room Blocks/Jr Suite, Jennie Campbell (@fsupecas21).webp',
     '/images/events-page/Room Blocks/DSCF8870.webp',
     '/images/events-page/Room Blocks/DSCF8914.webp',
   ];
+
+  // Use Sanity galleries if available, otherwise fallback
+  const gatheringsImages = eventsData?.gatheringsGallery?.length ? eventsData.gatheringsGallery : FALLBACK_GATHERINGS;
+  const weddingImages = eventsData?.weddingsGallery?.length ? eventsData.weddingsGallery : FALLBACK_WEDDINGS;
+  const meetingsImages = eventsData?.meetingsGallery?.length ? eventsData.meetingsGallery : FALLBACK_MEETINGS;
+  const takeoversImages = eventsData?.takeoverGallery?.length ? eventsData.takeoverGallery : FALLBACK_TAKEOVERS;
+  const roomBlocksImages = eventsData?.roomBlocksGallery?.length ? eventsData.roomBlocksGallery : FALLBACK_ROOMBLOCKS;
 
   const handleFilterChange = useCallback((filter: EventFilter) => {
     setActiveFilter(filter);
@@ -233,7 +243,7 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
       <section className="relative min-h-[85vh] md:min-h-screen overflow-hidden bg-kinship-sage">
         <div className="absolute inset-0">
           <Image
-            src="/images/events-page/amyzach-29.webp"
+            src={heroImage}
             alt="Kinship Landing Events & Gatherings"
             fill
             className="object-cover"
@@ -264,11 +274,22 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                     fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif',
                     textShadow: 'rgba(0, 0, 0, 0.4) 0px 4px 8px',
                     fontSize: 'clamp(32px, 5.5vw, 68px)',
-                    marginBottom: '1rem'
+                    marginBottom: heroSubtitle ? '0.5rem' : '1rem'
                   }}
                 >
                   {heroTitle}
                 </h1>
+                {heroSubtitle && (
+                  <p
+                    className="text-white/90 text-lg sm:text-xl md:text-2xl mb-4"
+                    style={{
+                      fontFamily: '"europa", "Hind", system-ui, sans-serif',
+                      textShadow: 'rgba(0, 0, 0, 0.3) 0px 2px 4px',
+                    }}
+                  >
+                    {heroSubtitle}
+                  </p>
+                )}
                 <EventsTestimonials />
               </motion.div>
             </div>
@@ -350,15 +371,15 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                   className="text-2xl sm:text-3xl md:text-4xl font-bold"
                   style={{ fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif', color: '#667C58' }}
                 >
-                  Gatherings
+                  {eventsData?.gatheringsTitle || 'Gatherings'}
                 </h2>
 
                 <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  Planning a gathering? The GreenHaus offers a unique, intimate setting for up to 80 guests: perfect for celebrations, workshops, and retreats. Pair your event with a room block and give your guests the full Kinship Landing experience, complete with stylish accommodations and all the perks of being downtown.
+                  {eventsData?.gatheringsDescription || 'Planning a gathering? The GreenHaus offers a unique, intimate setting for up to 80 guests: perfect for celebrations, workshops, and retreats. Pair your event with a room block and give your guests the full Kinship Landing experience, complete with stylish accommodations and all the perks of being downtown.'}
                 </p>
 
                 <a
-                  href="https://kinshiplanding.tripleseat.com/booking_request/42351"
+                  href={eventsData?.gatheringsCtaUrl || 'https://kinshiplanding.tripleseat.com/booking_request/42351'}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-6 sm:px-8 py-2 sm:py-3 text-white font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 shadow-md"
@@ -367,14 +388,14 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                     clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                   }}
                 >
-                  Host with Us
+                  {eventsData?.gatheringsCtaText || 'Host with Us'}
                 </a>
               </div>
 
               {/* Images - Right - INSANE CAROUSEL (47 optimizations) */}
               <InsaneCarousel
                 images={gatheringsImages}
-                alt="Gatherings at Kinship Landing"
+                alt={`${eventsData?.gatheringsTitle || 'Gatherings'} at Kinship Landing`}
                 onImageClick={(index) => setSelectedGatheringsImage({
                   src: gatheringsImages[index],
                   alt: 'Gatherings at Kinship Landing',
@@ -434,20 +455,20 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                     className="text-2xl sm:text-3xl md:text-4xl font-bold"
                     style={{ fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif', color: '#667C58' }}
                   >
-                    Weddings
+                    {eventsData?.weddingsTitle || 'Weddings'}
                   </h2>
 
                   <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                    Your wedding deserves more than just a venue—it deserves a celebration that feels uniquely yours. At Kinship, we specialize in intimate gatherings for up to 80 guests, pairing warm hospitality with the energy of downtown Colorado Springs and the natural beauty of the Front Range.
+                    {eventsData?.weddingsDescription || 'Your wedding deserves more than just a venue—it deserves a celebration that feels uniquely yours. At Kinship, we specialize in intimate gatherings for up to 80 guests, pairing warm hospitality with the energy of downtown Colorado Springs and the natural beauty of the Front Range.'}
                   </p>
                   <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                    From heartfelt "I do's" to unforgettable receptions, our team will help you create a day that's personal, joyful, and truly memorable. With catering from our onsite Homa Café, your celebration is infused with fresh, locally inspired flavors. Pair it all with a room block to keep your favorite people close and the party going all weekend long.
+                    {eventsData?.weddingsDescription2 || 'From heartfelt "I do\'s" to unforgettable receptions, our team will help you create a day that\'s personal, joyful, and truly memorable. With catering from our onsite Homa Café, your celebration is infused with fresh, locally inspired flavors. Pair it all with a room block to keep your favorite people close and the party going all weekend long.'}
                   </p>
 
                   {/* CTA Buttons */}
                   <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                     <a
-                      href="https://kinshiplanding.tripleseat.com/booking_request/42351"
+                      href={eventsData?.weddingsCtaUrl || 'https://kinshiplanding.tripleseat.com/booking_request/42351'}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center px-6 sm:px-8 py-2 sm:py-3 text-white font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 shadow-md"
@@ -456,10 +477,10 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                         clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                       }}
                     >
-                      Start Your Story
+                      {eventsData?.weddingsCtaText || 'Start Your Story'}
                     </a>
                     <a
-                      href="https://www.canva.com/design/DAG0ZFm6rzg/mOJAknwnEXp6No-7ETsRzQ/view?utm_content=DAG0ZFm6rzg&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hb1e57cb91e"
+                      href={eventsData?.weddingsInfoDeckUrl || 'https://www.canva.com/design/DAG0ZFm6rzg/mOJAknwnEXp6No-7ETsRzQ/view?utm_content=DAG0ZFm6rzg&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hb1e57cb91e'}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-2 sm:py-3 font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 shadow-md border-2"
@@ -479,7 +500,7 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                         <circle cx="12" cy="13" r="1.5" fill="currentColor"/>
                         <circle cx="12" cy="13" r="0.8"/>
                       </svg>
-                      View Wedding Info Deck
+                      {eventsData?.weddingsInfoDeckText || 'View Wedding Info Deck'}
                     </a>
                   </div>
                 </div>
@@ -516,24 +537,26 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                   className="text-2xl sm:text-3xl md:text-4xl font-bold"
                   style={{ fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif', color: '#667C58' }}
                 >
-                  Meetings & Retreats
+                  {eventsData?.meetingsTitle || 'Meetings & Retreats'}
                 </h2>
 
                 <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  The best ideas happen when teams have space to connect. Kinship is ideal for retreats and offsite meetings in the 30–45 guest range, with a max capacity of 85. Our intimate scale keeps gatherings personal and collaborative while still giving you room to breathe and create.
+                  {eventsData?.meetingsDescription || 'The best ideas happen when teams have space to connect. Kinship is ideal for retreats and offsite meetings in the 30–45 guest range, with a max capacity of 85. Our intimate scale keeps gatherings personal and collaborative while still giving you room to breathe and create.'}
                 </p>
                 <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  Fuel your team with fresh catering from Homa Café, featuring locally inspired menus that make every meal memorable. And to make your retreat truly stand out, our team partners with local experts to curate one-of-a-kind experiences—think ropes courses, guided hikes, yoga on the camp deck, and more.
+                  {eventsData?.meetingsDescription2 || 'Fuel your team with fresh catering from Homa Café, featuring locally inspired menus that make every meal memorable. And to make your retreat truly stand out, our team partners with local experts to curate one-of-a-kind experiences—think ropes courses, guided hikes, yoga on the camp deck, and more.'}
                 </p>
                 <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  Pair your retreat with a room block for a seamless multi-day experience—complete with unique accommodations, downtown Colorado Springs at your doorstep, and our signature hospitality throughout.
+                  {eventsData?.meetingsDescription3 || 'Pair your retreat with a room block for a seamless multi-day experience—complete with unique accommodations, downtown Colorado Springs at your doorstep, and our signature hospitality throughout.'}
                 </p>
-                <p className="text-xs sm:text-sm md:text-base leading-relaxed italic" style={{ opacity: 0.8 }}>
-                  Because of our size and event spaces, Kinship is best suited for active leadership gatherings and small group retreats rather than traditional corporate gatherings. Share a few details with us—we would love to explore how we can bring your event to life.
-                </p>
+                {(eventsData?.meetingsNote || true) && (
+                  <p className="text-xs sm:text-sm md:text-base leading-relaxed italic" style={{ opacity: 0.8 }}>
+                    {eventsData?.meetingsNote || 'Because of our size and event spaces, Kinship is best suited for active leadership gatherings and small group retreats rather than traditional corporate gatherings. Share a few details with us—we would love to explore how we can bring your event to life.'}
+                  </p>
+                )}
 
                 <a
-                  href="https://kinshiplanding.tripleseat.com/booking_request/42351"
+                  href={eventsData?.meetingsCtaUrl || 'https://kinshiplanding.tripleseat.com/booking_request/42351'}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-6 sm:px-8 py-2 sm:py-3 text-white font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 shadow-md"
@@ -542,14 +565,14 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                     clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                   }}
                 >
-                  Let's Make it Happen
+                  {eventsData?.meetingsCtaText || "Let's Make it Happen"}
                 </a>
               </div>
 
               {/* Images - Right - INSANE CAROUSEL (47 optimizations) */}
               <InsaneCarousel
                 images={meetingsImages}
-                alt="Meetings & Retreats at Kinship Landing"
+                alt={`${eventsData?.meetingsTitle || 'Meetings & Retreats'} at Kinship Landing`}
                 onImageClick={(index) => setSelectedMeetingsImage({
                   src: meetingsImages[index],
                   alt: 'Meetings & Retreats at Kinship Landing',
@@ -607,21 +630,21 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                   className="text-2xl sm:text-3xl md:text-4xl font-bold"
                   style={{ fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif', color: '#667C58' }}
                 >
-                  Room Blocks
+                  {eventsData?.roomBlocksTitle || 'Room Blocks'}
                 </h2>
 
                 <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  Keep your favorite people close. Whether it's a wedding weekend, a family reunion, or a team retreat, reserving a room block at Kinship makes it easy for everyone to stay together under one roof.
+                  {eventsData?.roomBlocksDescription || 'Keep your favorite people close. Whether it\'s a wedding weekend, a family reunion, or a team retreat, reserving a room block at Kinship makes it easy for everyone to stay together under one roof.'}
                 </p>
                 <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  Your crew will love our unique rooms, downtown location, and the chance to gather around the fire pit, share a meal at Homa Café, or head out on an adventure right from our front door.
+                  {eventsData?.roomBlocksDescription2 || 'Your crew will love our unique rooms, downtown location, and the chance to gather around the fire pit, share a meal at Homa Café, or head out on an adventure right from our front door.'}
                 </p>
                 <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  Ask us about setting up a block so your group can focus on making memories, not logistics.
+                  {eventsData?.roomBlocksDescription3 || 'Ask us about setting up a block so your group can focus on making memories, not logistics.'}
                 </p>
 
                 <a
-                  href="https://kinshiplanding.tripleseat.com/booking_request/42351"
+                  href={eventsData?.roomBlocksCtaUrl || 'https://kinshiplanding.tripleseat.com/booking_request/42351'}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-6 sm:px-8 py-2 sm:py-3 text-white font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 shadow-md"
@@ -630,7 +653,7 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                     clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                   }}
                 >
-                  Plan Your Stay
+                  {eventsData?.roomBlocksCtaText || 'Plan Your Stay'}
                 </a>
               </div>
             </div>
@@ -665,18 +688,18 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                   className="text-2xl sm:text-3xl md:text-4xl font-bold"
                   style={{ fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif', color: '#667C58' }}
                 >
-                  Make Kinship Yours
+                  {eventsData?.takeoverTitle || 'Make Kinship Yours'}
                 </h2>
 
                 <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  Sometimes the best way to gather is to have the whole place to yourself. With a full hotel buyout, Kinship Landing becomes your group's home base, complete with 40 guest rooms, our GreenHaus event space, The Yard, and all the cozy corners in between.
+                  {eventsData?.takeoverDescription || 'Sometimes the best way to gather is to have the whole place to yourself. With a full hotel buyout, Kinship Landing becomes your group\'s home base, complete with 40 guest rooms, our GreenHaus event space, The Yard, and all the cozy corners in between.'}
                 </p>
                 <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  Perfect for weddings, reunions, company retreats, or any gathering that deserves its own downtown adventure. Add catering from Homa Café and custom experiences with our local partners, and you've got the makings of an unforgettable takeover.
+                  {eventsData?.takeoverDescription2 || 'Perfect for weddings, reunions, company retreats, or any gathering that deserves its own downtown adventure. Add catering from Homa Café and custom experiences with our local partners, and you\'ve got the makings of an unforgettable takeover.'}
                 </p>
 
                 <a
-                  href="https://kinshiplanding.tripleseat.com/booking_request/42351"
+                  href={eventsData?.takeoverCtaUrl || 'https://kinshiplanding.tripleseat.com/booking_request/42351'}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-6 sm:px-8 py-2 sm:py-3 text-white font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 shadow-md"
@@ -685,14 +708,14 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                     clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                   }}
                 >
-                  Explore a Kinship Takeover
+                  {eventsData?.takeoverCtaText || 'Explore a Kinship Takeover'}
                 </a>
               </div>
 
               {/* Images - Right - INSANE CAROUSEL (47 optimizations) */}
               <InsaneCarousel
                 images={takeoversImages}
-                alt="Make Kinship Yours - Full Buyout"
+                alt={`${eventsData?.takeoverTitle || 'Make Kinship Yours'} - Full Buyout`}
                 onImageClick={(index) => setSelectedTakeoversImage({
                   src: takeoversImages[index],
                   alt: 'Make Kinship Yours - Full Buyout',
@@ -730,7 +753,7 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
               </div>
             </section>
 
-            {/* Venue Cards */}
+            {/* Venue Cards - Pass Sanity data directly from eventsPage */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -738,11 +761,45 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
               transition={{ duration: 0.3 }}
               className="space-y-0 bg-white"
             >
-              <GreenHausSection />
-              <ConferenceRoomSection />
-              <FireplaceSection />
-              <YardSection />
-              <CampDeckSection />
+              <GreenHausSection
+                sanityData={{
+                  name: eventsData?.greenhausTitle,
+                  description: eventsData?.greenhausDescription,
+                  capacity: { standing: parseInt(eventsData?.greenhausCapacity?.replace(/\D/g, '') || '80') },
+                  gallery: eventsData?.greenhausGallery
+                }}
+              />
+              <ConferenceRoomSection
+                sanityData={{
+                  name: eventsData?.conferenceRoomTitle,
+                  description: eventsData?.conferenceRoomDescription,
+                  capacity: { seated: parseInt(eventsData?.conferenceRoomCapacity?.replace(/\D/g, '') || '15') },
+                  gallery: eventsData?.conferenceRoomGallery
+                }}
+              />
+              <FireplaceSection
+                sanityData={{
+                  name: eventsData?.fireplaceTitle,
+                  description: eventsData?.fireplaceDescription,
+                  capacity: { seated: parseInt(eventsData?.fireplaceCapacity?.replace(/\D/g, '') || '20') },
+                  gallery: eventsData?.fireplaceGallery
+                }}
+              />
+              <YardSection
+                sanityData={{
+                  name: eventsData?.yardTitle,
+                  description: eventsData?.yardDescription,
+                  capacity: { standing: parseInt(eventsData?.yardCapacity?.replace(/\D/g, '') || '100') },
+                  gallery: eventsData?.yardGallery
+                }}
+              />
+              <CampDeckSection
+                sanityData={{
+                  name: eventsData?.campDeckTitle,
+                  description: eventsData?.campDeckDescription,
+                  gallery: eventsData?.campDeckGallery
+                }}
+              />
             </motion.div>
           </>
         )}

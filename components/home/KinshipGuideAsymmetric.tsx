@@ -5,29 +5,41 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { welcomeReveal, viewportConfig } from '@/lib/utils/animations';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
+import type { Homepage } from '@/lib/sanity/queries';
 
 // Default content for fallback
-const defaultContent = {
+const defaults = {
   title: 'Kinship is Your Guide',
-  body: `It makes a difference landing in a place where you know a friend. Consider us your insider guide to exploring the real gems of Colorado Springs.
-
-Whether you're excited for an immersion into the local food, arts, and culture scene just steps from our front door, or you are planning to go play outside at our nearby hiking, biking, or outdoor experiences on Pikes Peak, we'll connect you to an authentic way to experience our beloved Colorado Springs area.
-
-One of our favorite things to do is help you have an amazing time, and we'll gladly point you in the right direction. Hey, we may even come along with you for the ride!`
+  paragraph1: 'It makes a difference landing in a place where you know a friend. Consider us your insider guide to exploring the real gems of Colorado Springs.',
+  paragraph2: "Whether you're excited for an immersion into the local food, arts, and culture scene just steps from our front door, or you are planning to go play outside at our nearby hiking, biking, or outdoor experiences on Pikes Peak, we'll connect you to an authentic way to experience our beloved Colorado Springs area.",
+  paragraph3: "One of our favorite things to do is help you have an amazing time, and we'll gladly point you in the right direction. Hey, we may even come along with you for the ride!",
+  cta1Text: 'Events',
+  cta1Url: '/events',
+  cta2Text: 'Explore',
+  cta2Url: '/explore',
+  cta3Text: 'Book Your Room',
+  cta3Url: 'https://hotels.cloudbeds.com/reservation/4nfQ6E'
 };
 
 interface KinshipGuideAsymmetricProps {
-  title?: string;
-  body?: string;
+  sanityData?: Homepage | null;
 }
 
-export function KinshipGuideAsymmetric({ title, body }: KinshipGuideAsymmetricProps) {
+export function KinshipGuideAsymmetric({ sanityData }: KinshipGuideAsymmetricProps) {
   // Use Sanity data if provided, otherwise fall back to defaults
-  const guideTitle = title || defaultContent.title;
-  const guideBody = body || defaultContent.body;
+  const guideTitle = sanityData?.guideTitle || defaults.title;
+  const paragraph1 = sanityData?.guideParagraph1 || defaults.paragraph1;
+  const paragraph2 = sanityData?.guideParagraph2 || defaults.paragraph2;
+  const paragraph3 = sanityData?.guideParagraph3 || defaults.paragraph3;
+  const cta1Text = sanityData?.guideCta1Text || defaults.cta1Text;
+  const cta1Url = sanityData?.guideCta1Url || defaults.cta1Url;
+  const cta2Text = sanityData?.guideCta2Text || defaults.cta2Text;
+  const cta2Url = sanityData?.guideCta2Url || defaults.cta2Url;
+  const cta3Text = sanityData?.guideCta3Text || defaults.cta3Text;
+  const cta3Url = sanityData?.guideCta3Url || defaults.cta3Url;
 
-  // Split body into paragraphs
-  const paragraphs = guideBody.split('\n\n').filter(p => p.trim());
+  // Check if the third CTA is external
+  const isCta3External = cta3Url.startsWith('http');
 
   return (
     <section
@@ -65,23 +77,40 @@ export function KinshipGuideAsymmetric({ title, body }: KinshipGuideAsymmetricPr
             >
               {guideTitle}
             </h2>
-            {paragraphs.map((paragraph, index) => (
-              <p
-                key={index}
-                className={`text-base md:text-lg leading-relaxed ${index === paragraphs.length - 1 ? 'mb-6' : 'mb-3'}`}
-                style={{
-                  fontFamily: KINSHIP_FONTS.body,
-                  color: KINSHIP_COLORS.greenDark,
-                  opacity: 0.9,
-                }}
-              >
-                {paragraph}
-              </p>
-            ))}
+            <p
+              className="text-base md:text-lg leading-relaxed mb-3"
+              style={{
+                fontFamily: KINSHIP_FONTS.body,
+                color: KINSHIP_COLORS.greenDark,
+                opacity: 0.9,
+              }}
+            >
+              {paragraph1}
+            </p>
+            <p
+              className="text-base md:text-lg leading-relaxed mb-3"
+              style={{
+                fontFamily: KINSHIP_FONTS.body,
+                color: KINSHIP_COLORS.greenDark,
+                opacity: 0.9,
+              }}
+            >
+              {paragraph2}
+            </p>
+            <p
+              className="text-base md:text-lg leading-relaxed mb-6"
+              style={{
+                fontFamily: KINSHIP_FONTS.body,
+                color: KINSHIP_COLORS.greenDark,
+                opacity: 0.9,
+              }}
+            >
+              {paragraph3}
+            </p>
 
             {/* Three CTAs - Full Width on Mobile */}
             <div className="flex gap-2 sm:gap-3 w-full">
-              <Link href="/events" className="flex-1">
+              <Link href={cta1Url} className="flex-1">
                 <motion.button
                   className="w-full inline-flex items-center justify-center px-2 sm:px-4 md:px-6 py-2.5 sm:py-3 text-xs sm:text-sm md:text-base font-semibold text-white transition-all duration-300"
                   style={{
@@ -94,11 +123,11 @@ export function KinshipGuideAsymmetric({ title, body }: KinshipGuideAsymmetricPr
                   }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  Events
+                  {cta1Text}
                 </motion.button>
               </Link>
 
-              <Link href="/explore" className="flex-1">
+              <Link href={cta2Url} className="flex-1">
                 <motion.button
                   className="w-full inline-flex items-center justify-center px-2 sm:px-4 md:px-6 py-2.5 sm:py-3 text-xs sm:text-sm md:text-base font-semibold text-white transition-all duration-300"
                   style={{
@@ -111,14 +140,14 @@ export function KinshipGuideAsymmetric({ title, body }: KinshipGuideAsymmetricPr
                   }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  Explore
+                  {cta2Text}
                 </motion.button>
               </Link>
 
               <motion.a
-                href="https://hotels.cloudbeds.com/reservation/4nfQ6E"
-                target="_blank"
-                rel="noopener noreferrer"
+                href={cta3Url}
+                target={isCta3External ? '_blank' : undefined}
+                rel={isCta3External ? 'noopener noreferrer' : undefined}
                 className="flex-1 inline-flex items-center justify-center px-2 sm:px-4 md:px-6 py-2.5 sm:py-3 text-xs sm:text-sm md:text-base font-semibold text-white transition-all duration-300"
                 style={{
                   backgroundColor: KINSHIP_COLORS.greenDark,
@@ -130,7 +159,7 @@ export function KinshipGuideAsymmetric({ title, body }: KinshipGuideAsymmetricPr
                 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Book Your Room
+                {cta3Text}
               </motion.a>
             </div>
           </motion.div>

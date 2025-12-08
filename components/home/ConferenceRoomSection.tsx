@@ -5,13 +5,37 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export function ConferenceRoomSection() {
+// Props interface for Sanity data
+interface ConferenceRoomSectionProps {
+  sanityData?: {
+    name?: string;
+    description?: string;
+    heroImage?: string;
+    gallery?: string[];
+    capacity?: { seated?: number; standing?: number };
+    features?: string[];
+    idealFor?: string[];
+  };
+}
+
+// Fallback images (used when Sanity data not provided)
+const FALLBACK_IMAGES = [
+  '/images/events-page/The Conference room /conference-room-new.webp',
+  '/images/events-page/The Conference room /conference-room-mobile.webp',
+];
+
+export function ConferenceRoomSection({ sanityData }: ConferenceRoomSectionProps) {
   const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string; images: string[]; index: number } | null>(null);
 
-  const conferenceImages = [
-    '/images/events-page/The Conference room /conference-room-new.webp',
-    '/images/events-page/The Conference room /conference-room-mobile.webp',
-  ];
+  // Use Sanity data with fallbacks
+  const venueName = sanityData?.name || 'The Conference Room';
+  const venueDescription = sanityData?.description || 'A private, tech-ready meeting space for focused work sessions, board meetings, or intimate workshops with natural light and mountain views.';
+  const venueCapacity = sanityData?.capacity?.seated || 12;
+
+  // Use Sanity gallery if available, otherwise fallback
+  const conferenceImages = (sanityData?.gallery && sanityData.gallery.length > 0)
+    ? sanityData.gallery
+    : FALLBACK_IMAGES;
 
   return (
     <>
@@ -42,16 +66,14 @@ export function ConferenceRoomSection() {
               className="text-2xl sm:text-3xl md:text-4xl font-bold"
               style={{ fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif', color: '#667C58' }}
             >
-              Conference Room
+              {venueName}
             </h2>
 
             <p
               className="text-sm sm:text-base md:text-lg leading-relaxed"
               style={{ fontFamily: '"europa", "Hind", system-ui, sans-serif', color: '#667C58', opacity: 0.9 }}
             >
-              For small meetings, private events, and professional gatherings without the stuffy vibe.
-              Tucked on our first floor with Kinship's modern, cozy style: a large table and chairs,
-              flatscreen with easy hookups, and catering options from Homa.
+              {venueDescription}
             </p>
 
             {/* Features */}
