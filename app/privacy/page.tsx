@@ -2,13 +2,33 @@ import { Metadata } from 'next';
 import { HeaderNav } from '@/components/layout/HeaderNav';
 import { Footer } from '@/components/Footer';
 import { ScrollEffectsWrapper } from '@/components/home/ScrollEffectsWrapper';
+import { getPrivacyPage } from '@/lib/sanity/queries';
 
-export const metadata: Metadata = {
-  title: 'Privacy Policy | Kinship Landing',
-  description: 'Learn how Kinship Landing protects your privacy and personal information.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getPrivacyPage();
 
-export default function PrivacyPage() {
+  return {
+    title: data?.seoTitle || 'Privacy Policy | Kinship Landing',
+    description: data?.seoDescription || 'Learn how Kinship Landing protects your privacy and personal information.',
+  };
+}
+
+export default async function PrivacyPage() {
+  const data = await getPrivacyPage();
+
+  // Fallback content
+  const heroTitle = data?.heroTitle || 'Privacy Policy';
+  const heroSubtitle = data?.heroSubtitle || 'Kinship Landing values your privacy.';
+
+  const paragraph1 = data?.paragraph1 || 'We want you to be confident in using this site to make your online reservations at our boutique hotel in Colorado Springs, Colorado. And we are very much aware of your concerns about the privacy of your information. So rest assured, we have no desire or intent to infringe on your privacy. We will not provide your personal information to anyone else. When you submit your personal information such as name, address, email address and telephone number, we will not give or sell this information to any outside company for any use. This information you provide will be kept confidential and will be used only to support your customer relationship with us. We have appropriate security measures in place to protect against the loss, misuse or alteration of information we have collected from you at our site.';
+
+  const paragraph2 = data?.paragraph2 || 'All of the information contained in this website, including the site design, graphics and text, are the copyrighted property of Kinship Landing. Any other trademarks, company names, product names and/or logos set forth in this website are the property of their respective owners.';
+
+  const contactTitle = data?.contactTitle || 'Questions About Privacy?';
+  const contactText = data?.contactText || 'If you have any questions or concerns about our privacy policy, please don\'t hesitate to contact us:';
+  const contactEmail = data?.contactEmail || 'hello@kinshiplanding.com';
+  const contactPhone = data?.contactPhone || '(719) 203-9309';
+  const contactAddress = data?.contactAddress || '415 S Nevada Ave, Colorado Springs, CO 80903';
   return (
     <ScrollEffectsWrapper>
       <HeaderNav />
@@ -24,7 +44,7 @@ export default function PrivacyPage() {
                 color: '#667C58'
               }}
             >
-              Privacy Policy
+              {heroTitle}
             </h1>
             <p
               className="text-lg md:text-xl"
@@ -34,7 +54,7 @@ export default function PrivacyPage() {
                 opacity: 0.8
               }}
             >
-              Kinship Landing values your privacy.
+              {heroSubtitle}
             </p>
           </div>
         </section>
@@ -50,11 +70,11 @@ export default function PrivacyPage() {
               }}
             >
               <p className="text-lg leading-relaxed mb-6">
-                We want you to be confident in using this site to make your online reservations at our boutique hotel in Colorado Springs, Colorado. And we are very much aware of your concerns about the privacy of your information. So rest assured, we have no desire or intent to infringe on your privacy. We will not provide your personal information to anyone else. When you submit your personal information such as name, address, email address and telephone number, we will not give or sell this information to any outside company for any use. This information you provide will be kept confidential and will be used only to support your customer relationship with us. We have appropriate security measures in place to protect against the loss, misuse or alteration of information we have collected from you at our site.
+                {paragraph1}
               </p>
 
               <p className="text-lg leading-relaxed">
-                All of the information contained in this website, including the site design, graphics and text, are the copyrighted property of Kinship Landing. Any other trademarks, company names, product names and/or logos set forth in this website are the property of their respective owners.
+                {paragraph2}
               </p>
 
               {/* Contact Section */}
@@ -66,34 +86,34 @@ export default function PrivacyPage() {
                     color: '#667C58'
                   }}
                 >
-                  Questions About Privacy?
+                  {contactTitle}
                 </h2>
                 <p className="mb-4">
-                  If you have any questions or concerns about our privacy policy, please don't hesitate to contact us:
+                  {contactText}
                 </p>
                 <div className="space-y-2">
                   <p>
                     <strong>Email:</strong>{' '}
                     <a
-                      href="mailto:hello@kinshiplanding.com"
+                      href={`mailto:${contactEmail}`}
                       className="underline hover:brightness-110 transition-colors"
                       style={{ color: '#667C58' }}
                     >
-                      hello@kinshiplanding.com
+                      {contactEmail}
                     </a>
                   </p>
                   <p>
                     <strong>Phone:</strong>{' '}
                     <a
-                      href="tel:+17192039309"
+                      href={`tel:${contactPhone.replace(/\D/g, '')}`}
                       className="underline hover:brightness-110 transition-colors"
                       style={{ color: '#667C58' }}
                     >
-                      (719) 203-9309
+                      {contactPhone}
                     </a>
                   </p>
                   <p>
-                    <strong>Address:</strong> 415 S Nevada Ave, Colorado Springs, CO 80903
+                    <strong>Address:</strong> {contactAddress}
                   </p>
                 </div>
               </div>

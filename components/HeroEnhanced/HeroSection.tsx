@@ -34,7 +34,7 @@ const fallbackHeadline = 'Experience Colorado Springs like a local';
  */
 // Fallback media (current hardcoded values)
 const fallbackVideoUrl = 'https://storage.googleapis.com/msgsndr/ZSnKlb7yt1OZGmrCwL7T/media/68defb5cd6c63ec71789ef67.mp4';
-const fallbackImageUrl = '/images/HomePage/event image-optimized.webp';
+const fallbackImageUrl = '/images/HomePage/hero-poster-kinship-landing.webp';
 
 export function HeroSection({ headline, subheadline, reviews, heroVideoUrl, heroImageUrl }: HeroSectionProps) {
   // Format headline: insert line break after "Colorado" for display

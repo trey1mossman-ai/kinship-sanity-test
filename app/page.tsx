@@ -154,6 +154,18 @@ export default async function HomePage() {
           sectionTitle={homepageData?.roomsSectionTitle}
           ctaText={homepageData?.roomsCtaText}
           ctaUrl={homepageData?.roomsCtaUrl}
+          kingRoomsLabel={homepageData?.kingRoomsLabel}
+          kingRooms={homepageData?.kingRooms}
+          queenRoomsLabel={homepageData?.queenRoomsLabel}
+          queenRooms={homepageData?.queenRooms}
+          familyRoomLabel={homepageData?.familyRoomLabel}
+          familyRoomName={homepageData?.familyRoomName}
+          familyRoomSlug={homepageData?.familyRoomSlug}
+          familyRoomDescription={homepageData?.familyRoomDescription}
+          campDeckLabel={homepageData?.campDeckLabel}
+          campDeckName={homepageData?.campDeckName}
+          campDeckSlug={homepageData?.campDeckSlug}
+          campDeckDescription={homepageData?.campDeckDescription}
         />
 
         {/* 3. Events & Gatherings (with venue spaces) */}

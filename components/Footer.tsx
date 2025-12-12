@@ -220,6 +220,11 @@ export function Footer({ variant = 'default', siteSettings = defaultSettings }: 
                   </a>
                 </p>
               </div>
+              {/* HOMA Hours */}
+              <div className="mt-4 text-sm" style={{ color: '#4f575c' }}>
+                <p className="font-semibold" style={{ color: '#667C58' }}>Hours</p>
+                <p>7am - 10pm Daily</p>
+              </div>
               {/* HOMA Social - Perfectly aligned with Kinship at bottom */}
               <div className="flex gap-3 justify-center md:justify-start mt-6">
                 <a

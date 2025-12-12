@@ -191,6 +191,8 @@ export interface Homepage {
   heroCtaUrl?: string
 
   // Guide Section (Kinship is Your Guide)
+  guideBackgroundImageUrl?: string
+  guideStampImageUrl?: string
   guideTitle?: string
   guideParagraph1?: string
   guideParagraph2?: string
@@ -206,14 +208,31 @@ export interface Homepage {
   roomsSectionTitle?: string
   roomsCtaText?: string
   roomsCtaUrl?: string
+  kingRoomsLabel?: string
+  kingRooms?: Array<{ _key: string; name: string; slug: string; shortDescription: string; imageUrl?: string }>
+  queenRoomsLabel?: string
+  queenRooms?: Array<{ _key: string; name: string; slug: string; shortDescription: string; imageUrl?: string }>
+  familyRoomLabel?: string
+  familyRoomName?: string
+  familyRoomSlug?: string
+  familyRoomDescription?: string
+  familyRoomImageUrl?: string
+  campDeckLabel?: string
+  campDeckName?: string
+  campDeckSlug?: string
+  campDeckDescription?: string
+  campDeckImageUrl?: string
 
   // Events Section
+  eventsSectionImageUrl?: string
   eventsSectionTitle?: string
   eventsSectionSubtitle?: string
   eventsCtaText?: string
   eventsCtaUrl?: string
 
   // HOMA Café Section
+  homaBackgroundImageUrl?: string
+  homaLogoImageUrl?: string
   homaParagraph1?: string
   homaParagraph2?: string
   homaPromoTitle?: string
@@ -223,6 +242,7 @@ export interface Homepage {
   homaCtaUrl?: string
 
   // Press & Reviews
+  pressLogos?: Array<{ _key: string; name: string; logoUrl?: string; url?: string }>
   pressSectionTitle?: string
   reviewsSectionTitle?: string
   googleRating?: string
@@ -235,6 +255,7 @@ export interface Homepage {
   newsletterDisclaimer?: string
 
   // Map Section
+  mapImageUrl?: string
   mapSectionTitle?: string
   mapSubtitle?: string
   nearbyAttractions?: Array<{ _key: string; name: string; time: string; link?: string }>
@@ -257,6 +278,8 @@ export async function getHomepage(): Promise<Homepage | null> {
     heroCtaUrl,
 
     // Guide Section
+    "guideBackgroundImageUrl": guideBackgroundImage.asset->url,
+    "guideStampImageUrl": guideStampImage.asset->url,
     guideTitle,
     guideParagraph1,
     guideParagraph2,
@@ -272,14 +295,31 @@ export async function getHomepage(): Promise<Homepage | null> {
     roomsSectionTitle,
     roomsCtaText,
     roomsCtaUrl,
+    kingRoomsLabel,
+    "kingRooms": kingRooms[]{ _key, name, slug, shortDescription, "imageUrl": image.asset->url },
+    queenRoomsLabel,
+    "queenRooms": queenRooms[]{ _key, name, slug, shortDescription, "imageUrl": image.asset->url },
+    familyRoomLabel,
+    familyRoomName,
+    familyRoomSlug,
+    familyRoomDescription,
+    "familyRoomImageUrl": familyRoomImage.asset->url,
+    campDeckLabel,
+    campDeckName,
+    campDeckSlug,
+    campDeckDescription,
+    "campDeckImageUrl": campDeckImage.asset->url,
 
     // Events Section
+    "eventsSectionImageUrl": eventsSectionImage.asset->url,
     eventsSectionTitle,
     eventsSectionSubtitle,
     eventsCtaText,
     eventsCtaUrl,
 
     // HOMA Section
+    "homaBackgroundImageUrl": homaBackgroundImage.asset->url,
+    "homaLogoImageUrl": homaLogoImage.asset->url,
     homaParagraph1,
     homaParagraph2,
     homaPromoTitle,
@@ -289,6 +329,7 @@ export async function getHomepage(): Promise<Homepage | null> {
     homaCtaUrl,
 
     // Press & Reviews
+    "pressLogos": pressLogos[]{ _key, name, "logoUrl": logo.asset->url, url },
     pressSectionTitle,
     reviewsSectionTitle,
     googleRating,
@@ -301,6 +342,7 @@ export async function getHomepage(): Promise<Homepage | null> {
     newsletterDisclaimer,
 
     // Map Section
+    "mapImageUrl": mapImage.asset->url,
     mapSectionTitle,
     mapSubtitle,
     nearbyAttractions,
@@ -507,16 +549,124 @@ export async function getEventsPage(): Promise<EventsPage | null> {
 }
 
 // ============================================
+// ROOMS PAGE
+// ============================================
+export interface RoomsPage {
+  // Hero
+  heroTitle?: string
+  heroSubtitle?: string
+  heroImageUrl?: string
+  heroImages?: Array<{ url: string; alt?: string }>
+  // Filters
+  filterAllLabel?: string
+  filterKingLabel?: string
+  filterQueenLabel?: string
+  filterFamilyLabel?: string
+  filterCampDeckLabel?: string
+  // Room Blocks
+  roomBlocksTitle?: string
+  roomBlocksTagline?: string
+  roomBlocksDescription1?: string
+  roomBlocksDescription2?: string
+  roomBlocksDescription3?: string
+  roomBlocksCtaText?: string
+  roomBlocksCtaUrl?: string
+  roomBlocksImage1Url?: string
+  roomBlocksImage2Url?: string
+  // SEO
+  seoTitle?: string
+  seoDescription?: string
+}
+
+export async function getRoomsPage(): Promise<RoomsPage | null> {
+  const query = `*[_type == "roomsPage"][0] {
+    heroTitle,
+    heroSubtitle,
+    "heroImageUrl": heroImage.asset->url,
+    "heroImages": heroImages[]{ "url": asset->url, alt },
+    filterAllLabel,
+    filterKingLabel,
+    filterQueenLabel,
+    filterFamilyLabel,
+    filterCampDeckLabel,
+    roomBlocksTitle,
+    roomBlocksTagline,
+    roomBlocksDescription1,
+    roomBlocksDescription2,
+    roomBlocksDescription3,
+    roomBlocksCtaText,
+    roomBlocksCtaUrl,
+    "roomBlocksImage1Url": roomBlocksImage1.asset->url,
+    "roomBlocksImage2Url": roomBlocksImage2.asset->url,
+    seoTitle,
+    seoDescription
+  }`
+  return client.fetch(query)
+}
+
+// ============================================
 // HOMA PAGE & MENU
 // ============================================
 export interface HomaPage {
-  heroTitle: string
-  heroSubtitle?: string
-  description?: string
-  hours?: Record<string, string>
-  features?: string[]
+  // Hero
+  heroTitle?: string
+  heroCtaMenuText?: string
+  heroCtaMenuUrl?: string
+  heroCtaPromosText?: string
+  heroCtaPromosUrl?: string
+  heroTriptychImage1Url?: string
+  heroTriptychImage2Url?: string
+  heroTriptychImage3Url?: string
+  // About
+  aboutParagraph1?: string
+  aboutParagraph2?: string
+  aboutParagraph3?: string
+  // Specials
+  specialsSectionTitle?: string
+  happyHourTitle?: string
+  happyHourBadge?: string
+  happyHourTime?: string
+  happyHourSpecials?: Array<{ price: string; item: string }>
+  happyHourCtaText?: string
+  happyHourImageUrl?: string
+  brunchTitle?: string
+  brunchBadge?: string
+  brunchTime?: string
+  brunchDescription?: string
+  brunchCtaText?: string
+  brunchImageUrl?: string
+  eventsTitle?: string
+  eventsBadge?: string
+  eventsDescription?: string
+  eventsCtaText?: string
+  eventsCtaUrl?: string
+  eventsImageUrl?: string
+  // Promos
+  promoBannerImageUrl?: string
+  loyaltyCardImageUrl?: string
+  promos?: Array<{
+    title: string
+    description: string
+    badge?: string
+    ctaText?: string
+    ctaUrl?: string
+    imageUrl?: string
+  }>
+  // Hours
+  hoursSectionTitle?: string
+  hoursSubtitle?: string
+  address?: string
+  phone?: string
+  hours?: Array<{ label: string; days: string; hours: string }>
   reservationUrl?: string
   menuPdfUrl?: string
+  // Seating
+  seatingSectionTitle?: string
+  seatingDescription?: string
+  seatingImages?: string[]
+  // SEO
+  seoTitle?: string
+  seoDescription?: string
 }
 
 export interface MenuItem {
@@ -532,12 +682,50 @@ export interface MenuItem {
 export async function getHomaPage(): Promise<HomaPage | null> {
   const query = `*[_type == "homaPage"][0] {
     heroTitle,
-    heroSubtitle,
-    description,
+    heroCtaMenuText,
+    heroCtaMenuUrl,
+    heroCtaPromosText,
+    heroCtaPromosUrl,
+    "heroTriptychImage1Url": heroTriptychImage1.asset->url,
+    "heroTriptychImage2Url": heroTriptychImage2.asset->url,
+    "heroTriptychImage3Url": heroTriptychImage3.asset->url,
+    aboutParagraph1,
+    aboutParagraph2,
+    aboutParagraph3,
+    specialsSectionTitle,
+    happyHourTitle,
+    happyHourBadge,
+    happyHourTime,
+    happyHourSpecials,
+    happyHourCtaText,
+    "happyHourImageUrl": happyHourImage.asset->url,
+    brunchTitle,
+    brunchBadge,
+    brunchTime,
+    brunchDescription,
+    brunchCtaText,
+    "brunchImageUrl": brunchImage.asset->url,
+    eventsTitle,
+    eventsBadge,
+    eventsDescription,
+    eventsCtaText,
+    eventsCtaUrl,
+    "eventsImageUrl": eventsImage.asset->url,
+    "promoBannerImageUrl": promoBannerImage.asset->url,
+    "loyaltyCardImageUrl": loyaltyCardImage.asset->url,
+    "promos": promos[]{ title, description, badge, ctaText, ctaUrl, "imageUrl": image.asset->url },
+    hoursSectionTitle,
+    hoursSubtitle,
+    address,
+    phone,
     hours,
-    features,
     reservationUrl,
-    menuPdfUrl
+    menuPdfUrl,
+    seatingSectionTitle,
+    seatingDescription,
+    "seatingImages": seatingImages[].asset->url,
+    seoTitle,
+    seoDescription
   }`
   return client.fetch(query)
 }
@@ -556,83 +744,220 @@ export async function getMenuItems(): Promise<MenuItem[]> {
 }
 
 // ============================================
-// ABOUT PAGE
+// ABOUT PAGE (Complete - all content editable)
 // ============================================
 export interface AboutPage {
-  heroTitle: string
+  // Hero
+  heroTitle?: string
   heroSubtitle?: string
-  storyTitle: string
-  storyBody: string
+  heroImageUrl?: string
+  // Video
+  videoUrl?: string
+  videoTitle?: string
+  // Story
+  storyTitle?: string
+  storyParagraph1?: string
+  storyParagraph2?: string
+  storyParagraph3?: string
+  storyParagraph4?: string
+  storyParagraph5?: string
+  missionImageUrl?: string
+  // Values
   valuesTitle?: string
-  values?: Array<{ title: string; description: string }>
-  milestones?: Array<{ year: string; title: string; description: string }>
+  valuesIntro?: string
+  values?: Array<{ _key: string; number: number; title: string; description: string }>
+  valuesImageUrl?: string
+  // Milestones
+  milestonesTitle?: string
+  milestones?: Array<{ _key: string; year: string; title: string; description: string }>
+  // Contact
+  contactTitle?: string
+  contactPhone?: string
+  contactEmail?: string
+  contactAddress?: string
+  googleMapsUrl?: string
+  // SEO
+  seoTitle?: string
+  seoDescription?: string
 }
 
 export async function getAboutPage(): Promise<AboutPage | null> {
   const query = `*[_type == "aboutPage"][0] {
     heroTitle,
     heroSubtitle,
+    "heroImageUrl": heroImage.asset->url,
+    videoUrl,
+    videoTitle,
     storyTitle,
-    storyBody,
+    storyParagraph1,
+    storyParagraph2,
+    storyParagraph3,
+    storyParagraph4,
+    storyParagraph5,
+    "missionImageUrl": missionImage.asset->url,
     valuesTitle,
+    valuesIntro,
     values,
-    milestones
+    "valuesImageUrl": valuesImage.asset->url,
+    milestonesTitle,
+    milestones,
+    contactTitle,
+    contactPhone,
+    contactEmail,
+    contactAddress,
+    googleMapsUrl,
+    seoTitle,
+    seoDescription
   }`
   return client.fetch(query)
 }
 
 // ============================================
-// EXPLORE PAGE & ATTRACTIONS
+// EXPLORE PAGE (Complete - all content editable)
 // ============================================
 export interface ExplorePage {
-  heroTitle: string
+  // Hero
+  heroTitle?: string
   heroSubtitle?: string
+  heroImageUrl?: string
   introText?: string
-}
 
-export interface LocalAttraction {
-  _id: string
-  name: string
-  slug: string
-  category: string
-  description: string
-  distance?: string
-  website?: string
-  insiderTip?: string
-  heroImage?: string
+  // Section Break Images
+  speakeasiesBreakImageUrl?: string
+  entertainmentBreakImageUrl?: string
+  eatsBreakImageUrl?: string
+  wellnessBreakImageUrl?: string
+  coffeeBreakImageUrl?: string
+  dessertsBreakImageUrl?: string
+
+  // Speakeasies
+  speakeasiesTitle?: string
+  speakeasiesIntro?: string
+  speakeasies?: Array<{
+    _key: string
+    name: string
+    description: string
+    address?: string
+    howToFind?: string
+    suggestedDrink?: string
+    link?: string
+    imageUrl?: string
+  }>
+
+  // Entertainment
+  entertainmentTitle?: string
+  liveMusic?: Array<{ _key: string; name: string; description: string; link?: string }>
+  performingArts?: Array<{ _key: string; name: string; description: string; link?: string }>
+  comedy?: Array<{ _key: string; name: string; description: string; link?: string }>
+  artClasses?: Array<{ _key: string; name: string; description: string; link?: string }>
+  cooking?: Array<{ _key: string; name: string; description: string; link?: string }>
+
+  // Eats Nearby
+  eatsTitle?: string
+  eatsNearby?: Array<{
+    _key: string
+    name: string
+    distance?: string
+    description: string
+    link?: string
+    linkText?: string
+    imageUrl?: string
+  }>
+
+  // Coffee Shops
+  coffeeTitle?: string
+  coffeeShops?: Array<{
+    _key: string
+    name: string
+    distance?: string
+    whatToGet?: string
+    link?: string
+    imageUrl?: string
+  }>
+
+  // Desserts
+  dessertsTitle?: string
+  desserts?: Array<{
+    _key: string
+    name: string
+    description: string
+    distance?: string
+    suggested?: string
+    link?: string
+    imageUrl?: string
+  }>
+
+  // Wellness
+  wellnessTitle?: string
+  wellness?: Array<{
+    _key: string
+    name: string
+    description: string
+    link?: string
+    imageUrl?: string
+  }>
+
+  // SEO
+  seoTitle?: string
+  seoDescription?: string
 }
 
 export async function getExplorePage(): Promise<ExplorePage | null> {
   const query = `*[_type == "explorePage"][0] {
     heroTitle,
     heroSubtitle,
-    introText
-  }`
-  return client.fetch(query)
-}
-
-export async function getLocalAttractions(): Promise<LocalAttraction[]> {
-  const query = `*[_type == "localAttraction" && isActive == true] | order(displayOrder asc) {
-    _id,
-    name,
-    "slug": slug.current,
-    category,
-    description,
-    distance,
-    website,
-    insiderTip,
-    "heroImage": heroImage.asset->url
+    "heroImageUrl": heroImage.asset->url,
+    introText,
+    "speakeasiesBreakImageUrl": speakeasiesBreakImage.asset->url,
+    "entertainmentBreakImageUrl": entertainmentBreakImage.asset->url,
+    "eatsBreakImageUrl": eatsBreakImage.asset->url,
+    "wellnessBreakImageUrl": wellnessBreakImage.asset->url,
+    "coffeeBreakImageUrl": coffeeBreakImage.asset->url,
+    "dessertsBreakImageUrl": dessertsBreakImage.asset->url,
+    speakeasiesTitle,
+    speakeasiesIntro,
+    "speakeasies": speakeasies[]{ _key, name, description, address, howToFind, suggestedDrink, link, "imageUrl": image.asset->url },
+    entertainmentTitle,
+    liveMusic,
+    performingArts,
+    comedy,
+    artClasses,
+    cooking,
+    eatsTitle,
+    "eatsNearby": eatsNearby[]{ _key, name, distance, description, link, linkText, "imageUrl": image.asset->url },
+    coffeeTitle,
+    "coffeeShops": coffeeShops[]{ _key, name, distance, whatToGet, link, "imageUrl": image.asset->url },
+    dessertsTitle,
+    "desserts": desserts[]{ _key, name, description, distance, suggested, link, "imageUrl": image.asset->url },
+    wellnessTitle,
+    "wellness": wellness[]{ _key, name, description, link, "imageUrl": image.asset->url },
+    seoTitle,
+    seoDescription
   }`
   return client.fetch(query)
 }
 
 // ============================================
-// GALLERY
+// GALLERY PAGE (Complete - all content editable)
 // ============================================
 export interface GalleryPage {
-  title: string
-  subtitle?: string
-  description?: string
+  // Hero
+  heroTitle?: string
+  heroSubtitle?: string
+  heroImageUrl?: string
+  // Intro
+  introBadge?: string
+  introTitle?: string
+  introText?: string
+  // Filters
+  filterAllLabel?: string
+  filterRoomsLabel?: string
+  filterVenuesLabel?: string
+  filterHomaLabel?: string
+  filterOutdoorsLabel?: string
+  // SEO
+  seoTitle?: string
+  seoDescription?: string
 }
 
 export interface GalleryImage {
@@ -645,9 +970,23 @@ export interface GalleryImage {
 
 export async function getGalleryPage(): Promise<GalleryPage | null> {
   const query = `*[_type == "galleryPage"][0] {
-    title,
-    subtitle,
-    description
+    // Hero
+    heroTitle,
+    heroSubtitle,
+    "heroImageUrl": heroImage.asset->url,
+    // Intro
+    introBadge,
+    introTitle,
+    introText,
+    // Filters
+    filterAllLabel,
+    filterRoomsLabel,
+    filterVenuesLabel,
+    filterHomaLabel,
+    filterOutdoorsLabel,
+    // SEO
+    seoTitle,
+    seoDescription
   }`
   return client.fetch(query)
 }
@@ -664,14 +1003,36 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
 }
 
 // ============================================
-// CAREERS & JOBS
+// CAREERS PAGE (Complete - all content editable)
 // ============================================
+export interface WhyJoinReason {
+  _key: string
+  title: string
+  description: string
+}
+
 export interface CareersPage {
-  heroTitle: string
+  // Hero
+  heroTitle?: string
   heroSubtitle?: string
+  heroImageUrl?: string
+  // Introduction
+  introTitle?: string
   introText?: string
-  benefits?: string[]
-  applicationEmail?: string
+  // Why Join
+  whyJoinTitle?: string
+  whyJoinReasons?: WhyJoinReason[]
+  // Benefits
+  benefitsTitle?: string
+  benefitsList?: string[]
+  // CTA
+  ctaTitle?: string
+  ctaText?: string
+  ctaButtonText?: string
+  ctaButtonUrl?: string
+  // SEO
+  seoTitle?: string
+  seoDescription?: string
 }
 
 export interface JobPosting {
@@ -688,9 +1049,19 @@ export async function getCareersPage(): Promise<CareersPage | null> {
   const query = `*[_type == "careersPage"][0] {
     heroTitle,
     heroSubtitle,
+    "heroImageUrl": heroImage.asset->url,
+    introTitle,
     introText,
-    benefits,
-    applicationEmail
+    whyJoinTitle,
+    whyJoinReasons,
+    benefitsTitle,
+    benefitsList,
+    ctaTitle,
+    ctaText,
+    ctaButtonText,
+    ctaButtonUrl,
+    seoTitle,
+    seoDescription
   }`
   return client.fetch(query)
 }
@@ -709,115 +1080,253 @@ export async function getJobPostings(): Promise<JobPosting[]> {
 }
 
 // ============================================
-// OFFERS
+// OFFERS PAGE (Complete - all content editable including images)
 // ============================================
-export interface OffersPage {
-  heroTitle: string
-  heroSubtitle?: string
+export interface OffersPageOffer {
+  _key: string
+  title: string
+  imageUrl?: string
+  alt?: string
   description?: string
+  bookingUrl?: string
+  isActive?: boolean
 }
 
-export interface Offer {
-  _id: string
-  title: string
-  slug: string
-  shortDescription?: string
-  description: string
-  discountType?: string
-  discountValue?: number
-  promoCode?: string
-  validFrom?: string
-  validUntil?: string
-  terms?: string
-  isFeatured?: boolean
-  heroImage?: string
+export interface OffersPage {
+  // Hero
+  heroTitle?: string
+  heroSubtitle?: string
+  heroImageUrl?: string
+  // Introduction
+  introBadge?: string
+  introTitle?: string
+  introText?: string
+  // Offers array with images
+  offers?: OffersPageOffer[]
+  // SEO
+  seoTitle?: string
+  seoDescription?: string
 }
 
 export async function getOffersPage(): Promise<OffersPage | null> {
   const query = `*[_type == "offersPage"][0] {
+    // Hero
     heroTitle,
     heroSubtitle,
-    description
-  }`
-  return client.fetch(query)
-}
-
-export async function getOffers(): Promise<Offer[]> {
-  const query = `*[_type == "offer" && isActive == true] | order(isFeatured desc, title asc) {
-    _id,
-    title,
-    "slug": slug.current,
-    shortDescription,
-    description,
-    discountType,
-    discountValue,
-    promoCode,
-    validFrom,
-    validUntil,
-    terms,
-    isFeatured,
-    "heroImage": heroImage.asset->url
+    "heroImageUrl": heroImage.asset->url,
+    // Introduction
+    introBadge,
+    introTitle,
+    introText,
+    // Offers array with image projections
+    "offers": offers[isActive == true]{
+      _key,
+      title,
+      "imageUrl": image.asset->url,
+      alt,
+      description,
+      bookingUrl,
+      isActive
+    },
+    // SEO
+    seoTitle,
+    seoDescription
   }`
   return client.fetch(query)
 }
 
 // ============================================
-// COMMUNITY
+// COMMUNITY PAGE (Complete - all content editable)
 // ============================================
-export interface CommunityPage {
-  heroTitle: string
-  heroSubtitle?: string
+export interface CommunityEvent {
+  _key: string
+  title: string
   description?: string
+  imageUrl?: string
+  alt?: string
+  eventUrl?: string
+  buttonText?: string
+  isActive?: boolean
+}
+
+export interface CommunityPage {
+  // Hero
+  heroTitle?: string
+  heroSubtitle?: string
+  heroImageUrl?: string
+  // Intro
+  introBadge?: string
+  introTitle?: string
+  introText?: string
+  description?: string
+  // Events
+  events?: CommunityEvent[]
+  // SEO
+  seoTitle?: string
+  seoDescription?: string
 }
 
 export async function getCommunityPage(): Promise<CommunityPage | null> {
   const query = `*[_type == "communityPage"][0] {
     heroTitle,
     heroSubtitle,
-    description
+    "heroImageUrl": heroImage.asset->url,
+    introBadge,
+    introTitle,
+    introText,
+    description,
+    "events": events[] {
+      _key,
+      title,
+      description,
+      "imageUrl": image.asset->url,
+      alt,
+      eventUrl,
+      buttonText,
+      isActive
+    },
+    seoTitle,
+    seoDescription
   }`
   return client.fetch(query)
 }
 
 // ============================================
-// POLICIES, PRIVACY, ACCESSIBILITY
+// POLICIES PAGE (Complete - all content editable)
 // ============================================
+export interface PolicySection {
+  _key: string
+  title: string
+  content: string
+  bulletPoints?: string[]
+  isHighlighted?: boolean
+}
+
 export interface PoliciesPage {
-  title: string
-  checkInTime?: string
-  checkOutTime?: string
-  cancellationPolicy?: string
-  petPolicy?: string
-  smokingPolicy?: string
-  parkingInfo?: string
-  agePolicy?: string
-}
-
-export interface PrivacyPage {
-  title: string
-  lastUpdated?: string
-  content?: string
-}
-
-export interface AccessibilityPage {
-  title: string
-  commitment?: string
-  features?: string[]
-  contactInfo?: string
+  // Hero
+  heroTitle?: string
+  heroSubtitle?: string
+  // Policies array
+  policies?: PolicySection[]
+  // Contact
+  contactTitle?: string
+  contactText?: string
+  contactEmail?: string
+  contactPhone?: string
+  // SEO
+  seoTitle?: string
+  seoDescription?: string
 }
 
 export async function getPoliciesPage(): Promise<PoliciesPage | null> {
-  const query = `*[_type == "policiesPage"][0]`
+  const query = `*[_type == "policiesPage"][0] {
+    heroTitle,
+    heroSubtitle,
+    policies[] {
+      _key,
+      title,
+      content,
+      bulletPoints,
+      isHighlighted
+    },
+    contactTitle,
+    contactText,
+    contactEmail,
+    contactPhone,
+    seoTitle,
+    seoDescription
+  }`
   return client.fetch(query)
+}
+
+// ============================================
+// PRIVACY PAGE (Complete - all content editable)
+// ============================================
+export interface PrivacyPage {
+  // Hero
+  heroTitle?: string
+  heroSubtitle?: string
+  // Content
+  paragraph1?: string
+  paragraph2?: string
+  lastUpdated?: string
+  // Contact
+  contactTitle?: string
+  contactText?: string
+  contactEmail?: string
+  contactPhone?: string
+  contactAddress?: string
+  // SEO
+  seoTitle?: string
+  seoDescription?: string
 }
 
 export async function getPrivacyPage(): Promise<PrivacyPage | null> {
-  const query = `*[_type == "privacyPage"][0]`
+  const query = `*[_type == "privacyPage"][0] {
+    heroTitle,
+    heroSubtitle,
+    paragraph1,
+    paragraph2,
+    lastUpdated,
+    contactTitle,
+    contactText,
+    contactEmail,
+    contactPhone,
+    contactAddress,
+    seoTitle,
+    seoDescription
+  }`
   return client.fetch(query)
 }
 
+// ============================================
+// ACCESSIBILITY PAGE (Complete - all content editable)
+// ============================================
+export interface AccessibilityPage {
+  // Hero
+  heroTitle?: string
+  heroSubtitle?: string
+  // Website Accessibility
+  websiteTitle?: string
+  websiteParagraph1?: string
+  websiteParagraph2?: string
+  issueTitle?: string
+  issueText?: string
+  // ADA
+  adaTitle?: string
+  adaIntro?: string
+  amenitiesTitle?: string
+  amenities?: string[]
+  // Contact
+  contactTitle?: string
+  contactText?: string
+  contactEmail?: string
+  contactPhone?: string
+  // SEO
+  seoTitle?: string
+  seoDescription?: string
+}
+
 export async function getAccessibilityPage(): Promise<AccessibilityPage | null> {
-  const query = `*[_type == "accessibilityPage"][0]`
+  const query = `*[_type == "accessibilityPage"][0] {
+    heroTitle,
+    heroSubtitle,
+    websiteTitle,
+    websiteParagraph1,
+    websiteParagraph2,
+    issueTitle,
+    issueText,
+    adaTitle,
+    adaIntro,
+    amenitiesTitle,
+    amenities,
+    contactTitle,
+    contactText,
+    contactEmail,
+    contactPhone,
+    seoTitle,
+    seoDescription
+  }`
   return client.fetch(query)
 }
 

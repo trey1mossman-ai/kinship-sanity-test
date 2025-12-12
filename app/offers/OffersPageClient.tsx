@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
-import { CommunityPage as CommunityPageData } from '@/lib/sanity/queries';
+import { OffersPage } from '@/lib/sanity/queries';
 
 // Critical above-fold components
 import { HeaderNav } from '@/components/layout/HeaderNav';
@@ -19,10 +19,10 @@ const CallToBook = dynamic(() => import('@/components/CallToBook').then(mod => (
 const KINSHIP_COLORS = {
   green: '#849e74',
   greenDark: '#667C58',
-  sage: '#E8EBE4',
-  latte: '#F5F1E8',
+  sage: '#EEF0EB',
+  latte: '#efe7dd',
   white: '#FFFFFF',
-  black: '#1A1A1A'
+  text: '#080806'
 };
 
 const KINSHIP_FONTS = {
@@ -30,51 +30,44 @@ const KINSHIP_FONTS = {
   body: '"europa", "Hind", system-ui, sans-serif'
 };
 
-// Fallback events data (used when Sanity data is not available)
-const fallbackEvents = [
+// Fallback offers data (used when Sanity data is not available)
+const fallbackOffers = [
   {
-    _key: 'event-1',
-    title: 'November 24th Event',
-    description: 'Join us for an exciting community gathering at Kinship Landing.',
-    imageUrl: '/images/Community Page/Nov. 24.webp',
-    alt: 'Community Event - November 24th'
+    _key: 'nye-offer',
+    title: 'Ring in the New Year',
+    description: 'Celebrate the New Year in style at Kinship Landing. Book your stay and enjoy a memorable celebration in downtown Colorado Springs.',
+    imageUrl: '/images/Offers/NYE Promo (1080 x 566 px).webp',
+    alt: 'New Year\'s Eve Special Offer',
+    bookingUrl: 'https://hotels.cloudbeds.com/reservation/4nfQ6E'
   },
   {
-    _key: 'event-2',
-    title: 'Everything But the Turkey',
-    description: 'Let HOMA handle the sides this Thanksgiving! Pre-order our delicious holiday dishes and spend more time with family.',
-    imageUrl: '/images/Community Page/Nov. 26.webp',
-    alt: 'Community Event - November 26th',
-    eventUrl: 'https://www.eventbrite.com/e/everything-but-the-turkey-from-homa-cafe-bar-registration-1908375365089?aff=oddtdtcreator',
-    buttonText: 'Reserve a Spot'
-  },
-  {
-    _key: 'event-3',
-    title: 'Holiday Gathering',
-    description: 'Celebrate the season with our community at this special holiday event.',
-    imageUrl: '/images/Community Page/Nov.26 -.webp',
-    alt: 'Community Event - November 26th',
-    eventUrl: 'https://www.eventbrite.com/e/everything-but-the-turkey-from-homa-cafe-bar-registration-1908375365089?aff=oddtdtcreator',
-    buttonText: 'Reserve a Spot'
+    _key: 'elevator-offer',
+    title: 'Take the Elevator Home',
+    description: 'Enjoy dinner and drinks at HOMA, then take the elevator up to your room. No designated driver needed when you stay with us.',
+    imageUrl: '/images/Offers/Take the Elevator Home (1080 x 1080 px) (1).webp',
+    alt: 'Take the Elevator Home - Special Accommodation Offer',
+    bookingUrl: 'https://hotels.cloudbeds.com/reservation/4nfQ6E'
   }
 ];
 
-interface CommunityPageClientProps {
-  communityData: CommunityPageData | null;
+interface OffersPageClientProps {
+  data: OffersPage | null;
 }
 
-export function CommunityPageClient({ communityData }: CommunityPageClientProps) {
-  // Use Sanity data with fallbacks
-  const heroTitle = communityData?.heroTitle || 'Community Events';
-  const heroSubtitle = communityData?.heroSubtitle || 'Join us for gatherings, workshops, and experiences that bring our community together';
-  const introBadge = communityData?.introBadge || "What's Happening";
-  const introTitle = communityData?.introTitle || 'Upcoming Events';
-  const introText = communityData?.introText || 'Join us for gatherings, workshops, and experiences that bring our community together. Click any event below to view full details.';
-  const [selectedFlyer, setSelectedFlyer] = useState<{ src: string; alt: string } | null>(null);
+export default function OffersPageClient({ data }: OffersPageClientProps) {
+  const [selectedOffer, setSelectedOffer] = useState<{ src: string; alt: string } | null>(null);
 
-  // Use Sanity events or fallback - only use Sanity data if events have images
-  const sanityEventsHaveImages = communityData?.events?.some(event => event.imageUrl);
-  const events = (communityData?.events && communityData.events.length > 0 && sanityEventsHaveImages) ? communityData.events : fallbackEvents;
+  // Use Sanity data with fallbacks
+  const heroTitle = data?.heroTitle || 'Special Offers';
+  const heroSubtitle = data?.heroSubtitle || 'Discover exclusive deals and packages for your Colorado Springs adventure';
+  const heroImageUrl = data?.heroImageUrl || '/images/Offers/aligarciaphotography-72.webp';
+  const introTitle = data?.introTitle || 'Current Promotions';
+  const introText = data?.introText || 'Take advantage of our limited-time offers and experience outrageous hospitality at special rates. Click any offer to view full details.';
+  const introBadge = data?.introBadge || 'Save on Your Stay';
+
+  // Use Sanity offers or fallback - only use Sanity data if offers have images
+  const sanityOffersHaveImages = data?.offers?.some(offer => offer.imageUrl);
+  const offers = (data?.offers && data.offers.length > 0 && sanityOffersHaveImages) ? data.offers : fallbackOffers;
 
   return (
     <ScrollEffectsWrapper>
@@ -84,8 +77,8 @@ export function CommunityPageClient({ communityData }: CommunityPageClientProps)
       <section className="relative min-h-[85vh] md:min-h-screen overflow-hidden bg-kinship-sage">
         <div className="absolute inset-0">
           <Image
-            src="/images/Community Page/GetOutsideEvent6_26-SamStarrMedia (1).webp"
-            alt="Kinship Landing Community Events"
+            src={heroImageUrl}
+            alt="Kinship Landing Special Offers"
             fill
             className="object-cover"
             priority
@@ -161,14 +154,14 @@ export function CommunityPageClient({ communityData }: CommunityPageClientProps)
         </div>
       </section>
 
-      {/* Events Stacked Cards Section */}
+      {/* Offers Stacked Cards Section */}
       <section className="py-8 md:py-16 bg-white">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Stacked Events */}
+          {/* Stacked Offers */}
           <div className="space-y-8 md:space-y-12">
-            {events.map((event, index) => (
+            {offers.map((offer, index) => (
               <motion.div
-                key={event._key}
+                key={offer._key}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
@@ -183,7 +176,7 @@ export function CommunityPageClient({ communityData }: CommunityPageClientProps)
                   clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                 }}
               >
-                {/* Event Info - Left Side */}
+                {/* Offer Info - Left Side */}
                 <div className="space-y-4 order-2 md:order-1">
                   <div>
                     <h2
@@ -193,45 +186,43 @@ export function CommunityPageClient({ communityData }: CommunityPageClientProps)
                         color: '#667C58'
                       }}
                     >
-                      {event.title}
+                      {offer.title}
                     </h2>
-                    {event.description && (
+                    {offer.description && (
                       <p
                         className="text-kinship-text/80 text-base sm:text-lg leading-relaxed"
                         style={{ fontFamily: KINSHIP_FONTS.body }}
                       >
-                        {event.description}
+                        {offer.description}
                       </p>
                     )}
                   </div>
 
-                  {event.eventUrl && (
-                    <a
-                      href={event.eventUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block text-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-white font-semibold transition-all duration-200 hover:shadow-lg hover:translate-y-[-2px] active:translate-y-0"
-                      style={{
-                        backgroundColor: '#849e74',
-                        clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
-                      }}
-                    >
-                      {event.buttonText || 'Reserve a Spot'}
-                    </a>
-                  )}
+                  <a
+                    href={offer.bookingUrl || 'https://hotels.cloudbeds.com/reservation/4nfQ6E'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block text-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-white font-semibold transition-all duration-200 hover:shadow-lg hover:translate-y-[-2px] active:translate-y-0"
+                    style={{
+                      backgroundColor: '#849e74',
+                      clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
+                    }}
+                  >
+                    Book This Offer
+                  </a>
                 </div>
 
-                {/* Event Image - Right Side */}
+                {/* Offer Image - Right Side */}
                 <div className="order-1 md:order-2">
                   <button
-                    onClick={() => setSelectedFlyer({ src: event.imageUrl || '', alt: event.alt || event.title })}
+                    onClick={() => setSelectedOffer({ src: offer.imageUrl || '', alt: offer.alt || offer.title })}
                     className="relative w-full h-[280px] sm:h-[320px] md:h-[380px] overflow-hidden cursor-pointer bg-kinship-sage focus:outline-none focus:ring-2 focus:ring-kinship-green focus:ring-offset-2"
                     style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}
-                    aria-label={`View full size ${event.title} image`}
+                    aria-label={`View full size ${offer.title} image`}
                   >
                     <Image
-                      src={event.imageUrl || '/images/placeholder.webp'}
-                      alt={event.alt || event.title}
+                      src={offer.imageUrl || '/images/placeholder.webp'}
+                      alt={offer.alt || offer.title}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                       quality={75}
@@ -264,19 +255,19 @@ export function CommunityPageClient({ communityData }: CommunityPageClientProps)
 
       {/* Lightbox Modal */}
       <AnimatePresence>
-        {selectedFlyer && (
+        {selectedOffer && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4 sm:p-6"
-            onClick={() => setSelectedFlyer(null)}
+            onClick={() => setSelectedOffer(null)}
           >
             {/* Close button */}
             <button
-              onClick={() => setSelectedFlyer(null)}
+              onClick={() => setSelectedOffer(null)}
               className="absolute top-4 right-4 sm:top-6 sm:right-6 z-[10000] p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
-              aria-label="Close flyer view"
+              aria-label="Close offer view"
             >
               <svg
                 className="w-8 h-8 text-white"
@@ -304,8 +295,8 @@ export function CommunityPageClient({ communityData }: CommunityPageClientProps)
             >
               <div className="relative w-full h-full max-h-[90vh]">
                 <Image
-                  src={selectedFlyer.src}
-                  alt={selectedFlyer.alt}
+                  src={selectedOffer.src}
+                  alt={selectedOffer.alt}
                   fill
                   className="object-contain"
                   quality={75}

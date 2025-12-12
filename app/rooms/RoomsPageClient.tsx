@@ -12,6 +12,7 @@ import { ScrollEffectsWrapper } from '@/components/home/ScrollEffectsWrapper';
 import { RoomCard } from '@/components/rooms/RoomCard';
 import { roomsFaqs } from '@/components/rooms/faq-data';
 import { buildFAQSchema } from '@/lib/utils/faq-schema';
+import { RoomsPage } from '@/lib/sanity/queries';
 
 // Room type definition
 interface RoomTeaser {
@@ -27,6 +28,7 @@ interface RoomTeaser {
 
 interface RoomsPageClientProps {
   roomTeasers: RoomTeaser[];
+  roomsPageData: RoomsPage | null;
 }
 
 // Dynamic imports for below-fold components with loading states
@@ -46,19 +48,20 @@ const CallToBook = dynamic(() => import('@/components/CallToBook').then(mod => (
 type RoomFilter = 'all' | 'king' | 'queen' | 'family' | 'camp-deck';
 
 // Static constants moved outside component for performance
-const HERO_IMAGES = [
+const HERO_IMAGES_FALLBACK = [
   '/images/Gallery Page/Textiles-RichardSeldomridge-optimized.webp',
   '/images/Gallery Page/Family Suite, Ashlee Kay Photography (2)-optimized.webp',
   '/images/Gallery Page/PetFriendlyJrQueenSuite-ExploreWithMedia (2)-optimized.webp',
 ] as const;
 
-const FILTER_OPTIONS = [
-  { id: 'all' as const, label: 'All Rooms' },
-  { id: 'king' as const, label: 'King Rooms' },
-  { id: 'queen' as const, label: 'Queen Rooms' },
-  { id: 'family' as const, label: 'Family Rooms' },
-  { id: 'camp-deck' as const, label: 'Camp Deck' }
-] as const;
+// Filter options now built dynamically from Sanity data
+const getFilterOptions = (data: RoomsPage | null) => [
+  { id: 'all' as const, label: data?.filterAllLabel || 'All Rooms' },
+  { id: 'king' as const, label: data?.filterKingLabel || 'King Rooms' },
+  { id: 'queen' as const, label: data?.filterQueenLabel || 'Queen Rooms' },
+  { id: 'family' as const, label: data?.filterFamilyLabel || 'Family Rooms' },
+  { id: 'camp-deck' as const, label: data?.filterCampDeckLabel || 'Camp Deck' }
+];
 
 // Skeleton loader component for better perceived performance
 const RoomCardSkeleton = memo(() => (
@@ -75,11 +78,48 @@ const RoomCardSkeleton = memo(() => (
 ));
 RoomCardSkeleton.displayName = 'RoomCardSkeleton';
 
-export default function RoomsPageClient({ roomTeasers }: RoomsPageClientProps) {
+export default function RoomsPageClient({ roomTeasers, roomsPageData }: RoomsPageClientProps) {
   const [activeFilter, setActiveFilter] = useState<RoomFilter>('all');
   const [isPending, startTransition] = useTransition();
   const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string; images: string[]; index: number } | null>(null);
   const [heroImageIndex, setHeroImageIndex] = useState(0);
+
+  // Build filter options from Sanity data
+  const FILTER_OPTIONS = useMemo(() => getFilterOptions(roomsPageData), [roomsPageData]);
+
+  // Hero content from Sanity
+  const heroTitle = roomsPageData?.heroTitle || 'Stay With Us';
+  const heroSubtitle = roomsPageData?.heroSubtitle || 'Your Colorado Springs basecamp';
+
+  // Hero images from Sanity with fallbacks
+  const HERO_IMAGES = useMemo(() => {
+    if (roomsPageData?.heroImages && roomsPageData.heroImages.length > 0) {
+      return roomsPageData.heroImages.map(img => img.url);
+    }
+    return HERO_IMAGES_FALLBACK;
+  }, [roomsPageData?.heroImages]);
+
+  // Individual hero images for desktop layout
+  const heroImageMain = roomsPageData?.heroImageUrl || HERO_IMAGES_FALLBACK[0];
+  const heroImageFamily = (roomsPageData?.heroImages && roomsPageData.heroImages.length > 1)
+    ? roomsPageData.heroImages[1].url
+    : HERO_IMAGES_FALLBACK[1];
+  const heroImagePetFriendly = (roomsPageData?.heroImages && roomsPageData.heroImages.length > 2)
+    ? roomsPageData.heroImages[2].url
+    : HERO_IMAGES_FALLBACK[2];
+
+  // Room Blocks content from Sanity
+  const roomBlocksTitle = roomsPageData?.roomBlocksTitle || 'Book a Bunch of Rooms';
+  const roomBlocksTagline = roomsPageData?.roomBlocksTagline || 'Keep Your Crew Close';
+  const roomBlocksDescription1 = roomsPageData?.roomBlocksDescription1 || 'Keep your favorite people close. Whether it\'s a wedding weekend, a family reunion, or a team retreat, reserving a room block at Kinship makes it easy for everyone to stay together under one roof.';
+  const roomBlocksDescription2 = roomsPageData?.roomBlocksDescription2 || 'Your crew will love our unique rooms, downtown location, and the chance to gather around the fire pit, share a meal at Homa Café, or head out on an adventure right from our front door.';
+  const roomBlocksDescription3 = roomsPageData?.roomBlocksDescription3 || 'Ask us about setting up a block so your group can focus on making memories, not logistics.';
+  const roomBlocksCtaText = roomsPageData?.roomBlocksCtaText || 'Book Your Gathering at Kinship Landing';
+  const roomBlocksCtaUrl = roomsPageData?.roomBlocksCtaUrl || 'https://kinshiplanding.tripleseat.com/booking_request/42351';
+
+  // Room Blocks images from Sanity with fallbacks
+  const roomBlocksImage1 = roomsPageData?.roomBlocksImage1Url || '/images/Rooms Page:section/Book a bunch of rooms/MountainDoubleQueenSuite-AshleeKay-optimized.webp';
+  const roomBlocksImage2 = roomsPageData?.roomBlocksImage2Url || '/images/Rooms Page:section/Book a bunch of rooms/BunkRoom5-SamStarr-optimized.webp';
 
   // Preload critical images and preconnect to external services
   useEffect(() => {
@@ -192,7 +232,7 @@ export default function RoomsPageClient({ roomTeasers }: RoomsPageClientProps) {
                 className="relative w-full h-full"
               >
                 <Image
-                  src={HERO_IMAGES[heroImageIndex]}
+                  src={HERO_IMAGES[heroImageIndex] || HERO_IMAGES_FALLBACK[heroImageIndex]}
                   alt="Kinship Landing Rooms"
                   fill
                   className="object-cover"
@@ -211,7 +251,7 @@ export default function RoomsPageClient({ roomTeasers }: RoomsPageClientProps) {
           {/* Left Side - Main Hero Image */}
           <div className="relative overflow-hidden">
             <Image
-              src="/images/Gallery Page/Textiles-RichardSeldomridge-optimized.webp"
+              src={heroImageMain}
               alt="Kinship Landing Rooms"
               fill
               className="object-cover"
@@ -238,7 +278,7 @@ export default function RoomsPageClient({ roomTeasers }: RoomsPageClientProps) {
               }}
             >
               <Image
-                src="/images/Gallery Page/Family Suite, Ashlee Kay Photography (2)-optimized.webp"
+                src={heroImageFamily}
                 alt="Family Suite"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -260,7 +300,7 @@ export default function RoomsPageClient({ roomTeasers }: RoomsPageClientProps) {
             {/* Pet Friendly Jr - Bottom */}
             <div className="relative overflow-hidden group">
               <Image
-                src="/images/Gallery Page/PetFriendlyJrQueenSuite-ExploreWithMedia (2)-optimized.webp"
+                src={heroImagePetFriendly}
                 alt="Pet Friendly Jr Queen Suite"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -293,7 +333,7 @@ export default function RoomsPageClient({ roomTeasers }: RoomsPageClientProps) {
                   marginBottom: '1rem'
                 }}
               >
-                Stay With Us
+                {heroTitle}
               </h1>
               <p
                 className="text-white font-normal"
@@ -303,7 +343,7 @@ export default function RoomsPageClient({ roomTeasers }: RoomsPageClientProps) {
                   textShadow: 'rgba(0, 0, 0, 0.4) 0px 2px 4px'
                 }}
               >
-                Your Colorado Springs basecamp
+                {heroSubtitle}
               </p>
             </div>
           </div>
@@ -412,7 +452,7 @@ export default function RoomsPageClient({ roomTeasers }: RoomsPageClientProps) {
                 {/* Large Left Image */}
                 <div className="relative h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden shadow-lg">
                   <Image
-                    src="/images/Rooms Page:section/Book a bunch of rooms/MountainDoubleQueenSuite-AshleeKay-optimized.webp"
+                    src={roomBlocksImage1}
                     alt="Mountain Double Queen Suite for group stays"
                     fill
                     className="object-cover"
@@ -427,7 +467,7 @@ export default function RoomsPageClient({ roomTeasers }: RoomsPageClientProps) {
                 <div className="flex flex-col gap-4">
                   <div className="relative h-[145px] md:h-[195px] lg:h-[245px] overflow-hidden shadow-lg">
                     <Image
-                      src="/images/Rooms Page:section/Book a bunch of rooms/BunkRoom5-SamStarr-optimized.webp"
+                      src={roomBlocksImage2}
                       alt="Bunk room for group accommodations"
                       fill
                       className="object-cover"
@@ -451,7 +491,7 @@ export default function RoomsPageClient({ roomTeasers }: RoomsPageClientProps) {
                         color: '#F5F3ED'
                       }}
                     >
-                      Keep Your<br />Crew Close
+                      {roomBlocksTagline.split(' ').slice(0, 2).join(' ')}<br />{roomBlocksTagline.split(' ').slice(2).join(' ')}
                     </p>
                   </div>
                 </div>
@@ -466,7 +506,7 @@ export default function RoomsPageClient({ roomTeasers }: RoomsPageClientProps) {
                     color: '#667C58'
                   }}
                 >
-                  Book a Bunch of Rooms
+                  {roomBlocksTitle}
                 </h2>
 
                 <div
@@ -478,20 +518,20 @@ export default function RoomsPageClient({ roomTeasers }: RoomsPageClientProps) {
                   }}
                 >
                   <p>
-                    Keep your favorite people close. Whether it's a wedding weekend, a family reunion, or a team retreat, reserving a room block at Kinship makes it easy for everyone to stay together under one roof.
+                    {roomBlocksDescription1}
                   </p>
 
                   <p>
-                    Your crew will love our unique rooms, downtown location, and the chance to gather around the fire pit, share a meal at Homa Café, or head out on an adventure right from our front door.
+                    {roomBlocksDescription2}
                   </p>
 
                   <p>
-                    Ask us about setting up a block so your group can focus on making memories, not logistics.
+                    {roomBlocksDescription3}
                   </p>
                 </div>
 
                 <a
-                  href="https://kinshiplanding.tripleseat.com/booking_request/42351"
+                  href={roomBlocksCtaUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-8 py-4 text-base md:text-lg text-white font-semibold transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95"
@@ -502,7 +542,7 @@ export default function RoomsPageClient({ roomTeasers }: RoomsPageClientProps) {
                   }}
                   aria-label="Book your gathering at Kinship Landing"
                 >
-                  Book Your Gathering at Kinship Landing
+                  {roomBlocksCtaText}
                 </a>
               </div>
             </div>

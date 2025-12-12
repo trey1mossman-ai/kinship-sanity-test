@@ -145,6 +145,21 @@ interface RoomsGridSanityProps {
   sectionTitle?: string;
   ctaText?: string;
   ctaUrl?: string;
+  // Room data from Sanity Homepage
+  kingRoomsLabel?: string;
+  kingRooms?: Array<{ _key: string; name: string; slug: string; shortDescription: string; imageUrl?: string }>;
+  queenRoomsLabel?: string;
+  queenRooms?: Array<{ _key: string; name: string; slug: string; shortDescription: string; imageUrl?: string }>;
+  familyRoomLabel?: string;
+  familyRoomName?: string;
+  familyRoomSlug?: string;
+  familyRoomDescription?: string;
+  familyRoomImageUrl?: string;
+  campDeckLabel?: string;
+  campDeckName?: string;
+  campDeckSlug?: string;
+  campDeckDescription?: string;
+  campDeckImageUrl?: string;
 }
 
 // Carousel component for room types
@@ -589,28 +604,96 @@ function GalleryCarousel({
   );
 }
 
-export function RoomsGridSanity({ rooms, sectionTitle, ctaText, ctaUrl }: RoomsGridSanityProps) {
+export function RoomsGridSanity({
+  rooms,
+  sectionTitle,
+  ctaText,
+  ctaUrl,
+  kingRoomsLabel,
+  kingRooms,
+  queenRoomsLabel,
+  queenRooms,
+  familyRoomLabel,
+  familyRoomName,
+  familyRoomSlug,
+  familyRoomDescription,
+  familyRoomImageUrl,
+  campDeckLabel,
+  campDeckName,
+  campDeckSlug,
+  campDeckDescription,
+  campDeckImageUrl,
+}: RoomsGridSanityProps) {
   // Use props or fallback defaults
   const title = sectionTitle || 'Find Your Perfect Room';
   const buttonText = ctaText || 'Explore All Rooms';
   const buttonUrl = ctaUrl || '/rooms';
-  // Group rooms by homepageGroup, with fallback to hardcoded data
-  const roomsByType = rooms && rooms.length > 0
-    ? {
-        king: rooms.filter(r => r.homepageGroup === 'king'),
-        queen: rooms.filter(r => r.homepageGroup === 'queen'),
-        family: rooms.filter(r => r.homepageGroup === 'family'),
-        campDeck: rooms.filter(r => r.homepageGroup === 'campDeck'),
-      }
-    : fallbackRoomsByType;
 
-  // Check if we have any rooms from Sanity grouped
-  const hasRooms = rooms && rooms.length > 0 &&
-    (roomsByType.king.length > 0 || roomsByType.queen.length > 0 ||
-     roomsByType.family.length > 0 || roomsByType.campDeck.length > 0);
+  // Labels for room categories
+  const kingLabel = kingRoomsLabel || 'King Rooms';
+  const queenLabel = queenRoomsLabel || 'Queen Rooms';
+  const familyLabel = familyRoomLabel || 'Family';
+  const campLabel = campDeckLabel || 'Camp Deck';
 
-  // If no grouped rooms from Sanity, use fallback
-  const displayRooms = hasRooms ? roomsByType : fallbackRoomsByType;
+  // Build room data from Sanity or use fallback
+  const displayRooms = {
+    king: kingRooms && kingRooms.length > 0
+      ? kingRooms.map(r => {
+          // Use Sanity imageUrl if available, otherwise fallback to matched slug or first image
+          const fallbackImage = fallbackRoomsByType.king.find(fr => fr.slug === r.slug)?.heroImage || fallbackRoomsByType.king[0].heroImage;
+          return {
+            _id: r._key,
+            name: r.name,
+            slug: r.slug,
+            shortDescription: r.shortDescription,
+            heroImage: r.imageUrl || fallbackImage,
+            maxOccupancy: 2,
+            features: [],
+          };
+        })
+      : fallbackRoomsByType.king,
+    queen: queenRooms && queenRooms.length > 0
+      ? queenRooms.map(r => {
+          // Use Sanity imageUrl if available, otherwise fallback to matched slug or first image
+          const fallbackImage = fallbackRoomsByType.queen.find(fr => fr.slug === r.slug)?.heroImage || fallbackRoomsByType.queen[0].heroImage;
+          return {
+            _id: r._key,
+            name: r.name,
+            slug: r.slug,
+            shortDescription: r.shortDescription,
+            heroImage: r.imageUrl || fallbackImage,
+            maxOccupancy: 2,
+            features: [],
+          };
+        })
+      : fallbackRoomsByType.queen,
+    family: familyRoomName
+      ? [{
+          _id: 'family-suite',
+          name: familyRoomName,
+          slug: familyRoomSlug || 'family-suite',
+          shortDescription: familyRoomDescription || '',
+          // Use Sanity familyRoomImageUrl if available, otherwise fallback
+          heroImage: familyRoomImageUrl || fallbackRoomsByType.family[0].heroImage,
+          gallery: fallbackRoomsByType.family[0].gallery,
+          maxOccupancy: 6,
+          features: [],
+        }]
+      : fallbackRoomsByType.family,
+    campDeck: campDeckName
+      ? [{
+          _id: 'camp-deck',
+          name: campDeckName,
+          slug: campDeckSlug || 'camp-deck',
+          shortDescription: campDeckDescription || '',
+          // Use Sanity campDeckImageUrl if available, otherwise fallback
+          heroImage: campDeckImageUrl || fallbackRoomsByType.campDeck[0].heroImage,
+          gallery: fallbackRoomsByType.campDeck[0].gallery,
+          maxOccupancy: 2,
+          features: [],
+        }]
+      : fallbackRoomsByType.campDeck,
+  };
 
   return (
     <section
@@ -650,36 +733,36 @@ export function RoomsGridSanity({ rooms, sectionTitle, ctaText, ctaUrl }: RoomsG
           {/* King Rooms Carousel */}
           {displayRooms.king.length > 0 && (
             <RoomCarousel
-              title="King Rooms"
+              title={kingLabel}
               rooms={displayRooms.king}
-              roomType="King Rooms"
+              roomType={kingLabel}
             />
           )}
 
           {/* Queen Rooms Carousel */}
           {displayRooms.queen.length > 0 && (
             <RoomCarousel
-              title="Queen Rooms"
+              title={queenLabel}
               rooms={displayRooms.queen}
-              roomType="Queen Rooms"
+              roomType={queenLabel}
             />
           )}
 
           {/* Family Suite Section - Gallery carousel for ONE room */}
           {displayRooms.family.length > 0 && (
             <GalleryCarousel
-              title="Family"
+              title={familyLabel}
               room={displayRooms.family[0]}
-              roomType="Family"
+              roomType={familyLabel}
             />
           )}
 
           {/* Camp Deck Section - Gallery carousel for ONE room */}
           {displayRooms.campDeck.length > 0 && (
             <GalleryCarousel
-              title="Camp Deck"
+              title={campLabel}
               room={displayRooms.campDeck[0]}
-              roomType="Camp Deck"
+              roomType={campLabel}
             />
           )}
         </div>

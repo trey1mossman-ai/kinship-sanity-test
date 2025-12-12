@@ -14,6 +14,9 @@ interface PressAndReviewsProps {
   };
   pressSectionTitle?: string;
   reviewsSectionTitle?: string;
+  homepageData?: {
+    pressLogos?: Array<{ _key: string; name: string; logoUrl?: string; url?: string }>;
+  };
 }
 
 // Fallback values
@@ -24,25 +27,25 @@ const defaults = {
 
 // Fallback press data in case Sanity is unavailable
 const fallbackPress = [
-  { name: 'Forbes', src: '/press/Forbes.jpg' },
-  { name: 'TODAY', src: '/press/today-show.webp' },
-  { name: 'Denver Post', src: '/press/denverpostlogo-grey.webp' },
-  { name: 'USA Today', src: '/press/USA Today.jpg' },
-  { name: 'Condé Nast Traveler', src: '/press/conde nast traveler.jpg' },
-  { name: 'AFAR', src: '/press/Afar.jpg' },
-  { name: 'Globe Traveler', src: '/press/Globe Traveler.jpg' },
-  { name: 'The Telegraph', src: '/press/The Telegraph.jpg' },
-  { name: 'Out There Colorado', src: '/press/out there colorado.jpg' },
-  { name: 'BizBash', src: '/press/bizbash.jpg' },
+  { _key: 'forbes', name: 'Forbes', logoUrl: '/press/Forbes.jpg' },
+  { _key: 'today', name: 'TODAY', logoUrl: '/press/today-show.webp' },
+  { _key: 'denver-post', name: 'Denver Post', logoUrl: '/press/denverpostlogo-grey.webp' },
+  { _key: 'usa-today', name: 'USA Today', logoUrl: '/press/USA Today.jpg' },
+  { _key: 'conde-nast', name: 'Condé Nast Traveler', logoUrl: '/press/conde nast traveler.jpg' },
+  { _key: 'afar', name: 'AFAR', logoUrl: '/press/Afar.jpg' },
+  { _key: 'globe-traveler', name: 'Globe Traveler', logoUrl: '/press/Globe Traveler.jpg' },
+  { _key: 'telegraph', name: 'The Telegraph', logoUrl: '/press/The Telegraph.jpg' },
+  { _key: 'out-there', name: 'Out There Colorado', logoUrl: '/press/out there colorado.jpg' },
+  { _key: 'bizbash', name: 'BizBash', logoUrl: '/press/bizbash.jpg' },
 ];
 
-export function PressAndReviews({ reviewData, pressSectionTitle, reviewsSectionTitle }: PressAndReviewsProps) {
+export function PressAndReviews({ reviewData, pressSectionTitle, reviewsSectionTitle, homepageData }: PressAndReviewsProps) {
   // Use Sanity data if provided, otherwise use fallback defaults
   const pressTitle = pressSectionTitle || defaults.pressSectionTitle;
   const reviewsTitle = reviewsSectionTitle || defaults.reviewsSectionTitle;
 
-  // Always use fallback press logos (images need separate handling in Sanity)
-  const press = fallbackPress;
+  // Use Sanity press logos if available, otherwise use fallback
+  const press = homepageData?.pressLogos?.length ? homepageData.pressLogos : fallbackPress;
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -116,23 +119,28 @@ export function PressAndReviews({ reviewData, pressSectionTitle, reviewsSectionT
               {/* Show 3 logos on mobile, 4 on tablet, 5 on desktop */}
               {press
                 .slice(currentIndex * 5, currentIndex * 5 + 5)
-                .map((outlet, index) => (
-                  <div
-                    key={outlet.name}
-                    className={`flex-shrink-0 opacity-70 hover:opacity-100 transition-opacity duration-500 ${
-                      index >= 3 ? 'hidden md:block' : ''
-                    } ${index >= 4 ? 'hidden lg:block' : ''}`}
-                  >
-                    <Image
-                      src={outlet.src}
-                      alt={outlet.name}
-                      width={420}
-                      height={140}
-                      className="object-contain w-[100px] xs:w-[120px] sm:w-[160px] md:w-[200px] lg:w-[240px] xl:w-[280px] h-auto max-h-[60px] xs:max-h-[80px] sm:max-h-[100px] md:max-h-[120px] lg:max-h-[140px] grayscale hover:grayscale-0 transition-all duration-300"
-                      style={{ objectFit: 'contain' }}
-                    />
-                  </div>
-                ))}
+                .map((logo, index) => {
+                  // Use Sanity logoUrl if available, otherwise use fallback logoUrl from fallbackPress
+                  const logoSrc = logo.logoUrl || '';
+
+                  return (
+                    <div
+                      key={logo._key}
+                      className={`flex-shrink-0 opacity-70 hover:opacity-100 transition-opacity duration-500 ${
+                        index >= 3 ? 'hidden md:block' : ''
+                      } ${index >= 4 ? 'hidden lg:block' : ''}`}
+                    >
+                      <Image
+                        src={logoSrc}
+                        alt={logo.name}
+                        width={420}
+                        height={140}
+                        className="object-contain w-[100px] xs:w-[120px] sm:w-[160px] md:w-[200px] lg:w-[240px] xl:w-[280px] h-auto max-h-[60px] xs:max-h-[80px] sm:max-h-[100px] md:max-h-[120px] lg:max-h-[140px] grayscale hover:grayscale-0 transition-all duration-300"
+                        style={{ objectFit: 'contain' }}
+                      />
+                    </div>
+                  );
+                })}
               </motion.div>
             </AnimatePresence>
           </div>

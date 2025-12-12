@@ -44,6 +44,36 @@ const homepageContent = {
   roomsCtaText: 'Explore All Rooms',
   roomsCtaUrl: '/rooms',
 
+  // King Rooms carousel
+  kingRoomsLabel: 'King Rooms',
+  kingRooms: [
+    { _key: 'king-suite', name: 'King Suite', slug: 'king-suite', shortDescription: 'King bed, sunrise views, in-room fireplace and soaking tub.' },
+    { _key: 'executive-king-suite', name: 'Executive King Suite', slug: 'executive-king-suite', shortDescription: 'King bed, premium finishes, adjustable work desk, executive amenities.' },
+    { _key: 'mountain-king-suite', name: 'Mountain King Suite', slug: 'mountain-king-suite', shortDescription: 'King bed with mountain views, fireplace and soaking tub.' },
+  ],
+
+  // Queen Rooms carousel
+  queenRoomsLabel: 'Queen Rooms',
+  queenRooms: [
+    { _key: 'mountain-jr-queen', name: 'Mountain Jr Queen', slug: 'mountain-jr-queen', shortDescription: 'Queen bed, custom touches, Rocky Mountain views' },
+    { _key: 'queen-balcony-suite', name: 'Mountain Queen Balcony Suite', slug: 'queen-balcony-suite', shortDescription: 'Queen bed, full balcony to mountain view, plus trundle with two twins' },
+    { _key: 'jr-queen-suite', name: 'Jr Queen', slug: 'jr-queen-suite', shortDescription: 'Queen bed, custom touches, cozy and clean' },
+    { _key: 'double-queen-balcony-suite', name: 'Double Queen Balcony Suite', slug: 'double-queen-balcony-suite', shortDescription: 'Two queen beds, full balcony with rockers, delightful finishes' },
+    { _key: 'mountain-double-queen', name: 'Mountain Double Queen Suite', slug: 'mountain-double-queen', shortDescription: 'Two queen beds, overhead door to mountain views, curated and clean' },
+  ],
+
+  // Family Suite
+  familyRoomLabel: 'Family',
+  familyRoomName: 'Family Suite',
+  familyRoomSlug: 'family-suite',
+  familyRoomDescription: 'Queen bed + twin bunks, two bathrooms, cozy and functional. Sleeps 6.',
+
+  // Camp Deck
+  campDeckLabel: 'Camp Deck',
+  campDeckName: 'Camp Deck',
+  campDeckSlug: 'camp-deck',
+  campDeckDescription: 'Outdoor camping deck with private restroom and mountain views.',
+
   // ==================== EVENTS SECTION ====================
   eventsSectionTitle: 'Gather Together',
   eventsSectionSubtitle: 'Unique spaces for unforgettable events',

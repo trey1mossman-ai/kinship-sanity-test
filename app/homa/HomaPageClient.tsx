@@ -22,22 +22,22 @@ const Footer = dynamic(() => import('@/components/Footer').then(mod => ({ defaul
 const ScrollTop = dynamic(() => import('@/components/ScrollTop').then(mod => ({ default: mod.ScrollTop })));
 const CallToBook = dynamic(() => import('@/components/CallToBook').then(mod => ({ default: mod.CallToBook })));
 
-// Hero carousel images - Desktop: BRILLIANT 3-panel triptych layouts
-const HERO_IMAGES_DESKTOP = [
+// Fallback hero carousel images - Desktop: BRILLIANT 3-panel triptych layouts
+const HERO_IMAGES_DESKTOP_FALLBACK = [
   '/images/HOMA Page/hero-triptych-1.webp',
   '/images/HOMA Page/hero-triptych-3.webp',
 ] as const;
 
-// Hero carousel images - Mobile: portrait friendly
-const HERO_IMAGES_MOBILE = [
+// Fallback hero carousel images - Mobile: portrait friendly
+const HERO_IMAGES_MOBILE_FALLBACK = [
   '/images/HOMA Page/Fresh and local.webp',
   '/images/HOMA Page/samantha-baldwin-14.webp',
   '/images/HOMA Page/Homa Espresso Web Size_-4 (1).webp',
   '/images/HOMA Page/CafeSeating-ChrystalHolmes (1)-optimized.webp',
 ] as const;
 
-// Fireplace carousel images
-const FIREPLACE_IMAGES = [
+// Fallback fireplace carousel images
+const FIREPLACE_IMAGES_FALLBACK = [
   '/images/HOMA Page/homa seating-optimized.webp',
   '/images/HOMA Page/homa seating 2-optimized.webp',
   '/images/HOMA Page/Seating Homa -optimized.webp',
@@ -61,6 +61,24 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Build hero images arrays with Sanity images and fallbacks
+  const HERO_IMAGES_DESKTOP = [
+    homaData?.heroTriptychImage1Url || HERO_IMAGES_DESKTOP_FALLBACK[0],
+    homaData?.heroTriptychImage2Url || HERO_IMAGES_DESKTOP_FALLBACK[1],
+  ];
+
+  const HERO_IMAGES_MOBILE = [
+    homaData?.heroTriptychImage1Url || HERO_IMAGES_MOBILE_FALLBACK[0],
+    homaData?.heroTriptychImage3Url || HERO_IMAGES_MOBILE_FALLBACK[1],
+    homaData?.heroTriptychImage2Url || HERO_IMAGES_MOBILE_FALLBACK[2],
+    HERO_IMAGES_MOBILE_FALLBACK[3], // Keep existing fallback
+  ];
+
+  // Build fireplace images array with Sanity images and fallbacks
+  const FIREPLACE_IMAGES = homaData?.seatingImages && homaData.seatingImages.length > 0
+    ? homaData.seatingImages
+    : FIREPLACE_IMAGES_FALLBACK;
 
   // Get the correct hero images array based on screen size
   const HERO_IMAGES = isMobile ? HERO_IMAGES_MOBILE : HERO_IMAGES_DESKTOP;
@@ -275,7 +293,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                 {/* Image */}
                 <div className="relative h-[200px] w-full overflow-hidden flex-shrink-0">
                   <Image
-                    src="/images/HOMA Page/homa-happy-hour-34.webp"
+                    src={homaData?.happyHourImageUrl || '/images/HOMA Page/homa-happy-hour-34.webp'}
                     alt="The Happiest Hour at HOMA"
                     fill
                     className="object-cover"
@@ -391,7 +409,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                 {/* Image */}
                 <div className="relative h-[200px] w-full overflow-hidden flex-shrink-0">
                   <Image
-                    src="/images/HOMA Page/Brunch.webp"
+                    src={homaData?.brunchImageUrl || '/images/HOMA Page/Brunch.webp'}
                     alt="Sunday Brunch at HOMA"
                     fill
                     className="object-cover"
@@ -477,7 +495,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                 {/* Image */}
                 <div className="relative h-[200px] w-full overflow-hidden flex-shrink-0">
                   <Image
-                    src="/images/HOMA Page/CafeSeating2, SamStarr.webp"
+                    src={homaData?.eventsImageUrl || '/images/HOMA Page/CafeSeating2, SamStarr.webp'}
                     alt="Upcoming Events at Kinship Landing"
                     fill
                     className="object-cover"
@@ -545,83 +563,98 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
 
         {/* 4. PROMO BANNER SECTION - Full Width Matching Cards */}
         <section id="promos" className="py-16 md:py-24" style={{ backgroundColor: KINSHIP_COLORS.latte }}>
-          <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div
-              className="bg-white border-2 overflow-hidden transition-shadow duration-300 hover:shadow-lg p-8 md:p-12"
-              style={{
-                borderColor: KINSHIP_COLORS.greenDark,
-                clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
-              }}
-            >
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                {/* Left: Image */}
-                <div className="relative h-[250px] md:h-[300px] overflow-hidden">
-                  <Image
-                    src="/images/HOMA Page/everything-turkey-promo-optimized.webp"
-                    alt="Everything but the Turkey - Thanksgiving Side Dishes from HOMA"
-                    fill
-                    className="object-cover"
-                    quality={75}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    style={{
-                      clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
-                    }}
-                  />
-                </div>
+          <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            {/* Render promos from Sanity, or fallback to default promo */}
+            {(homaData?.promos && homaData.promos.length > 0 ? homaData.promos : [{
+              title: 'Everything but the Turkey',
+              description: 'Skip the stress this holiday season and let us handle your side dishes! Introducing "Everything but the Turkey"—a curated selection of delicious, ready-to-serve sides that will make your Thanksgiving meal unforgettable. From creamy mashed potatoes to savory sage stuffing, and of course, classic pies, we\'ve got you covered. Just cook the turkey, and we\'ll take care of the rest!',
+              badge: 'Thanksgiving Special',
+              ctaText: 'Reserve a Spot',
+              ctaUrl: 'https://www.eventbrite.com/e/everything-but-the-turkey-from-homa-cafe-bar-registration-1908375365089?aff=oddtdtcreator',
+              imageUrl: homaData?.promoBannerImageUrl || '/images/HOMA Page/everything-turkey-promo-optimized.webp'
+            }]).map((promo, index) => (
+              <div
+                key={index}
+                className="bg-white border-2 overflow-hidden transition-shadow duration-300 hover:shadow-lg p-8 md:p-12"
+                style={{
+                  borderColor: KINSHIP_COLORS.greenDark,
+                  clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
+                }}
+              >
+                <div className="grid md:grid-cols-2 gap-8 items-center">
+                  {/* Left: Image */}
+                  <div className="relative h-[250px] md:h-[300px] overflow-hidden">
+                    <Image
+                      src={promo.imageUrl || '/images/HOMA Page/everything-turkey-promo-optimized.webp'}
+                      alt={promo.title}
+                      fill
+                      className="object-cover"
+                      quality={75}
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      style={{
+                        clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
+                      }}
+                    />
+                  </div>
 
-                {/* Right: Content */}
-                <div className="space-y-6">
-                  {/* Badge */}
-                  <span
-                    className="inline-block px-4 py-2 text-white text-sm uppercase tracking-wider font-bold"
-                    style={{
-                      backgroundColor: KINSHIP_COLORS.green,
-                      clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
-                    }}
-                  >
-                    Thanksgiving Special
-                  </span>
+                  {/* Right: Content */}
+                  <div className="space-y-6">
+                    {/* Badge */}
+                    {promo.badge && (
+                      <span
+                        className="inline-block px-4 py-2 text-white text-sm uppercase tracking-wider font-bold"
+                        style={{
+                          backgroundColor: KINSHIP_COLORS.green,
+                          clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
+                        }}
+                      >
+                        {promo.badge}
+                      </span>
+                    )}
 
-                  {/* Title */}
-                  <h3
-                    className="text-3xl md:text-4xl font-bold"
-                    style={{
-                      fontFamily: KINSHIP_FONTS.heading,
-                      color: KINSHIP_COLORS.greenDark
-                    }}
-                  >
-                    Everything but the Turkey
-                  </h3>
+                    {/* Title */}
+                    <h3
+                      className="text-3xl md:text-4xl font-bold"
+                      style={{
+                        fontFamily: KINSHIP_FONTS.heading,
+                        color: KINSHIP_COLORS.greenDark
+                      }}
+                    >
+                      {promo.title}
+                    </h3>
 
-                  {/* Description */}
-                  <p
-                    className="text-base md:text-lg leading-relaxed"
-                    style={{
-                      fontFamily: KINSHIP_FONTS.body,
-                      color: KINSHIP_COLORS.greenDark,
-                      opacity: 0.9
-                    }}
-                  >
-                    Skip the stress this holiday season and let us handle your side dishes! Introducing "Everything but the Turkey"—a curated selection of delicious, ready-to-serve sides that will make your Thanksgiving meal unforgettable. From creamy mashed potatoes to savory sage stuffing, and of course, classic pies, we've got you covered. Just cook the turkey, and we'll take care of the rest!
-                  </p>
+                    {/* Description */}
+                    <p
+                      className="text-base md:text-lg leading-relaxed"
+                      style={{
+                        fontFamily: KINSHIP_FONTS.body,
+                        color: KINSHIP_COLORS.greenDark,
+                        opacity: 0.9
+                      }}
+                    >
+                      {promo.description}
+                    </p>
 
-                  {/* CTA Button */}
-                  <a
-                    href="https://www.eventbrite.com/e/everything-but-the-turkey-from-homa-cafe-bar-registration-1908375365089?aff=oddtdtcreator"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center min-h-[48px] px-8 py-3 text-base font-semibold transition-all duration-300 hover:scale-105 active:scale-95"
-                    style={{
-                      backgroundColor: KINSHIP_COLORS.greenDark,
-                      color: KINSHIP_COLORS.white,
-                      clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
-                    }}
-                  >
-                    Reserve a Spot
-                  </a>
+                    {/* CTA Button */}
+                    {promo.ctaUrl && promo.ctaText && (
+                      <a
+                        href={promo.ctaUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center min-h-[48px] px-8 py-3 text-base font-semibold transition-all duration-300 hover:scale-105 active:scale-95"
+                        style={{
+                          backgroundColor: KINSHIP_COLORS.greenDark,
+                          color: KINSHIP_COLORS.white,
+                          clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
+                        }}
+                      >
+                        {promo.ctaText}
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         </section>
 

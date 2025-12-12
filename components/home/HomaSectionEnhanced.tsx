@@ -33,6 +33,10 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
   const ctaText = sanityData?.homaCtaText || defaults.ctaText;
   const ctaUrl = sanityData?.homaCtaUrl || defaults.ctaUrl;
 
+  // Image URLs with Sanity fallbacks
+  const homaLogoUrl = sanityData?.homaLogoImageUrl || '/images/homa-logo-sq.svg';
+  const homaBackgroundUrl = sanityData?.homaBackgroundImageUrl;
+
   const [hoveredImage, setHoveredImage] = useState<number | null>(null);
 
   const homaImages = [
@@ -78,7 +82,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
             <motion.div variants={staggerItem} className="mb-2">
               <Link href="/homa" className="inline-block transition-opacity hover:opacity-80">
                 <Image
-                  src="/images/homa-logo-sq.svg"
+                  src={homaLogoUrl}
                   alt="HOMA Café + Bar"
                   width={220}
                   height={130}
@@ -193,7 +197,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
             <motion.div variants={staggerItem} className="mb-0">
               <Link href="/homa" className="inline-block transition-opacity hover:opacity-80">
                 <Image
-                  src="/images/homa-logo-sq.svg"
+                  src={homaLogoUrl}
                   alt="HOMA Café + Bar"
                   width={220}
                   height={130}

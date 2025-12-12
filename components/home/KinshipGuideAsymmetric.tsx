@@ -38,6 +38,10 @@ export function KinshipGuideAsymmetric({ sanityData }: KinshipGuideAsymmetricPro
   const cta3Text = sanityData?.guideCta3Text || defaults.cta3Text;
   const cta3Url = sanityData?.guideCta3Url || defaults.cta3Url;
 
+  // Use Sanity images with fallbacks
+  const guideBackgroundImage = sanityData?.guideBackgroundImageUrl || '/images/HomePage/GardenoftheGods, SamStarr-mobile.webp';
+  const guideStampImage = sanityData?.guideStampImageUrl || '/images/HomePage/background for stay explore gather drink eat-mobile.webp';
+
   // Check if the third CTA is external
   const isCta3External = cta3Url.startsWith('http');
 
@@ -49,7 +53,7 @@ export function KinshipGuideAsymmetric({ sanityData }: KinshipGuideAsymmetricPro
       {/* Background Image with Overlay */}
       <div className="absolute inset-0">
         <Image
-          src="/images/HomePage/GardenoftheGods, SamStarr-mobile.webp"
+          src={guideBackgroundImage}
           alt="Garden of the Gods Colorado Springs"
           fill
           className="object-cover"
@@ -181,7 +185,7 @@ export function KinshipGuideAsymmetric({ sanityData }: KinshipGuideAsymmetricPro
                 }}
               >
                 <Image
-                  src="/images/HomePage/background for stay explore gather drink eat-mobile.webp"
+                  src={guideStampImage}
                   alt="Kinship Landing interior"
                   fill
                   className="object-cover"

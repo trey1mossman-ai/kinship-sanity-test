@@ -22,49 +22,44 @@ interface ExplorePageClientProps {
   exploreData: ExplorePageData | null;
 }
 
-export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
-  // Use Sanity data with fallbacks
-  const heroTitle = exploreData?.heroTitle || 'Explore Colorado Springs';
-  const heroSubtitle = exploreData?.heroSubtitle || 'Your local guide to hidden gems, insider adventures, and authentic experiences';
-  const introText = exploreData?.introText || 'There are a ton of coffee shops, cocktail joints, places to grab a bite, and entertainment within just a few blocks of Kinship! Grab your buddies and swing by one of our favorite hot spots!';
+// Default data arrays for fallback
+const defaultSpeakeasies = [
+  {
+    name: 'Rabbit Hole',
+    description: 'Take the subway steps down to the rabbit hole and be immersed in Alice in Wonderland vibes with delicious wine, cuisine and cocktails.',
+    address: '101 N Tejon Street',
+    howToFind: 'Look for the subway entrance on N Tejon Street and follow the steps down the rabbit hole.',
+    suggestedDrink: 'The famous "White Rabbit"',
+    link: 'https://www.rabbitholedinner.com/'
+  },
+  {
+    name: 'Shame and Regret',
+    description: 'This alley way retreat has a long history of housing speakeasys. If there wasn\'t a neon sign, you wouldn\'t know this was a bar. Blending into an alley wall, Shame and Regret features 90 American whiskeys, 90 scotch whiskeys and bold craft cocktails.',
+    address: '15 E Bijou Street, Suite C',
+    howToFind: 'Find the alley on Bijou street and look for the neon sign!',
+    suggestedDrink: 'The Prenup',
+    link: 'https://www.shameandregret.com/'
+  },
+  {
+    name: 'Allusion Cocktail Bar',
+    description: 'Get ready for a fun experience! This hidden gem is a revolving pop up concept, featuring themes such as Disney, Harry Potter, Alice and Wonderland, and more.',
+    address: '323 N Tejon Street',
+    howToFind: 'Located behind Rooster\'s House of Ramen.',
+    suggestedDrink: 'Definitely a themed drink!',
+    link: 'https://www.allusionbar.com/'
+  },
+  {
+    name: 'The Archives',
+    description: 'Founded by a group of hospitality professionals, this underground cocktail bar features late-night food and classic/modern cocktails.',
+    address: '15 S Tejon Street',
+    howToFind: 'Located downstairs inside of Colorado Craft.',
+    suggestedDrink: 'A Martini definitely fits the underground vibe.',
+    link: 'http://www.thearchivescos.com/'
+  }
+];
 
-  const speakeasies = [
-    {
-      name: 'Rabbit Hole',
-      description: 'Take the subway steps down to the rabbit hole and be immersed in Alice in Wonderland vibes with delicious wine, cuisine and cocktails.',
-      address: '101 N Tejon Street',
-      howToFind: 'Look for the subway entrance on N Tejon Street and follow the steps down the rabbit hole.',
-      suggestedDrink: 'The famous "White Rabbit"',
-      link: 'https://www.rabbitholedinner.com/'
-    },
-    {
-      name: 'Shame and Regret',
-      description: 'This alley way retreat has a long history of housing speakeasys. If there wasn\'t a neon sign, you wouldn\'t know this was a bar. Blending into an alley wall, Shame and Regret features 90 American whiskeys, 90 scotch whiskeys and bold craft cocktails.',
-      address: '15 E Bijou Street, Suite C',
-      howToFind: 'Find the alley on Bijou street and look for the neon sign!',
-      suggestedDrink: 'The Prenup',
-      link: 'https://www.shameandregret.com/'
-    },
-    {
-      name: 'Allusion Cocktail Bar',
-      description: 'Get ready for a fun experience! This hidden gem is a revolving pop up concept, featuring themes such as Disney, Harry Potter, Alice and Wonderland, and more.',
-      address: '323 N Tejon Street',
-      howToFind: 'Located behind Rooster\'s House of Ramen.',
-      suggestedDrink: 'Definitely a themed drink!',
-      link: 'https://www.allusionbar.com/'
-    },
-    {
-      name: 'The Archives',
-      description: 'Founded by a group of hospitality professionals, this underground cocktail bar features late-night food and classic/modern cocktails.',
-      address: '15 S Tejon Street',
-      howToFind: 'Located downstairs inside of Colorado Craft.',
-      suggestedDrink: 'A Martini definitely fits the underground vibe.',
-      link: 'http://www.thearchivescos.com/'
-    }
-  ];
-
-  const entertainment = {
-    liveMusic: [
+const defaultEntertainment = {
+  liveMusic: [
       {
         name: 'Lulu\'s Live Music and Bar',
         description: 'Located in Downtown Colorado Springs (just a few blocks away!), Lulu\'s is your go-to spot for cocktails, beer and music. With a fun atmosphere and a full calendar, there\'s plenty of entertainment to enjoy here.'
@@ -121,10 +116,10 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
         name: 'The French Kitchen',
         description: 'This local bakery also provides individual adult cooking classes, kids\' skills classes, and private events.'
       }
-    ]
-  };
+  ]
+};
 
-  const eatsNearby = [
+const defaultEatsNearby = [
     {
       name: 'Loyal Coffee',
       distance: '2-minute walk',
@@ -147,10 +142,10 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
       description: 'Affectionately referred to as "OCC" by the locals, this charming neighborhood of Colorado Springs features locally-owned shops, restaurants and galleries.',
       link: 'https://goo.gl/maps/AADLcnGhrThBGP9H6',
       linkText: 'Open bike route in Google Maps'
-    }
-  ];
+  }
+];
 
-  const wellness = [
+const defaultWellness = [
     {
       name: 'SunWater Spa',
       description: 'Year-round cedar soaking tubs in the heart of Manitou Springs, SunWater\'s natural hot tubs use natural Manitou mineral-water. Take in views of Pikes Peak and the Front Range mountain views as you rest and relax in your own little oasis.',
@@ -169,10 +164,10 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
       name: 'Massage',
       description: 'A spa day is always a good idea. Let Mateos Day Spa, near Ute Valley Park & other Colorado Springs Gems, take care of you with a massage, nail service, facial or spa package.',
       link: 'https://www.mateosdayspa.com/'
-    }
-  ];
+  }
+];
 
-  const coffeeShops = [
+const defaultCoffeeShops = [
     {
       name: 'Loyal Coffee',
       distance: '486 feet from Kinship Landing',
@@ -202,10 +197,10 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
       distance: '1.5 miles from Kinship Landing',
       whatToGet: 'Matcha or 50/50 and their avocado toast',
       link: 'https://switchbackroasters.com/'
-    }
-  ];
+  }
+];
 
-  const desserts = [
+const defaultDesserts = [
     {
       name: 'Josh & John\'s Ice Cream',
       description: 'Churning the best homemade ice cream using local dairy, right in the heart of Downtown Colorado Springs!',
@@ -247,8 +242,53 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
       distance: 'Head to our first floor & satiate that sweet tooth',
       suggested: 'Ice Cream Sandwich or Polenta Cake',
       link: '/homa'
-    }
-  ];
+  }
+];
+
+export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
+  // Use Sanity data with fallbacks
+  const heroTitle = exploreData?.heroTitle || 'Explore Colorado Springs';
+  const heroSubtitle = exploreData?.heroSubtitle || 'Your local guide to hidden gems, insider adventures, and authentic experiences';
+  const introText = exploreData?.introText || 'There are a ton of coffee shops, cocktail joints, places to grab a bite, and entertainment within just a few blocks of Kinship! Grab your buddies and swing by one of our favorite hot spots!';
+
+  // Use Sanity data arrays or defaults
+  const speakeasies = exploreData?.speakeasies && exploreData.speakeasies.length > 0
+    ? exploreData.speakeasies
+    : defaultSpeakeasies;
+
+  const entertainment = {
+    liveMusic: exploreData?.liveMusic && exploreData.liveMusic.length > 0
+      ? exploreData.liveMusic
+      : defaultEntertainment.liveMusic,
+    performingArts: exploreData?.performingArts && exploreData.performingArts.length > 0
+      ? exploreData.performingArts
+      : defaultEntertainment.performingArts,
+    comedy: exploreData?.comedy && exploreData.comedy.length > 0
+      ? exploreData.comedy
+      : defaultEntertainment.comedy,
+    artClasses: exploreData?.artClasses && exploreData.artClasses.length > 0
+      ? exploreData.artClasses
+      : defaultEntertainment.artClasses,
+    cooking: exploreData?.cooking && exploreData.cooking.length > 0
+      ? exploreData.cooking
+      : defaultEntertainment.cooking,
+  };
+
+  const eatsNearby = exploreData?.eatsNearby && exploreData.eatsNearby.length > 0
+    ? exploreData.eatsNearby
+    : defaultEatsNearby;
+
+  const wellness = exploreData?.wellness && exploreData.wellness.length > 0
+    ? exploreData.wellness
+    : defaultWellness;
+
+  const coffeeShops = exploreData?.coffeeShops && exploreData.coffeeShops.length > 0
+    ? exploreData.coffeeShops
+    : defaultCoffeeShops;
+
+  const desserts = exploreData?.desserts && exploreData.desserts.length > 0
+    ? exploreData.desserts
+    : defaultDesserts;
 
   return (
     <ScrollEffectsWrapper>
@@ -376,7 +416,7 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
       <section className="relative min-h-[60vh] md:min-h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/Explore Page/explore-hero-optimized.webp"
+            src={exploreData?.heroImageUrl || "/images/Explore Page/explore-hero-optimized.webp"}
             alt="Explore Colorado Springs"
             fill
             className="object-cover"
@@ -448,7 +488,7 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
         {/* SPEAKEASIES IMAGE BREAK */}
         <section className="relative h-[400px] md:h-[500px] overflow-hidden">
           <Image
-            src="/images/Explore Page/speakeasies-break.webp"
+            src={exploreData?.speakeasiesBreakImageUrl || "/images/Explore Page/speakeasies-break.webp"}
             alt="Hidden speakeasies in Colorado Springs"
             fill
             className="object-cover"
@@ -591,7 +631,7 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
         {/* ENTERTAINMENT IMAGE BREAK */}
         <section className="relative h-[400px] md:h-[500px] overflow-hidden">
           <Image
-            src="/images/Explore Page/entertainment-break.webp"
+            src={exploreData?.entertainmentBreakImageUrl || "/images/Explore Page/entertainment-break.webp"}
             alt="Arts and entertainment in Colorado Springs"
             fill
             className="object-cover"
@@ -901,7 +941,7 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
         {/* EATS IMAGE BREAK */}
         <section className="relative h-[400px] md:h-[500px] overflow-hidden">
           <Image
-            src="/images/Explore Page/eats-break.webp"
+            src={exploreData?.eatsBreakImageUrl || "/images/Explore Page/eats-break.webp"}
             alt="Local restaurants and cafes near Kinship Landing"
             fill
             className="object-cover"
@@ -1013,7 +1053,7 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
         {/* WELLNESS IMAGE BREAK */}
         <section className="relative h-[400px] md:h-[500px] overflow-hidden">
           <Image
-            src="/images/Explore Page/wellness-break.webp"
+            src={exploreData?.wellnessBreakImageUrl || "/images/Explore Page/wellness-break.webp"}
             alt="Wellness and relaxation in Colorado Springs"
             fill
             className="object-cover"
@@ -1163,7 +1203,7 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
         {/* COFFEE IMAGE BREAK */}
         <section className="relative h-[400px] md:h-[500px] overflow-hidden">
           <Image
-            src="/images/Explore Page/coffee-break.webp"
+            src={exploreData?.coffeeBreakImageUrl || "/images/Explore Page/coffee-break.webp"}
             alt="Local coffee shops in Colorado Springs"
             fill
             className="object-cover"
@@ -1275,7 +1315,7 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
         {/* DESSERTS IMAGE BREAK */}
         <section className="relative h-[400px] md:h-[500px] overflow-hidden">
           <Image
-            src="/images/Explore Page/desserts-break.webp"
+            src={exploreData?.dessertsBreakImageUrl || "/images/Explore Page/desserts-break.webp"}
             alt="Sweet treats and desserts in Colorado Springs"
             fill
             className="object-cover"

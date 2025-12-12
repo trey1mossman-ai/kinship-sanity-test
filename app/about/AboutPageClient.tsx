@@ -39,6 +39,14 @@ const defaultMilestones = [
   },
 ];
 
+const defaultValues = [
+  { number: 1, title: 'Courage', description: 'We act with integrity and do what is right in the face of challenges.' },
+  { number: 2, title: 'Trust', description: 'We choose to believe people are inherently good.' },
+  { number: 3, title: 'Generosity', description: 'We insist there is more than enough, always, and look for ways to share it.' },
+  { number: 4, title: 'Community', description: 'We know that we belong together.' },
+  { number: 5, title: 'Adventure', description: 'We seek experiences that encourage us to grow.' },
+];
+
 interface AboutPageClientProps {
   aboutData: AboutPage | null;
 }
@@ -49,6 +57,36 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
     ? aboutData.milestones
     : defaultMilestones;
 
+  const values = aboutData?.values && aboutData.values.length > 0
+    ? aboutData.values
+    : defaultValues;
+
+  // Story content from Sanity
+  const storyParagraphs = [
+    aboutData?.storyParagraph1 || 'Our story began with friendship and adventure. After extended time traveling the world to dozens of countries, sinking our teeth deep into our local community, making lifelong friends, and recognizing a global need for intentional, authentic hospitality, the founding team of three friends landed back home in Colorado Springs with a clear vision: create an awesome place to sleep and the easiest way to find friendship and adventure in Colorado Springs.',
+    aboutData?.storyParagraph2 || 'Through a values-driven start-up, we are creating a community-powered accommodation concept with courage, trust, adventure, generosity, and community at the helm. Our first endeavor in Colorado Springs is a friendly boutique hotel in the heart of downtown called Kinship Landing, the very first of its kind.',
+    aboutData?.storyParagraph3 || "Here, locals and travelers connect to the best of the region's outdoor and cultural resources. We've found that having a place to launch from and land at makes all the difference. Our future vision: a worldwide network of different hospitality concepts, each cherished by the local community and contributing to the global family.",
+    aboutData?.storyParagraph4 || "We've all experienced outrageous hospitality at some point - it fills you with a sense of belonging, friendship, and trust. You're not going to find it just anywhere. At Kinship Landing, down-to-earth hospitality provides just what you are hoping for in a place to stay.",
+    aboutData?.storyParagraph5 || "You're part of the family. Land here.",
+  ];
+
+  // Values intro text from Sanity
+  const valuesIntro = aboutData?.valuesIntro || 'We make every decision and live every action through the lens of our values. From design decisions to staff recruitment and training, these values are our compass. We aspire to multiply them in the world and hope you carry them out the door with you when you say, "see ya again soon" at checkout.';
+
+  // Video URL from Sanity
+  const videoUrl = aboutData?.videoUrl || 'https://player.vimeo.com/video/854855486?badge=0&autopause=0&player_id=0&app_id=58479';
+
+  // Contact info from Sanity
+  const contactPhone = aboutData?.contactPhone || '(719) 203-9309';
+  const contactEmail = aboutData?.contactEmail || 'hello@kinshiplanding.com';
+  const contactAddress = aboutData?.contactAddress || '415 S Nevada Ave, Colorado Springs, CO 80903';
+  const googleMapsUrl = aboutData?.googleMapsUrl || 'https://www.google.com/maps/place/415+S+Nevada+Ave,+Colorado+Springs,+CO+80903';
+
+  // Image URLs from Sanity with fallbacks
+  const heroImageUrl = aboutData?.heroImageUrl || '/images/About/911A2070-2-optimized.webp';
+  const missionImageUrl = aboutData?.missionImageUrl || '/images/About/Greenhaus-CampDeckAdventure-SamStarrMedia.webp';
+  const valuesImageUrl = aboutData?.valuesImageUrl || '/images/About/WoodWall-SamStarr.webp';
+
   const contactCards = [
     {
       title: 'Call',
@@ -57,8 +95,8 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
         </svg>
       ),
-      content: '(719) 203-9309',
-      link: 'tel:+17192039309',
+      content: contactPhone,
+      link: `tel:${contactPhone.replace(/[^0-9+]/g, '')}`,
     },
     {
       title: 'Email',
@@ -67,8 +105,8 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
       ),
-      content: 'hello@kinshiplanding.com',
-      link: 'mailto:hello@kinshiplanding.com',
+      content: contactEmail,
+      link: `mailto:${contactEmail}`,
     },
     {
       title: 'Visit',
@@ -78,8 +116,8 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
       ),
-      content: '415 S Nevada Ave, Colorado Springs, CO 80903',
-      link: 'https://www.google.com/maps/place/415+S+Nevada+Ave,+Colorado+Springs,+CO+80903',
+      content: contactAddress,
+      link: googleMapsUrl,
     },
   ];
 
@@ -91,7 +129,7 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
       <section className="relative min-h-[60vh] md:min-h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/About/911A2070-2-optimized.webp"
+            src={heroImageUrl}
             alt="About Kinship Landing - Crafted by locals, built for adventurers"
             fill
             className="object-cover"
@@ -127,11 +165,11 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
               }}
             >
               <iframe
-                src="https://player.vimeo.com/video/854855486?badge=0&autopause=0&player_id=0&app_id=58479"
+                src={videoUrl}
                 className="absolute top-0 left-0 w-full h-full"
                 frameBorder="0"
                 allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
-                title="Kinship Landing Video"
+                title={aboutData?.videoTitle || 'Kinship Landing Video'}
               />
             </div>
           </div>
@@ -150,68 +188,18 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
               {aboutData?.storyTitle || 'The Kinship Story'}
             </h2>
             <div className="space-y-6 text-center">
-              {aboutData?.storyBody ? (
-                aboutData.storyBody.split('\n\n').map((paragraph, index) => (
-                  <p
-                    key={index}
-                    className="text-lg md:text-xl leading-relaxed"
-                    style={{
-                      fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                      color: '#667C58',
-                    }}
-                  >
-                    {paragraph}
-                  </p>
-                ))
-              ) : (
-                <>
-                  <p
-                    className="text-lg md:text-xl leading-relaxed"
-                    style={{
-                      fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                      color: '#667C58',
-                    }}
-                  >
-                    Our story began with friendship and adventure. After extended time traveling the world to dozens of countries, sinking our teeth deep into our local community, making lifelong friends, and recognizing a global need for intentional, authentic hospitality, the founding team of three friends landed back home in Colorado Springs with a clear vision: create an awesome place to sleep and the easiest way to find friendship and adventure in Colorado Springs.
-                  </p>
-                  <p
-                    className="text-lg md:text-xl leading-relaxed"
-                    style={{
-                      fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                      color: '#667C58',
-                    }}
-                  >
-                    Through a values-driven start-up, we are creating a community-powered accommodation concept with courage, trust, adventure, generosity, and community at the helm. Our first endeavor in Colorado Springs is a friendly boutique hotel in the heart of downtown called Kinship Landing, the very first of its kind.
-                  </p>
-                  <p
-                    className="text-lg md:text-xl leading-relaxed"
-                    style={{
-                      fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                      color: '#667C58',
-                    }}
-                  >
-                    Here, locals and travelers connect to the best of the region&apos;s outdoor and cultural resources. We&apos;ve found that having a place to launch from and land at makes all the difference. Our future vision: a worldwide network of different hospitality concepts, each cherished by the local community and contributing to the global family.
-                  </p>
-                  <p
-                    className="text-lg md:text-xl leading-relaxed"
-                    style={{
-                      fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                      color: '#667C58',
-                    }}
-                  >
-                    We&apos;ve all experienced outrageous hospitality at some point - it fills you with a sense of belonging, friendship, and trust. You&apos;re not going to find it just anywhere. At Kinship Landing, down-to-earth hospitality provides just what you are hoping for in a place to stay.
-                  </p>
-                  <p
-                    className="text-lg md:text-xl leading-relaxed"
-                    style={{
-                      fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                      color: '#667C58',
-                    }}
-                  >
-                    You&apos;re part of the family. Land here.
-                  </p>
-                </>
-              )}
+              {storyParagraphs.map((paragraph, index) => (
+                <p
+                  key={index}
+                  className="text-lg md:text-xl leading-relaxed"
+                  style={{
+                    fontFamily: '"europa", "Hind", system-ui, sans-serif',
+                    color: '#667C58',
+                  }}
+                >
+                  {paragraph}
+                </p>
+              ))}
             </div>
           </div>
         </section>
@@ -235,229 +223,55 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
                 color: '#667C58',
               }}
             >
-              We make every decision and live every action through the lens of our values. From design decisions to staff recruitment and training, these values are our compass. We aspire to multiply them in the world and hope you carry them out the door with you when you say, &quot;see ya again soon&quot; at checkout.
+              {valuesIntro}
             </p>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
-              {/* Courage */}
-              <div
-                className="group relative bg-white p-8 sm:p-10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col items-center text-center"
-                style={{
-                  borderTop: '4px solid #667C58',
-                  clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-                }}
-              >
+              {values.map((value, index) => (
                 <div
-                  className="w-12 h-12 flex items-center justify-center text-white font-bold text-xl mb-6 transition-transform duration-500 group-hover:scale-110"
+                  key={value.title}
+                  className="group relative bg-white p-8 sm:p-10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col items-center text-center"
                   style={{
-                    backgroundColor: '#849e74',
+                    borderTop: '4px solid #667C58',
                     clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
                   }}
                 >
-                  1
+                  <div
+                    className="w-12 h-12 flex items-center justify-center text-white font-bold text-xl mb-6 transition-transform duration-500 group-hover:scale-110"
+                    style={{
+                      backgroundColor: '#849e74',
+                      clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+                    }}
+                  >
+                    {value.number || index + 1}
+                  </div>
+                  <h3
+                    className="text-3xl font-bold mb-4 transition-colors duration-300"
+                    style={{
+                      fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif',
+                      color: '#667C58'
+                    }}
+                  >
+                    {value.title}
+                  </h3>
+                  <p
+                    className="text-base leading-relaxed"
+                    style={{
+                      fontFamily: '"europa", "Hind", system-ui, sans-serif',
+                      color: '#667C58',
+                      opacity: 0.85
+                    }}
+                  >
+                    {value.description}
+                  </p>
+                  <div
+                    className="absolute bottom-0 left-0 right-0 h-1 transition-all duration-500 group-hover:h-2"
+                    style={{
+                      background: 'linear-gradient(90deg, #849e74 0%, #667C58 100%)'
+                    }}
+                  />
                 </div>
-                <h3
-                  className="text-3xl font-bold mb-4 transition-colors duration-300"
-                  style={{
-                    fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif',
-                    color: '#667C58'
-                  }}
-                >
-                  Courage
-                </h3>
-                <p
-                  className="text-base leading-relaxed"
-                  style={{
-                    fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                    color: '#667C58',
-                    opacity: 0.85
-                  }}
-                >
-                  We act with integrity and do what is right in the face of challenges.
-                </p>
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-1 transition-all duration-500 group-hover:h-2"
-                  style={{
-                    background: 'linear-gradient(90deg, #849e74 0%, #667C58 100%)'
-                  }}
-                />
-              </div>
-
-              {/* Trust */}
-              <div
-                className="group relative bg-white p-8 sm:p-10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col items-center text-center"
-                style={{
-                  borderTop: '4px solid #667C58',
-                  clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-                }}
-              >
-                <div
-                  className="w-12 h-12 flex items-center justify-center text-white font-bold text-xl mb-6 transition-transform duration-500 group-hover:scale-110"
-                  style={{
-                    backgroundColor: '#849e74',
-                    clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-                  }}
-                >
-                  2
-                </div>
-                <h3
-                  className="text-3xl font-bold mb-4"
-                  style={{
-                    fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif',
-                    color: '#667C58'
-                  }}
-                >
-                  Trust
-                </h3>
-                <p
-                  className="text-base leading-relaxed"
-                  style={{
-                    fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                    color: '#667C58',
-                    opacity: 0.85
-                  }}
-                >
-                  We choose to believe people are inherently good.
-                </p>
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-1 transition-all duration-500 group-hover:h-2"
-                  style={{
-                    background: 'linear-gradient(90deg, #849e74 0%, #667C58 100%)'
-                  }}
-                />
-              </div>
-
-              {/* Generosity */}
-              <div
-                className="group relative bg-white p-8 sm:p-10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col items-center text-center"
-                style={{
-                  borderTop: '4px solid #667C58',
-                  clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-                }}
-              >
-                <div
-                  className="w-12 h-12 flex items-center justify-center text-white font-bold text-xl mb-6 transition-transform duration-500 group-hover:scale-110"
-                  style={{
-                    backgroundColor: '#849e74',
-                    clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-                  }}
-                >
-                  3
-                </div>
-                <h3
-                  className="text-3xl font-bold mb-4"
-                  style={{
-                    fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif',
-                    color: '#667C58'
-                  }}
-                >
-                  Generosity
-                </h3>
-                <p
-                  className="text-base leading-relaxed"
-                  style={{
-                    fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                    color: '#667C58',
-                    opacity: 0.85
-                  }}
-                >
-                  We insist there is more than enough, always, and look for ways to share it.
-                </p>
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-1 transition-all duration-500 group-hover:h-2"
-                  style={{
-                    background: 'linear-gradient(90deg, #849e74 0%, #667C58 100%)'
-                  }}
-                />
-              </div>
-
-              {/* Community */}
-              <div
-                className="group relative bg-white p-8 sm:p-10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col items-center text-center"
-                style={{
-                  borderTop: '4px solid #667C58',
-                  clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-                }}
-              >
-                <div
-                  className="w-12 h-12 flex items-center justify-center text-white font-bold text-xl mb-6 transition-transform duration-500 group-hover:scale-110"
-                  style={{
-                    backgroundColor: '#849e74',
-                    clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-                  }}
-                >
-                  4
-                </div>
-                <h3
-                  className="text-3xl font-bold mb-4"
-                  style={{
-                    fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif',
-                    color: '#667C58'
-                  }}
-                >
-                  Community
-                </h3>
-                <p
-                  className="text-base leading-relaxed"
-                  style={{
-                    fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                    color: '#667C58',
-                    opacity: 0.85
-                  }}
-                >
-                  We know that we belong together.
-                </p>
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-1 transition-all duration-500 group-hover:h-2"
-                  style={{
-                    background: 'linear-gradient(90deg, #849e74 0%, #667C58 100%)'
-                  }}
-                />
-              </div>
-
-              {/* Adventure */}
-              <div
-                className="group relative bg-white p-8 sm:p-10 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col items-center text-center"
-                style={{
-                  borderTop: '4px solid #667C58',
-                  clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-                }}
-              >
-                <div
-                  className="w-12 h-12 flex items-center justify-center text-white font-bold text-xl mb-6 transition-transform duration-500 group-hover:scale-110"
-                  style={{
-                    backgroundColor: '#849e74',
-                    clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-                  }}
-                >
-                  5
-                </div>
-                <h3
-                  className="text-3xl font-bold mb-4"
-                  style={{
-                    fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif',
-                    color: '#667C58'
-                  }}
-                >
-                  Adventure
-                </h3>
-                <p
-                  className="text-base leading-relaxed"
-                  style={{
-                    fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                    color: '#667C58',
-                    opacity: 0.85
-                  }}
-                >
-                  We seek experiences that encourage us to grow.
-                </p>
-                <div
-                  className="absolute bottom-0 left-0 right-0 h-1 transition-all duration-500 group-hover:h-2"
-                  style={{
-                    background: 'linear-gradient(90deg, #849e74 0%, #667C58 100%)'
-                  }}
-                />
-              </div>
+              ))}
             </div>
 
             {/* Values Image */}
@@ -466,7 +280,7 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
               style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}
             >
               <Image
-                src="/images/About/WoodWall-SamStarr.webp"
+                src={valuesImageUrl}
                 alt="Kinship Landing interior craftsmanship"
                 fill
                 className="object-cover"
@@ -618,7 +432,7 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
                 style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}
               >
                 <Image
-                  src="/images/About/Greenhaus-CampDeckAdventure-SamStarrMedia.webp"
+                  src={missionImageUrl}
                   alt="Outdoor adventure space at Kinship Landing"
                   fill
                   className="object-cover"
@@ -640,7 +454,7 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
                 color: '#667C58'
               }}
             >
-              Our Journey
+              {aboutData?.milestonesTitle || 'Our Journey'}
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {milestones.map((milestone) => (
@@ -696,7 +510,7 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
                 color: '#667C58'
               }}
             >
-              Get in Touch
+              {aboutData?.contactTitle || 'Get in Touch'}
             </h2>
 
             {/* Contact Cards */}

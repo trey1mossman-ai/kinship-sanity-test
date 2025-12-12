@@ -116,6 +116,10 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
   const takeoversImages = eventsData?.takeoverGallery?.length ? eventsData.takeoverGallery : FALLBACK_TAKEOVERS;
   const roomBlocksImages = eventsData?.roomBlocksGallery?.length ? eventsData.roomBlocksGallery : FALLBACK_ROOMBLOCKS;
 
+  // Visual break image (used between FAQ and Newsletter sections)
+  // @ts-ignore - visualBreakImage may not be in EventsPage type yet
+  const visualBreakImage = eventsData?.visualBreakImage || '/images/events-page/Meetings:Retreats/Kinship-4G3A9437-1 (1).webp';
+
   const handleFilterChange = useCallback((filter: EventFilter) => {
     setActiveFilter(filter);
   }, []);
@@ -817,7 +821,7 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
           }}
         >
           <Image
-            src="/images/events-page/Meetings:Retreats/Kinship-4G3A9437-1 (1).webp"
+            src={visualBreakImage}
             alt="GreenHaus event space at Kinship Landing - Click to learn more"
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-105"

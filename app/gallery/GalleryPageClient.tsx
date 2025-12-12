@@ -104,16 +104,22 @@ export function GalleryPageClient({ galleryData }: GalleryPageClientProps) {
   const [activeFilter, setActiveFilter] = useState<GalleryFilter>('all');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  // Use Sanity data with fallbacks
-  const title = galleryData?.title || 'Gallery';
-  const subtitle = galleryData?.subtitle || 'Explore Kinship Landing';
+  // Use Sanity data with fallbacks - Hero
+  const title = galleryData?.heroTitle || 'Gallery';
+  const subtitle = galleryData?.heroSubtitle || 'Explore Kinship Landing';
 
+  // Intro section - Sanity with fallbacks
+  const introBadge = galleryData?.introBadge || 'See It For Yourself';
+  const introTitle = galleryData?.introTitle || 'Your Colorado Springs Basecamp';
+  const introText = galleryData?.introText || 'From cozy rooms with mountain views to vibrant gathering spaces and locally-crafted dishes at HOMA, explore what makes Kinship Landing the perfect place to stay, gather, and launch your Colorado adventures.';
+
+  // Filter labels - Sanity with fallbacks
   const filters: { id: GalleryFilter; label: string }[] = [
-    { id: 'all', label: 'All' },
-    { id: 'rooms', label: 'Rooms' },
-    { id: 'venues', label: 'Venues' },
-    { id: 'homa', label: 'Homa Café' },
-    { id: 'weddings', label: 'Weddings' },
+    { id: 'all', label: galleryData?.filterAllLabel || 'All' },
+    { id: 'rooms', label: galleryData?.filterRoomsLabel || 'Rooms' },
+    { id: 'venues', label: galleryData?.filterVenuesLabel || 'Venues' },
+    { id: 'homa', label: galleryData?.filterHomaLabel || 'Homa Café' },
+    { id: 'weddings', label: galleryData?.filterOutdoorsLabel || 'Weddings' },
   ];
 
   const filteredImages = galleryImages.filter(
@@ -298,8 +304,44 @@ export function GalleryPageClient({ galleryData }: GalleryPageClientProps) {
 
       <main id="main-content">
 
-      {/* Filter Buttons */}
+      {/* Intro Section */}
       <section className="py-12 md:py-16 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center">
+            <span
+              className="inline-block px-3 sm:px-4 py-1 text-white text-xs uppercase tracking-wider font-semibold mb-6"
+              style={{
+                backgroundColor: '#667C58',
+                clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
+              }}
+            >
+              {introBadge}
+            </span>
+            <h2
+              className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4"
+              style={{
+                fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif',
+                color: '#667C58'
+              }}
+            >
+              {introTitle}
+            </h2>
+            <p
+              className="text-base sm:text-lg md:text-xl leading-relaxed"
+              style={{
+                fontFamily: '"europa", "Hind", system-ui, sans-serif',
+                color: '#667C58',
+                opacity: 0.85
+              }}
+            >
+              {introText}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Filter Buttons */}
+      <section className="pb-8 md:pb-12 bg-white">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4">
             {filters.map((filter) => (

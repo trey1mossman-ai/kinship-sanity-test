@@ -142,6 +142,17 @@ export default function RootLayout({
           })(window,document,'script','dataLayer','GTM-PHJ4NJQ');
         ` }} />
 
+        {/* Unregister any stale service workers */}
+        <script dangerouslySetInnerHTML={{ __html: `
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+              for (let registration of registrations) {
+                registration.unregister();
+              }
+            });
+          }
+        ` }} />
+
         {/* Critical inline styles for no flash */}
         <style dangerouslySetInnerHTML={{ __html: `
           body { margin: 0; background: #ffffff; }
