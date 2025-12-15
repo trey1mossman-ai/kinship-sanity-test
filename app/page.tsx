@@ -187,6 +187,10 @@ export default async function HomePage() {
           reviewData={reviewsData}
           pressSectionTitle={homepageData?.pressSectionTitle}
           reviewsSectionTitle={homepageData?.reviewsSectionTitle}
+          homepageData={homepageData ? {
+            pressLogos: homepageData.pressLogos,
+            pressBackgroundMuralUrl: homepageData.pressBackgroundMuralUrl
+          } : undefined}
         />
 
         {/* 6. Newsletter signup */}
@@ -196,7 +200,7 @@ export default async function HomePage() {
         {/* 7. Visual Break - WoodWall Detail */}
         <section className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden">
           <Image
-            src="/images/About/WoodWall-SamStarr.webp"
+            src={homepageData?.woodwallBreakImageUrl || "/images/About/WoodWall-SamStarr.webp"}
             alt="Kinship Landing interior craftsmanship detail"
             fill
             className="object-cover"

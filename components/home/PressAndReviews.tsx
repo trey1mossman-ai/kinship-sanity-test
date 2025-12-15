@@ -16,6 +16,7 @@ interface PressAndReviewsProps {
   reviewsSectionTitle?: string;
   homepageData?: {
     pressLogos?: Array<{ _key: string; name: string; logoUrl?: string; url?: string }>;
+    pressBackgroundMuralUrl?: string;
   };
 }
 
@@ -47,6 +48,9 @@ export function PressAndReviews({ reviewData, pressSectionTitle, reviewsSectionT
   // Use Sanity press logos if available, otherwise use fallback
   const press = homepageData?.pressLogos?.length ? homepageData.pressLogos : fallbackPress;
 
+  // Use Sanity background mural URL if available, otherwise use fallback
+  const backgroundMuralUrl = homepageData?.pressBackgroundMuralUrl || '/images/HomePage/Background-mural-mobile.webp';
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Auto-scroll effect - scroll 5 at a time
@@ -65,7 +69,7 @@ export function PressAndReviews({ reviewData, pressSectionTitle, reviewsSectionT
       {/* Mural Background */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/HomePage/Background-mural-mobile.webp"
+          src={backgroundMuralUrl}
           alt="Kinship Landing mural artwork"
           fill
           className="object-cover opacity-30"

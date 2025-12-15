@@ -242,6 +242,7 @@ export interface Homepage {
   homaCtaUrl?: string
 
   // Press & Reviews
+  pressBackgroundMuralUrl?: string
   pressLogos?: Array<{ _key: string; name: string; logoUrl?: string; url?: string }>
   pressSectionTitle?: string
   reviewsSectionTitle?: string
@@ -255,6 +256,7 @@ export interface Homepage {
   newsletterDisclaimer?: string
 
   // Map Section
+  woodwallBreakImageUrl?: string
   mapImageUrl?: string
   mapSectionTitle?: string
   mapSubtitle?: string
@@ -329,6 +331,7 @@ export async function getHomepage(): Promise<Homepage | null> {
     homaCtaUrl,
 
     // Press & Reviews
+    "pressBackgroundMuralUrl": pressBackgroundMural.asset->url,
     "pressLogos": pressLogos[]{ _key, name, "logoUrl": logo.asset->url, url },
     pressSectionTitle,
     reviewsSectionTitle,
@@ -342,6 +345,7 @@ export async function getHomepage(): Promise<Homepage | null> {
     newsletterDisclaimer,
 
     // Map Section
+    "woodwallBreakImageUrl": woodwallBreakImage.asset->url,
     "mapImageUrl": mapImage.asset->url,
     mapSectionTitle,
     mapSubtitle,
