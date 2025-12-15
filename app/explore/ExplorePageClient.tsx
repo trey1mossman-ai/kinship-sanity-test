@@ -1,6 +1,6 @@
 'use client';
 
-import { Metadata } from 'next';
+import { useState } from 'react';
 import Image from 'next/image';
 import Script from 'next/script';
 import dynamic from 'next/dynamic';
@@ -10,6 +10,19 @@ import { HeaderNav } from '@/components/layout/HeaderNav';
 import { ScrollEffectsWrapper } from '@/components/home/ScrollEffectsWrapper';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
 import { ExplorePage as ExplorePageData } from '@/lib/sanity/queries';
+
+// Filter categories for quick navigation
+const EXPLORE_FILTERS = [
+  { id: 'all', label: 'All', icon: '✨' },
+  { id: 'speakeasies', label: 'Speakeasies', icon: '🍸' },
+  { id: 'entertainment', label: 'Entertainment', icon: '🎭' },
+  { id: 'dining', label: 'Eats', icon: '🍽️' },
+  { id: 'coffee', label: 'Coffee', icon: '☕' },
+  { id: 'desserts', label: 'Desserts', icon: '🍰' },
+  { id: 'wellness', label: 'Wellness', icon: '🧘' },
+] as const;
+
+type FilterId = typeof EXPLORE_FILTERS[number]['id'];
 
 // Dynamic imports for below-fold components
 const ExploreFAQ = dynamic(() => import('@/components/explore/ExploreFAQ').then(mod => ({ default: mod.ExploreFAQ })));
@@ -246,6 +259,44 @@ const defaultDesserts = [
 ];
 
 export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
+  const [activeFilter, setActiveFilter] = useState<FilterId>('all');
+
+  // Scroll to section when filter is clicked
+  const handleFilterClick = (filterId: FilterId) => {
+    setActiveFilter(filterId);
+
+    if (filterId === 'all') {
+      // Scroll to top of main content
+      document.getElementById('filter-bar')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+
+    // Map filter IDs to section IDs
+    const sectionMap: Record<string, string> = {
+      speakeasies: 'speakeasies',
+      entertainment: 'entertainment',
+      dining: 'dining',
+      coffee: 'coffee-section',
+      desserts: 'desserts-section',
+      wellness: 'wellness-section',
+    };
+
+    const sectionId = sectionMap[filterId];
+    if (sectionId) {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        const offset = 100; // Account for sticky header
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+
   // Use Sanity data with fallbacks
   const heroTitle = exploreData?.heroTitle || 'Explore Colorado Springs';
   const heroSubtitle = exploreData?.heroSubtitle || 'Your local guide to hidden gems, insider adventures, and authentic experiences';
@@ -484,6 +535,43 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
             </p>
           </div>
         </section>
+
+        {/* STICKY FILTER BAR */}
+        <div
+          id="filter-bar"
+          className="sticky top-[72px] z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm"
+        >
+          <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+              {EXPLORE_FILTERS.map((filter) => (
+                <button
+                  key={filter.id}
+                  onClick={() => handleFilterClick(filter.id)}
+                  className={`
+                    inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5
+                    text-sm sm:text-base font-semibold transition-all duration-200
+                    border-2 hover:shadow-md active:scale-95
+                  `}
+                  style={{
+                    fontFamily: KINSHIP_FONTS.body,
+                    backgroundColor: activeFilter === filter.id ? KINSHIP_COLORS.green : 'white',
+                    color: activeFilter === filter.id ? 'white' : KINSHIP_COLORS.greenDark,
+                    borderColor: activeFilter === filter.id ? KINSHIP_COLORS.green : KINSHIP_COLORS.greenDark,
+                  }}
+                >
+                  <span className="text-base sm:text-lg">{filter.icon}</span>
+                  <span>{filter.label}</span>
+                </button>
+              ))}
+            </div>
+            <p
+              className="text-center text-sm mt-3 opacity-70"
+              style={{ fontFamily: KINSHIP_FONTS.body, color: KINSHIP_COLORS.greenDark }}
+            >
+              Click a category to jump to that section
+            </p>
+          </div>
+        </div>
 
         {/* SPEAKEASIES IMAGE BREAK */}
         <section className="relative h-[400px] md:h-[500px] overflow-hidden">
@@ -1064,7 +1152,7 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
         </section>
 
         {/* WELLNESS/RELAX SECTION */}
-        <section className="py-20 md:py-28 bg-white">
+        <section id="wellness-section" className="py-20 md:py-28 bg-white">
           <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16 md:mb-20">
               <h2
@@ -1214,7 +1302,7 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
         </section>
 
         {/* COFFEE ENTHUSIAST SECTION */}
-        <section className="py-20 md:py-28" style={{ backgroundColor: KINSHIP_COLORS.latte }}>
+        <section id="coffee-section" className="py-20 md:py-28" style={{ backgroundColor: KINSHIP_COLORS.latte }}>
           <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16 md:mb-20">
               <h2
@@ -1326,7 +1414,7 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
         </section>
 
         {/* DESSERTS SECTION */}
-        <section className="py-20 md:py-28 bg-white">
+        <section id="desserts-section" className="py-20 md:py-28 bg-white">
           <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16 md:mb-20">
               <h2
