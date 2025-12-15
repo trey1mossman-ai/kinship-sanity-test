@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Script from 'next/script';
 import dynamic from 'next/dynamic';
+import { Wine, Music, UtensilsCrossed, Coffee, Cake, Leaf } from 'lucide-react';
 
 // Critical above-fold components
 import { HeaderNav } from '@/components/layout/HeaderNav';
@@ -13,13 +14,12 @@ import { ExplorePage as ExplorePageData } from '@/lib/sanity/queries';
 
 // Filter categories for quick navigation
 const EXPLORE_FILTERS = [
-  { id: 'all', label: 'All', icon: '✨' },
-  { id: 'speakeasies', label: 'Speakeasies', icon: '🍸' },
-  { id: 'entertainment', label: 'Entertainment', icon: '🎭' },
-  { id: 'dining', label: 'Eats', icon: '🍽️' },
-  { id: 'coffee', label: 'Coffee', icon: '☕' },
-  { id: 'desserts', label: 'Desserts', icon: '🍰' },
-  { id: 'wellness', label: 'Wellness', icon: '🧘' },
+  { id: 'speakeasies', label: 'Speakeasies', Icon: Wine },
+  { id: 'entertainment', label: 'Entertainment', Icon: Music },
+  { id: 'dining', label: 'Eats', Icon: UtensilsCrossed },
+  { id: 'coffee', label: 'Coffee', Icon: Coffee },
+  { id: 'desserts', label: 'Desserts', Icon: Cake },
+  { id: 'wellness', label: 'Wellness', Icon: Leaf },
 ] as const;
 
 type FilterId = typeof EXPLORE_FILTERS[number]['id'];
@@ -259,17 +259,11 @@ const defaultDesserts = [
 ];
 
 export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
-  const [activeFilter, setActiveFilter] = useState<FilterId>('all');
+  const [activeFilter, setActiveFilter] = useState<FilterId | null>(null);
 
   // Scroll to section when filter is clicked
   const handleFilterClick = (filterId: FilterId) => {
     setActiveFilter(filterId);
-
-    if (filterId === 'all') {
-      // Scroll to top of main content
-      document.getElementById('filter-bar')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return;
-    }
 
     // Map filter IDs to section IDs
     const sectionMap: Record<string, string> = {
@@ -543,26 +537,29 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
         >
           <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-              {EXPLORE_FILTERS.map((filter) => (
-                <button
-                  key={filter.id}
-                  onClick={() => handleFilterClick(filter.id)}
-                  className={`
-                    inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5
-                    text-sm sm:text-base font-semibold transition-all duration-200
-                    border-2 hover:shadow-md active:scale-95
-                  `}
-                  style={{
-                    fontFamily: KINSHIP_FONTS.body,
-                    backgroundColor: activeFilter === filter.id ? KINSHIP_COLORS.green : 'white',
-                    color: activeFilter === filter.id ? 'white' : KINSHIP_COLORS.greenDark,
-                    borderColor: activeFilter === filter.id ? KINSHIP_COLORS.green : KINSHIP_COLORS.greenDark,
-                  }}
-                >
-                  <span className="text-base sm:text-lg">{filter.icon}</span>
-                  <span>{filter.label}</span>
-                </button>
-              ))}
+              {EXPLORE_FILTERS.map((filter) => {
+                const IconComponent = filter.Icon;
+                return (
+                  <button
+                    key={filter.id}
+                    onClick={() => handleFilterClick(filter.id)}
+                    className={`
+                      inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5
+                      text-sm sm:text-base font-semibold transition-all duration-200
+                      border-2 hover:shadow-md active:scale-95
+                    `}
+                    style={{
+                      fontFamily: KINSHIP_FONTS.body,
+                      backgroundColor: activeFilter === filter.id ? KINSHIP_COLORS.green : 'white',
+                      color: activeFilter === filter.id ? 'white' : KINSHIP_COLORS.greenDark,
+                      borderColor: activeFilter === filter.id ? KINSHIP_COLORS.green : KINSHIP_COLORS.greenDark,
+                    }}
+                  >
+                    <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span>{filter.label}</span>
+                  </button>
+                );
+              })}
             </div>
             <p
               className="text-center text-sm mt-3 opacity-70"
