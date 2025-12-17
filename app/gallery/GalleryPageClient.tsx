@@ -119,10 +119,19 @@ export function GalleryPageClient({ galleryData }: GalleryPageClientProps) {
     { id: 'rooms', label: galleryData?.filterRoomsLabel || 'Rooms' },
     { id: 'venues', label: galleryData?.filterVenuesLabel || 'Venues' },
     { id: 'homa', label: galleryData?.filterHomaLabel || 'Homa Café' },
-    { id: 'weddings', label: galleryData?.filterOutdoorsLabel || 'Weddings' },
+    { id: 'weddings', label: galleryData?.filterWeddingsLabel || 'Weddings' },
   ];
 
-  const filteredImages = galleryImages.filter(
+  // Use Sanity gallery images if available, otherwise use hardcoded fallback
+  const displayImages: GalleryImage[] = galleryData?.galleryImages && galleryData.galleryImages.length > 0
+    ? galleryData.galleryImages.map((img) => ({
+        src: img.imageUrl,
+        alt: img.alt || 'Gallery Image',
+        category: [img.category as GalleryFilter || 'rooms'],
+      }))
+    : galleryImages;
+
+  const filteredImages = displayImages.filter(
     (image) => activeFilter === 'all' || image.category.includes(activeFilter)
   );
 
@@ -232,7 +241,7 @@ export function GalleryPageClient({ galleryData }: GalleryPageClientProps) {
       <section className="relative min-h-[60vh] md:min-h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/events-page/Make Kinship Yours/HomaNightlife-GregCeo.webp"
+            src={galleryData?.heroImageUrl || "/images/events-page/Make Kinship Yours/HomaNightlife-GregCeo.webp"}
             alt="Kinship Landing Gallery - Explore our spaces"
             fill
             className="object-cover"
@@ -413,7 +422,11 @@ export function GalleryPageClient({ galleryData }: GalleryPageClientProps) {
       </section>
 
       {/* FAQ Section */}
-      <GalleryFAQ />
+      <GalleryFAQ
+        sectionTitle={galleryData?.faqSectionTitle}
+        sectionSubtitle={galleryData?.faqSectionSubtitle}
+        faqItems={galleryData?.faqItems}
+      />
 
         {/* Newsletter signup */}
         <Newsletter />

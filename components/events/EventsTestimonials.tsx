@@ -4,31 +4,49 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { KINSHIP_FONTS } from '@/lib/config/brand';
 
+interface Testimonial {
+  quote: string;
+  name: string;
+}
+
+interface EventsTestimonialsProps {
+  testimonials?: Array<{
+    _key: string;
+    quote: string;
+    name: string;
+  }>;
+}
+
+// Default testimonials (fallback if Sanity data not available)
+const defaultTestimonials: Testimonial[] = [
+  {
+    quote: "Our experience was absolutely wonderful from the venue itself to the attentive and responsive staff! Highly recommend Kinship to future brides!",
+    name: "Aubrey S"
+  },
+  {
+    quote: "Every part of the experience was top notch. The room was beautiful, the bed comfortable, the food delicious and the service exceptional.",
+    name: "Beth G"
+  },
+  {
+    quote: "The evening was a huge success thanks to Brad and his staff! They were so accommodating with every request and need.",
+    name: "Mary B"
+  }
+];
+
 /**
  * EventsTestimonials Component
  * Purpose: Show rotating event guest reviews below Events hero text
  * Pattern: Matches HOMA, About, and homepage testimonials exactly
  * Brand: Authentic voices proving exceptional event experiences
  */
-export function EventsTestimonials() {
+export function EventsTestimonials({ testimonials }: EventsTestimonialsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showingSEO, setShowingSEO] = useState(true);
 
-  // Event-specific featured reviews (shorter ones for mobile compatibility)
-  const featuredReviews = [
-    {
-      quote: "Our experience was absolutely wonderful from the venue itself to the attentive and responsive staff! Highly recommend Kinship to future brides!",
-      name: "Aubrey S"
-    },
-    {
-      quote: "Every part of the experience was top notch. The room was beautiful, the bed comfortable, the food delicious and the service exceptional.",
-      name: "Beth G"
-    },
-    {
-      quote: "The evening was a huge success thanks to Brad and his staff! They were so accommodating with every request and need.",
-      name: "Mary B"
-    }
-  ];
+  // Use Sanity data if available, otherwise use defaults
+  const featuredReviews: Testimonial[] = testimonials && testimonials.length > 0
+    ? testimonials.map(t => ({ quote: t.quote, name: t.name }))
+    : defaultTestimonials;
 
   // Show SEO text for 4 seconds, then start review rotation
   useEffect(() => {

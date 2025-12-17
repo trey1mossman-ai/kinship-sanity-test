@@ -3,11 +3,43 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
-import { roomsFaqs } from './faq-data';
+import { roomsFaqs as defaultRoomsFaqs } from './faq-data';
 
-export function RoomsFAQ() {
+interface FAQ {
+  id?: string;
+  question: string;
+  answer_short: string;
+  answer_long: string;
+}
+
+interface RoomsFAQProps {
+  sectionTitle?: string;
+  sectionSubtitle?: string;
+  faqItems?: Array<{
+    _key: string;
+    id?: string;
+    question: string;
+    answerShort: string;
+    answerLong: string;
+  }>;
+}
+
+export function RoomsFAQ({ sectionTitle, sectionSubtitle, faqItems }: RoomsFAQProps) {
   const [openItems, setOpenItems] = useState<Set<number>>(new Set());
   const [showAll, setShowAll] = useState(false);
+
+  // Use Sanity data if available, otherwise use defaults
+  const title = sectionTitle || 'Rooms FAQs';
+  const subtitle = sectionSubtitle || 'Everything you need to know about booking and staying';
+
+  const roomsFaqs: FAQ[] = faqItems && faqItems.length > 0
+    ? faqItems.map(item => ({
+        id: item.id,
+        question: item.question,
+        answer_short: item.answerShort,
+        answer_long: item.answerLong,
+      }))
+    : defaultRoomsFaqs;
 
   // Show first 5 FAQs initially, or all if showAll is true
   const displayedFaqs = showAll ? roomsFaqs : roomsFaqs.slice(0, 5);
@@ -38,7 +70,7 @@ export function RoomsFAQ() {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }, 100);
-  }, []);
+  }, [roomsFaqs]);
 
   const toggleItem = (index: number) => {
     const newOpenItems = new Set(openItems);
@@ -68,7 +100,7 @@ export function RoomsFAQ() {
               color: KINSHIP_COLORS.greenDark,
             }}
           >
-            Rooms FAQs
+            {title}
           </h2>
           <p
             className="text-lg"
@@ -78,7 +110,7 @@ export function RoomsFAQ() {
               opacity: 0.8
             }}
           >
-            Everything you need to know about booking and staying
+            {subtitle}
           </p>
         </motion.div>
 

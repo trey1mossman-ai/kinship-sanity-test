@@ -10,9 +10,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { HeaderNav } from '@/components/layout/HeaderNav';
 import { ScrollEffectsWrapper } from '@/components/home/ScrollEffectsWrapper';
 import { RoomCard } from '@/components/rooms/RoomCard';
-import { roomsFaqs } from '@/components/rooms/faq-data';
+import { roomsFaqs as defaultRoomsFaqs } from '@/components/rooms/faq-data';
 import { buildFAQSchema } from '@/lib/utils/faq-schema';
 import { RoomsPage } from '@/lib/sanity/queries';
+import { roomTeasers as fallbackRoomTeasers } from '@/lib/data/rooms';
 
 // Room type definition
 interface RoomTeaser {
@@ -27,7 +28,6 @@ interface RoomTeaser {
 }
 
 interface RoomsPageClientProps {
-  roomTeasers: RoomTeaser[];
   roomsPageData: RoomsPage | null;
 }
 
@@ -78,11 +78,28 @@ const RoomCardSkeleton = memo(() => (
 ));
 RoomCardSkeleton.displayName = 'RoomCardSkeleton';
 
-export default function RoomsPageClient({ roomTeasers, roomsPageData }: RoomsPageClientProps) {
+export default function RoomsPageClient({ roomsPageData }: RoomsPageClientProps) {
   const [activeFilter, setActiveFilter] = useState<RoomFilter>('all');
   const [isPending, startTransition] = useTransition();
   const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string; images: string[]; index: number } | null>(null);
   const [heroImageIndex, setHeroImageIndex] = useState(0);
+
+  // Transform Sanity rooms to RoomTeaser format, or use fallback
+  const roomTeasers: RoomTeaser[] = useMemo(() => {
+    if (roomsPageData?.rooms && roomsPageData.rooms.length > 0) {
+      return roomsPageData.rooms.map(room => ({
+        id: room.id,
+        name: room.name,
+        slug: room.slug,
+        category: room.category,
+        heroImage: room.heroImageUrl || '/images/placeholder.webp',
+        galleryImages: room.galleryImages || [],
+        features: room.features || [],
+        description: room.description,
+      }));
+    }
+    return fallbackRoomTeasers;
+  }, [roomsPageData?.rooms]);
 
   // Build filter options from Sanity data
   const FILTER_OPTIONS = useMemo(() => getFilterOptions(roomsPageData), [roomsPageData]);
@@ -180,9 +197,9 @@ export default function RoomsPageClient({ roomTeasers, roomsPageData }: RoomsPag
     }
   }, []);
 
-  // Memoized filtered rooms - only recalculates when activeFilter changes
+  // Memoized filtered rooms - recalculates when activeFilter or roomTeasers change
   const filteredRooms = useMemo(() => {
-    const excludeBunks = (room: typeof roomTeasers[0]) => !room.name.toLowerCase().includes('bunk');
+    const excludeBunks = (room: RoomTeaser) => !room.name.toLowerCase().includes('bunk');
 
     switch (activeFilter) {
       case 'all':
@@ -206,7 +223,7 @@ export default function RoomsPageClient({ roomTeasers, roomsPageData }: RoomsPag
       default:
         return roomTeasers.filter(excludeBunks);
     }
-  }, [activeFilter]);
+  }, [activeFilter, roomTeasers]);
 
   return (
     <ScrollEffectsWrapper>
@@ -550,7 +567,11 @@ export default function RoomsPageClient({ roomTeasers, roomsPageData }: RoomsPag
         </section>
 
         {/* FAQs Section */}
-        <RoomsFAQ />
+        <RoomsFAQ
+          sectionTitle={roomsPageData?.faqSectionTitle}
+          sectionSubtitle={roomsPageData?.faqSectionSubtitle}
+          faqItems={roomsPageData?.faqItems}
+        />
 
         {/* Visual Break - King Suite (Clickable) */}
         <Link
@@ -562,7 +583,7 @@ export default function RoomsPageClient({ roomTeasers, roomsPageData }: RoomsPag
           }}
         >
           <Image
-            src="/images/Rooms Page:section/King Suite/CityKingSuite-RichardSeldomridge (3)-optimized.webp"
+            src={roomsPageData?.visualBreakImageUrl || "/images/Rooms Page:section/King Suite/CityKingSuite-RichardSeldomridge (3)-optimized.webp"}
             alt="King Suite at Kinship Landing - Click to learn more"
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -590,7 +611,13 @@ export default function RoomsPageClient({ roomTeasers, roomsPageData }: RoomsPag
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(buildFAQSchema(
-            roomsFaqs,
+            roomsPageData?.faqItems && roomsPageData.faqItems.length > 0
+              ? roomsPageData.faqItems.map(item => ({
+                  question: item.question,
+                  answer_short: item.answerShort,
+                  answer_long: item.answerLong,
+                }))
+              : defaultRoomsFaqs,
             'https://kinshiplanding.com/rooms',
             'Kinship Landing Rooms FAQs'
           ))

@@ -229,6 +229,8 @@ export interface Homepage {
   eventsSectionSubtitle?: string
   eventsCtaText?: string
   eventsCtaUrl?: string
+  greenhausCarouselImages?: string[]
+  yardCarouselImages?: string[]
 
   // HOMA Café Section
   homaBackgroundImageUrl?: string
@@ -255,9 +257,8 @@ export interface Homepage {
   newsletterButtonText?: string
   newsletterDisclaimer?: string
 
-  // Map Section
+  // Map Section (uses embedded Google Maps iframe, not an image)
   woodwallBreakImageUrl?: string
-  mapImageUrl?: string
   mapSectionTitle?: string
   mapSubtitle?: string
   nearbyAttractions?: Array<{ _key: string; name: string; time: string; link?: string }>
@@ -318,6 +319,8 @@ export async function getHomepage(): Promise<Homepage | null> {
     eventsSectionSubtitle,
     eventsCtaText,
     eventsCtaUrl,
+    "greenhausCarouselImages": greenhausCarouselImages[].asset->url,
+    "yardCarouselImages": yardCarouselImages[].asset->url,
 
     // HOMA Section
     "homaBackgroundImageUrl": homaBackgroundImage.asset->url,
@@ -344,9 +347,8 @@ export async function getHomepage(): Promise<Homepage | null> {
     newsletterButtonText,
     newsletterDisclaimer,
 
-    // Map Section
+    // Map Section (uses embedded Google Maps iframe, not an image)
     "woodwallBreakImageUrl": woodwallBreakImage.asset->url,
-    "mapImageUrl": mapImage.asset->url,
     mapSectionTitle,
     mapSubtitle,
     nearbyAttractions,
@@ -363,6 +365,19 @@ export async function getHomepage(): Promise<Homepage | null> {
 // ============================================
 // EVENTS PAGE (Complete - all content editable)
 // ============================================
+export interface EventsTestimonial {
+  _key: string
+  quote: string
+  name: string
+}
+
+export interface EventsFAQ {
+  _key: string
+  question: string
+  answerShort: string
+  answerLong: string
+}
+
 export interface EventsPage {
   // Hero
   heroTitle: string
@@ -454,6 +469,17 @@ export interface EventsPage {
   inquiryEmail?: string
   inquiryPhone?: string
   bookingUrl?: string
+
+  // Testimonials
+  testimonials?: EventsTestimonial[]
+
+  // Visual Break
+  visualBreakImageUrl?: string
+
+  // FAQs
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: EventsFAQ[]
 }
 
 export async function getEventsPage(): Promise<EventsPage | null> {
@@ -547,7 +573,27 @@ export async function getEventsPage(): Promise<EventsPage | null> {
     // Contact
     inquiryEmail,
     inquiryPhone,
-    bookingUrl
+    bookingUrl,
+
+    // Testimonials
+    "testimonials": testimonials[]{
+      _key,
+      quote,
+      name
+    },
+
+    // Visual Break
+    "visualBreakImageUrl": visualBreakImage.asset->url,
+
+    // FAQs
+    faqSectionTitle,
+    faqSectionSubtitle,
+    "faqItems": faqItems[]{
+      _key,
+      question,
+      answerShort,
+      answerLong
+    }
   }`
   return client.fetch(query)
 }
@@ -555,6 +601,28 @@ export async function getEventsPage(): Promise<EventsPage | null> {
 // ============================================
 // ROOMS PAGE
 // ============================================
+export interface RoomsPageRoom {
+  _key: string
+  id: string
+  name: string
+  slug: string
+  category: 'suites' | 'junior' | 'family' | 'specialty'
+  description: string
+  features?: string[]
+  heroImageUrl?: string
+  galleryImages?: string[]
+  displayOrder?: number
+  isActive?: boolean
+}
+
+export interface RoomsPageFAQ {
+  _key: string
+  id?: string
+  question: string
+  answerShort: string
+  answerLong: string
+}
+
 export interface RoomsPage {
   // Hero
   heroTitle?: string
@@ -567,6 +635,8 @@ export interface RoomsPage {
   filterQueenLabel?: string
   filterFamilyLabel?: string
   filterCampDeckLabel?: string
+  // Rooms
+  rooms?: RoomsPageRoom[]
   // Room Blocks
   roomBlocksTitle?: string
   roomBlocksTagline?: string
@@ -577,6 +647,12 @@ export interface RoomsPage {
   roomBlocksCtaUrl?: string
   roomBlocksImage1Url?: string
   roomBlocksImage2Url?: string
+  // Visual Break
+  visualBreakImageUrl?: string
+  // FAQ
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: RoomsPageFAQ[]
   // SEO
   seoTitle?: string
   seoDescription?: string
@@ -584,15 +660,32 @@ export interface RoomsPage {
 
 export async function getRoomsPage(): Promise<RoomsPage | null> {
   const query = `*[_type == "roomsPage"][0] {
+    // Hero
     heroTitle,
     heroSubtitle,
     "heroImageUrl": heroImage.asset->url,
     "heroImages": heroImages[]{ "url": asset->url, alt },
+    // Filters
     filterAllLabel,
     filterKingLabel,
     filterQueenLabel,
     filterFamilyLabel,
     filterCampDeckLabel,
+    // Rooms
+    "rooms": rooms[isActive == true] | order(displayOrder asc) {
+      _key,
+      id,
+      name,
+      slug,
+      category,
+      description,
+      features,
+      "heroImageUrl": heroImage.asset->url,
+      "galleryImages": gallery[].asset->url,
+      displayOrder,
+      isActive
+    },
+    // Room Blocks
     roomBlocksTitle,
     roomBlocksTagline,
     roomBlocksDescription1,
@@ -602,6 +695,19 @@ export async function getRoomsPage(): Promise<RoomsPage | null> {
     roomBlocksCtaUrl,
     "roomBlocksImage1Url": roomBlocksImage1.asset->url,
     "roomBlocksImage2Url": roomBlocksImage2.asset->url,
+    // Visual Break
+    "visualBreakImageUrl": visualBreakImage.asset->url,
+    // FAQ
+    faqSectionTitle,
+    faqSectionSubtitle,
+    "faqItems": faqItems[]{
+      _key,
+      id,
+      question,
+      answerShort,
+      answerLong
+    },
+    // SEO
     seoTitle,
     seoDescription
   }`
@@ -668,6 +774,21 @@ export interface HomaPage {
   seatingSectionTitle?: string
   seatingDescription?: string
   seatingImages?: string[]
+  // FAQ
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: Array<{
+    question: string
+    answerShort: string
+    answerLong: string
+  }>
+  // Loyalty
+  loyaltyTitle?: string
+  loyaltyDescription?: string
+  loyaltyCtaText?: string
+  loyaltyCtaUrl?: string
+  loyaltyFineprint?: string
+  loyaltyImageUrl?: string
   // SEO
   seoTitle?: string
   seoDescription?: string
@@ -728,6 +849,15 @@ export async function getHomaPage(): Promise<HomaPage | null> {
     seatingSectionTitle,
     seatingDescription,
     "seatingImages": seatingImages[].asset->url,
+    faqSectionTitle,
+    faqSectionSubtitle,
+    faqItems,
+    loyaltyTitle,
+    loyaltyDescription,
+    loyaltyCtaText,
+    loyaltyCtaUrl,
+    loyaltyFineprint,
+    "loyaltyImageUrl": loyaltyImage.asset->url,
     seoTitle,
     seoDescription
   }`
@@ -944,6 +1074,20 @@ export async function getExplorePage(): Promise<ExplorePage | null> {
 // ============================================
 // GALLERY PAGE (Complete - all content editable)
 // ============================================
+export interface GalleryPageImage {
+  _key: string
+  imageUrl: string
+  alt?: string
+  category?: string
+}
+
+export interface GalleryPageFAQ {
+  _key: string
+  question: string
+  answerShort: string
+  answerLong: string
+}
+
 export interface GalleryPage {
   // Hero
   heroTitle?: string
@@ -959,6 +1103,13 @@ export interface GalleryPage {
   filterVenuesLabel?: string
   filterHomaLabel?: string
   filterOutdoorsLabel?: string
+  filterWeddingsLabel?: string
+  // Gallery Images
+  galleryImages?: GalleryPageImage[]
+  // FAQ
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: GalleryPageFAQ[]
   // SEO
   seoTitle?: string
   seoDescription?: string
@@ -988,6 +1139,23 @@ export async function getGalleryPage(): Promise<GalleryPage | null> {
     filterVenuesLabel,
     filterHomaLabel,
     filterOutdoorsLabel,
+    filterWeddingsLabel,
+    // Gallery Images
+    "galleryImages": galleryImages[] {
+      _key,
+      "imageUrl": image.asset->url,
+      alt,
+      category
+    },
+    // FAQ
+    faqSectionTitle,
+    faqSectionSubtitle,
+    faqItems[] {
+      _key,
+      question,
+      answerShort,
+      answerLong
+    },
     // SEO
     seoTitle,
     seoDescription

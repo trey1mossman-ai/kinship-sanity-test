@@ -11,7 +11,18 @@ interface FAQ {
   answer_long: string;
 }
 
-const galleryFaqs: FAQ[] = [
+interface GalleryFAQProps {
+  sectionTitle?: string;
+  sectionSubtitle?: string;
+  faqItems?: Array<{
+    _key: string;
+    question: string;
+    answerShort: string;
+    answerLong: string;
+  }>;
+}
+
+const defaultFaqs: FAQ[] = [
   {
     question: "What types of images are in the Kinship Landing gallery?",
     answer_short: "The gallery features guest rooms, event spaces, Homa Café + Bar, outdoor areas, weddings, and mountain views.",
@@ -54,9 +65,22 @@ const galleryFaqs: FAQ[] = [
   }
 ];
 
-export function GalleryFAQ() {
+export function GalleryFAQ({ sectionTitle, sectionSubtitle, faqItems }: GalleryFAQProps) {
   const [openItems, setOpenItems] = useState<Set<number>>(new Set());
   const [showAll, setShowAll] = useState(false);
+
+  // Use Sanity data with fallbacks
+  const title = sectionTitle || 'Gallery FAQs';
+  const subtitle = sectionSubtitle || 'Everything you need to know about our gallery and photography';
+
+  // Convert Sanity FAQ format to component format, or use defaults
+  const galleryFaqs: FAQ[] = faqItems && faqItems.length > 0
+    ? faqItems.map(item => ({
+        question: item.question,
+        answer_short: item.answerShort,
+        answer_long: item.answerLong,
+      }))
+    : defaultFaqs;
 
   // Show first 5 FAQs initially, or all if showAll is true
   const displayedFaqs = showAll ? galleryFaqs : galleryFaqs.slice(0, 5);
@@ -79,7 +103,7 @@ export function GalleryFAQ() {
         document.head.removeChild(existingScript);
       }
     };
-  }, []);
+  }, [galleryFaqs]);
 
   const toggleItem = (index: number) => {
     const newOpenItems = new Set(openItems);
@@ -109,7 +133,7 @@ export function GalleryFAQ() {
               color: KINSHIP_COLORS.greenDark,
             }}
           >
-            Gallery FAQs
+            {title}
           </h2>
           <p
             className="text-lg"
@@ -119,7 +143,7 @@ export function GalleryFAQ() {
               opacity: 0.8
             }}
           >
-            Everything you need to know about our gallery and photography
+            {subtitle}
           </p>
         </motion.div>
 

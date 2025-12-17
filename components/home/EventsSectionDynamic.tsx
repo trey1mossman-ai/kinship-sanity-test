@@ -11,6 +11,8 @@ interface EventsSectionDynamicProps {
   subtitle?: string;
   ctaText?: string;
   ctaUrl?: string;
+  greenhausCarouselImages?: string[];
+  yardCarouselImages?: string[];
 }
 
 // Fallback values (from current hardcoded text)
@@ -19,7 +21,14 @@ const fallbackSubtitle = 'Unique spaces for unforgettable events';
 const fallbackCtaText = 'Learn More';
 const fallbackCtaUrl = '/events';
 
-export function EventsSectionDynamic({ title, subtitle, ctaText, ctaUrl }: EventsSectionDynamicProps) {
+export function EventsSectionDynamic({
+  title,
+  subtitle,
+  ctaText,
+  ctaUrl,
+  greenhausCarouselImages,
+  yardCarouselImages
+}: EventsSectionDynamicProps) {
   // Use Sanity data if available, otherwise fallback to hardcoded
   const displayTitle = title || fallbackTitle;
   const displaySubtitle = subtitle || fallbackSubtitle;
@@ -41,7 +50,8 @@ export function EventsSectionDynamic({ title, subtitle, ctaText, ctaUrl }: Event
   // The Yard carousel state
   const [yardImageIndex, setYardImageIndex] = useState(0);
 
-  const greenhausImages = [
+  // Fallback GreenHaus images (from current hardcoded values)
+  const fallbackGreenhausImages = [
     '/images/events-page/Meetings:Retreats/Kinship-4G3A9437-1 (1).webp',
     '/images/events-page/Gatherings/0B1A0328-optimized.webp',
     '/images/events-page/GreenHaus/Greenhaus-SamStarrMedia (1).webp',
@@ -49,12 +59,17 @@ export function EventsSectionDynamic({ title, subtitle, ctaText, ctaUrl }: Event
     '/images/events-page/GreenHaus/Greenhaus-RichardSeldomridge.webp',
   ];
 
-  const yardImages = [
+  // Fallback Yard images (from current hardcoded values)
+  const fallbackYardImages = [
     '/images/events-page/The Yard/IMG_1494.webp',
     '/images/events-page/The Yard/DSC_6966.webp',
     '/images/events-page/The Yard/D85A8970.webp',
     '/images/events-page/The Yard/IMG_1487 (1).webp',
   ];
+
+  // Use Sanity data if available, otherwise fallback
+  const greenhausImages = greenhausCarouselImages?.length ? greenhausCarouselImages : fallbackGreenhausImages;
+  const yardImages = yardCarouselImages?.length ? yardCarouselImages : fallbackYardImages;
 
   // Auto-advance GreenHaus carousel every 5 seconds (slower, more premium feel)
   useEffect(() => {

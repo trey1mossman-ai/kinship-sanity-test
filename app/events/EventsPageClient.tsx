@@ -117,8 +117,8 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
   const roomBlocksImages = eventsData?.roomBlocksGallery?.length ? eventsData.roomBlocksGallery : FALLBACK_ROOMBLOCKS;
 
   // Visual break image (used between FAQ and Newsletter sections)
-  // @ts-ignore - visualBreakImage may not be in EventsPage type yet
-  const visualBreakImage = eventsData?.visualBreakImage || '/images/events-page/Meetings:Retreats/Kinship-4G3A9437-1 (1).webp';
+  // Visual break image from Sanity or fallback
+  const visualBreakImage = eventsData?.visualBreakImageUrl || '/images/events-page/Meetings:Retreats/Kinship-4G3A9437-1 (1).webp';
 
   const handleFilterChange = useCallback((filter: EventFilter) => {
     setActiveFilter(filter);
@@ -294,7 +294,7 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                     {heroSubtitle}
                   </p>
                 )}
-                <EventsTestimonials />
+                <EventsTestimonials testimonials={eventsData?.testimonials} />
               </motion.div>
             </div>
           </div>
@@ -809,7 +809,11 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
         )}
 
         {/* FAQ Section */}
-        <EventsFAQ />
+        <EventsFAQ
+          sectionTitle={eventsData?.faqSectionTitle}
+          sectionSubtitle={eventsData?.faqSectionSubtitle}
+          faqItems={eventsData?.faqItems}
+        />
 
         {/* Visual Break - Meeting Space Detail (Clickable) */}
         <Link

@@ -84,7 +84,7 @@ export function CommunityPageClient({ communityData }: CommunityPageClientProps)
       <section className="relative min-h-[85vh] md:min-h-screen overflow-hidden bg-kinship-sage">
         <div className="absolute inset-0">
           <Image
-            src="/images/Community Page/GetOutsideEvent6_26-SamStarrMedia (1).webp"
+            src={communityData?.heroImageUrl || "/images/Community Page/GetOutsideEvent6_26-SamStarrMedia (1).webp"}
             alt="Kinship Landing Community Events"
             fill
             className="object-cover"

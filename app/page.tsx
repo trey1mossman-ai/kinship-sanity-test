@@ -175,6 +175,8 @@ export default async function HomePage() {
           subtitle={homepageData?.eventsSectionSubtitle}
           ctaText={homepageData?.eventsCtaText}
           ctaUrl={homepageData?.eventsCtaUrl}
+          greenhausCarouselImages={homepageData?.greenhausCarouselImages}
+          yardCarouselImages={homepageData?.yardCarouselImages}
         />
 
         {/* 4. HOMA section */}

@@ -1,7 +1,16 @@
 import Image from 'next/image';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
 
-export function HomaLoyalty() {
+interface HomaLoyaltyProps {
+  title?: string;
+  description?: string;
+  ctaText?: string;
+  ctaUrl?: string;
+  fineprint?: string;
+  imageUrl?: string;
+}
+
+export function HomaLoyalty({ title, description, ctaText, ctaUrl, fineprint, imageUrl }: HomaLoyaltyProps) {
   return (
     <section className="section-spacing" style={{ backgroundColor: '#aec69a' }}>
       <div className="container">
@@ -17,7 +26,7 @@ export function HomaLoyalty() {
                   color: KINSHIP_COLORS.slate
                 }}
               >
-                HOMA Loyalty and Rewards
+                {title || "HOMA Loyalty and Rewards"}
               </h2>
 
               <p
@@ -28,12 +37,12 @@ export function HomaLoyalty() {
                   opacity: 0.9
                 }}
               >
-                Become a Homa Homie for FREE and get $5 right off the bat plus $0.10 per dollar spent towards future purchase, special deals, event invites, free birthday goodies, and more.
+                {description || "Become a Homa Homie for FREE and get $5 right off the bat plus $0.10 per dollar spent towards future purchase, special deals, event invites, free birthday goodies, and more."}
               </p>
 
               {/* CTA Button */}
               <a
-                href="https://www.toasttab.com/kinship-landing-homa-415-south-nevada-avenue/rewardsSignup"
+                href={ctaUrl || "https://www.toasttab.com/kinship-landing-homa-415-south-nevada-avenue/rewardsSignup"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-8 py-3 font-semibold hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-kinship-evergreen focus:ring-offset-2 focus:ring-offset-[#aec69a] transition-all duration-200 min-h-[48px]"
@@ -50,7 +59,7 @@ export function HomaLoyalty() {
                   e.currentTarget.style.backgroundColor = KINSHIP_COLORS.greenDark;
                 }}
               >
-                Join HOMA Rewards
+                {ctaText || "Join HOMA Rewards"}
               </a>
 
               <p
@@ -61,15 +70,15 @@ export function HomaLoyalty() {
                   opacity: 0.6
                 }}
               >
-                Sign up takes less than a minute. Start earning rewards today!
+                {fineprint || "Sign up takes less than a minute. Start earning rewards today!"}
               </p>
             </div>
 
             {/* Right: Image */}
             <div className="relative h-[300px] md:h-[400px] overflow-hidden rounded-lg shadow-xl">
               <Image
-                src="/images/HOMA Page/homa 8.13.24-6 (1).webp"
-                alt="HOMA Homies Loyalty Rewards"
+                src={imageUrl || "/images/HOMA Page/homa 8.13.24-6 (1).webp"}
+                alt={title || "HOMA Homies Loyalty Rewards"}
                 fill
                 className="object-cover"
                 quality={75}

@@ -1,4 +1,3 @@
-import { getRoomsFromSanity } from '@/lib/data/rooms-sanity'
 import { getRoomsPage } from '@/lib/sanity/queries'
 import RoomsPageClient from './RoomsPageClient'
 
@@ -6,11 +5,8 @@ import RoomsPageClient from './RoomsPageClient'
 export const revalidate = 60
 
 export default async function RoomsPage() {
-  // Fetch rooms and page content from Sanity at build time / on request
-  const [roomTeasers, roomsPageData] = await Promise.all([
-    getRoomsFromSanity(),
-    getRoomsPage()
-  ])
+  // Fetch rooms page data (including rooms array) from Sanity
+  const roomsPageData = await getRoomsPage()
 
-  return <RoomsPageClient roomTeasers={roomTeasers} roomsPageData={roomsPageData} />
+  return <RoomsPageClient roomsPageData={roomsPageData} />
 }

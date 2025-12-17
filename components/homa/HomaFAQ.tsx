@@ -11,7 +11,17 @@ interface FAQ {
   answer_long: string;
 }
 
-const homaFaqs: FAQ[] = [
+interface HomaFAQProps {
+  sectionTitle?: string;
+  sectionSubtitle?: string;
+  faqItems?: Array<{
+    question: string;
+    answerShort: string;
+    answerLong: string;
+  }>;
+}
+
+const defaultHomaFaqs: FAQ[] = [
   {
     question: "What are the hours for Homa Café + Bar?",
     answer_short: "We're open daily from 7:00 AM to 9:00 PM, serving breakfast, lunch, and dinner.",
@@ -74,19 +84,26 @@ const homaFaqs: FAQ[] = [
   }
 ];
 
-export function HomaFAQ() {
+export default function HomaFAQ({ sectionTitle, sectionSubtitle, faqItems }: HomaFAQProps) {
   const [openItems, setOpenItems] = useState<Set<number>>(new Set());
   const [showAll, setShowAll] = useState(false);
 
+  // Use Sanity data or fallback to default FAQs
+  const faqs = faqItems?.length ? faqItems.map(item => ({
+    question: item.question,
+    answer_short: item.answerShort,
+    answer_long: item.answerLong,
+  })) : defaultHomaFaqs;
+
   // Show first 5 FAQs initially, or all if showAll is true
-  const displayedFaqs = showAll ? homaFaqs : homaFaqs.slice(0, 5);
+  const displayedFaqs = showAll ? faqs : faqs.slice(0, 5);
 
   // Inject JSON-LD schema for SEO/AEO
   useEffect(() => {
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.text = JSON.stringify(buildFAQSchema(
-      homaFaqs,
+      faqs,
       'https://kinshiplanding.com/homa',
       'Homa Café + Bar FAQs'
     ));
@@ -99,7 +116,7 @@ export function HomaFAQ() {
         document.head.removeChild(existingScript);
       }
     };
-  }, []);
+  }, [faqs]);
 
   const toggleItem = (index: number) => {
     const newOpenItems = new Set(openItems);
@@ -129,7 +146,7 @@ export function HomaFAQ() {
               color: KINSHIP_COLORS.greenDark,
             }}
           >
-            Homa FAQs
+            {sectionTitle || "Homa FAQs"}
           </h2>
           <p
             className="text-lg"
@@ -139,7 +156,7 @@ export function HomaFAQ() {
               opacity: 0.8
             }}
           >
-            Everything you need to know about Homa Café + Bar
+            {sectionSubtitle || "Everything you need to know about Homa Café + Bar"}
           </p>
         </motion.div>
 
@@ -256,7 +273,7 @@ export function HomaFAQ() {
         </div>
 
         {/* Show More/Less Button - Blocky Design */}
-        {homaFaqs.length > 5 && (
+        {faqs.length > 5 && (
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -281,7 +298,7 @@ export function HomaFAQ() {
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              {showAll ? 'Show Less' : `Show All ${homaFaqs.length} Questions`}
+              {showAll ? 'Show Less' : `Show All ${faqs.length} Questions`}
               <svg
                 className={`w-5 h-5 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`}
                 fill="none"

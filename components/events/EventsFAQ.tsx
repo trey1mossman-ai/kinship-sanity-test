@@ -11,7 +11,18 @@ interface FAQ {
   answer_long: string;
 }
 
-const eventsFaqs: FAQ[] = [
+interface EventsFAQProps {
+  sectionTitle?: string;
+  sectionSubtitle?: string;
+  faqItems?: Array<{
+    _key: string;
+    question: string;
+    answerShort: string;
+    answerLong: string;
+  }>;
+}
+
+const defaultEventsFaqs: FAQ[] = [
   {
     question: "What event venues does Kinship Landing offer?",
     answer_short: "We have four unique spaces: The Yard (200 guests), The Greenhaus (50-70), Conference Room (2-10), and The Camp Deck (10-20).",
@@ -74,9 +85,21 @@ const eventsFaqs: FAQ[] = [
   }
 ];
 
-export function EventsFAQ() {
+export function EventsFAQ({ sectionTitle, sectionSubtitle, faqItems }: EventsFAQProps) {
   const [openItems, setOpenItems] = useState<Set<number>>(new Set());
   const [showAll, setShowAll] = useState(false);
+
+  // Use Sanity data if available, otherwise use defaults
+  const title = sectionTitle || 'Events FAQs';
+  const subtitle = sectionSubtitle || 'Everything you need to know about hosting events at Kinship';
+
+  const eventsFaqs: FAQ[] = faqItems && faqItems.length > 0
+    ? faqItems.map(item => ({
+        question: item.question,
+        answer_short: item.answerShort,
+        answer_long: item.answerLong,
+      }))
+    : defaultEventsFaqs;
 
   // Show first 5 FAQs initially, or all if showAll is true
   const displayedFaqs = showAll ? eventsFaqs : eventsFaqs.slice(0, 5);
@@ -129,7 +152,7 @@ export function EventsFAQ() {
               color: KINSHIP_COLORS.greenDark,
             }}
           >
-            Events FAQs
+            {title}
           </h2>
           <p
             className="text-lg"
@@ -139,7 +162,7 @@ export function EventsFAQ() {
               opacity: 0.8
             }}
           >
-            Everything you need to know about hosting events at Kinship
+            {subtitle}
           </p>
         </motion.div>
 

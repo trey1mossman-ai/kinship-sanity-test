@@ -17,7 +17,7 @@ import { HomaTestimonials } from '@/components/homa/HomaTestimonials';
 const HomaMenuAccordion = dynamic(() => import('@/components/homa/HomaMenuAccordion').then(mod => ({ default: mod.HomaMenuAccordion })));
 const HomaReviews = dynamic(() => import('@/components/homa/HomaReviews').then(mod => ({ default: mod.HomaReviews })));
 const HomaLoyalty = dynamic(() => import('@/components/homa/HomaLoyalty').then(mod => ({ default: mod.HomaLoyalty })));
-const HomaFAQ = dynamic(() => import('@/components/homa/HomaFAQ').then(mod => ({ default: mod.HomaFAQ })));
+const HomaFAQ = dynamic(() => import('@/components/homa/HomaFAQ'));
 const Footer = dynamic(() => import('@/components/Footer').then(mod => ({ default: mod.Footer })));
 const ScrollTop = dynamic(() => import('@/components/ScrollTop').then(mod => ({ default: mod.ScrollTop })));
 const CallToBook = dynamic(() => import('@/components/CallToBook').then(mod => ({ default: mod.CallToBook })));
@@ -48,6 +48,13 @@ const FIREPLACE_IMAGES_FALLBACK = [
 interface HomaPageClientProps {
   homaData: HomaPageData | null;
 }
+
+const defaultHappyHourSpecials = [
+  { price: "$4", item: "Draft Beer" },
+  { price: "$5", item: "House Glass of Wine" },
+  { price: "$9", item: "Signature Cocktail or Mocktail" },
+  { price: "Half Price", item: "Cauli Pop or Fries" }
+];
 
 export function HomaPageClient({ homaData }: HomaPageClientProps) {
   const [heroImageIndex, setHeroImageIndex] = useState(0);
@@ -191,7 +198,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                   fontSize: 'clamp(32px, 5.5vw, 68px)',
                 }}
               >
-                Food made for friends
+                {homaData?.heroTitle || "Food made for friends"}
               </h1>
 
               {/* Rotating Testimonials with SEO Subtext */}
@@ -200,17 +207,17 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
               {/* CTA Buttons - Responsive sizing */}
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-2">
                 <a
-                  href="#menu"
+                  href={homaData?.heroCtaMenuUrl || "#menu"}
                   className="inline-flex items-center justify-center px-6 py-2.5 sm:px-8 sm:py-3 text-base sm:text-lg font-semibold transition-all duration-300 hover:scale-105 active:scale-95 shadow-xl hover:shadow-2xl"
                   style={{
                     backgroundColor: KINSHIP_COLORS.greenDark,
                     color: KINSHIP_COLORS.white
                   }}
                 >
-                  View Menu
+                  {homaData?.heroCtaMenuText || "View Menu"}
                 </a>
                 <a
-                  href="#promos"
+                  href={homaData?.heroCtaPromosUrl || "#promos"}
                   className="inline-flex items-center justify-center px-6 py-2.5 sm:px-8 sm:py-3 text-base sm:text-lg font-semibold transition-all duration-300 hover:scale-105 active:scale-95 border-2 shadow-xl hover:shadow-2xl"
                   style={{
                     backgroundColor: KINSHIP_COLORS.white,
@@ -218,7 +225,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                     borderColor: KINSHIP_COLORS.white
                   }}
                 >
-                  View Promos
+                  {homaData?.heroCtaPromosText || "View Promos"}
                 </a>
               </div>
             </div>
@@ -239,7 +246,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                   opacity: 0.9
                 }}
               >
-                HOMA, food for the people! Serving hearty, healthy, and delicious dishes inspired by foods we have loved from traveling around the world. Brought together with a little fresh Colorado style, each dish is crafted with the hungry and the healthy in mind.
+                {homaData?.aboutParagraph1 || "HOMA, food for the people! Serving hearty, healthy, and delicious dishes inspired by foods we have loved from traveling around the world. Brought together with a little fresh Colorado style, each dish is crafted with the hungry and the healthy in mind."}
               </p>
               <p
                 className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-6"
@@ -249,7 +256,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                   opacity: 0.9
                 }}
               >
-                Our house made, freshly prepared, and locally sourced ingredients showcase local faves and new dishes sure to delight. Featuring nutrient rich grain bowls or salads, stacked sandwiches with housemade bread, the perfect breakfast, small bites, and signature hand pies, you'll love every yummy bite.
+                {homaData?.aboutParagraph2 || "Our house made, freshly prepared, and locally sourced ingredients showcase local faves and new dishes sure to delight. Featuring nutrient rich grain bowls or salads, stacked sandwiches with housemade bread, the perfect breakfast, small bites, and signature hand pies, you'll love every yummy bite."}
               </p>
               <p
                 className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
@@ -259,7 +266,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                   opacity: 0.9
                 }}
               >
-                Paired with our full Bar, coffee offerings, and good vibes, you can't go wrong!
+                {homaData?.aboutParagraph3 || "Paired with our full Bar, coffee offerings, and good vibes, you can't go wrong!"}
               </p>
             </div>
           </div>
@@ -276,7 +283,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                 color: KINSHIP_COLORS.greenDark
               }}
             >
-              Specials & Events
+              {homaData?.specialsSectionTitle || "Specials & Events"}
             </h2>
 
             {/* Three Column Grid */}
@@ -313,7 +320,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                         clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                       }}
                     >
-                      Happy Hour
+                      {homaData?.happyHourBadge || "Happy Hour"}
                     </span>
 
                     {/* Title */}
@@ -324,7 +331,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                         color: KINSHIP_COLORS.greenDark
                       }}
                     >
-                      The Happiest Hour
+                      {homaData?.happyHourTitle || "The Happiest Hour"}
                     </h3>
 
                     {/* Time */}
@@ -335,51 +342,24 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                         color: KINSHIP_COLORS.green
                       }}
                     >
-                      3 - 6pm, Monday - Friday
+                      {homaData?.happyHourTime || "3 - 6pm, Monday - Friday"}
                     </p>
 
                     {/* Specials List */}
                     <div className="space-y-2 pt-2">
-                      <p
-                        className="text-base"
-                        style={{
-                          fontFamily: KINSHIP_FONTS.body,
-                          color: KINSHIP_COLORS.greenDark,
-                          opacity: 0.9
-                        }}
-                      >
-                        <strong>$4</strong> Draft Beer
-                      </p>
-                      <p
-                        className="text-base"
-                        style={{
-                          fontFamily: KINSHIP_FONTS.body,
-                          color: KINSHIP_COLORS.greenDark,
-                          opacity: 0.9
-                        }}
-                      >
-                        <strong>$5</strong> House Glass of Wine
-                      </p>
-                      <p
-                        className="text-base"
-                        style={{
-                          fontFamily: KINSHIP_FONTS.body,
-                          color: KINSHIP_COLORS.greenDark,
-                          opacity: 0.9
-                        }}
-                      >
-                        <strong>$9</strong> Signature Cocktail or Mocktail
-                      </p>
-                      <p
-                        className="text-base"
-                        style={{
-                          fontFamily: KINSHIP_FONTS.body,
-                          color: KINSHIP_COLORS.greenDark,
-                          opacity: 0.9
-                        }}
-                      >
-                        <strong>Half Price</strong> Cauli Pop or Fries
-                      </p>
+                      {(homaData?.happyHourSpecials || defaultHappyHourSpecials).map((special, index) => (
+                        <p
+                          key={index}
+                          className="text-base"
+                          style={{
+                            fontFamily: KINSHIP_FONTS.body,
+                            color: KINSHIP_COLORS.greenDark,
+                            opacity: 0.9
+                          }}
+                        >
+                          <strong>{special.price}</strong> {special.item}
+                        </p>
+                      ))}
                     </div>
                   </div>
 
@@ -393,7 +373,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                       clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                     }}
                   >
-                    View Hours
+                    {homaData?.happyHourCtaText || "View Hours"}
                   </a>
                 </div>
               </div>
@@ -429,7 +409,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                         clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                       }}
                     >
-                      Sundays
+                      {homaData?.brunchBadge || "Sundays"}
                     </span>
 
                     {/* Title */}
@@ -440,7 +420,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                         color: KINSHIP_COLORS.greenDark
                       }}
                     >
-                      Brunch. Every Sunday.
+                      {homaData?.brunchTitle || "Brunch. Every Sunday."}
                     </h3>
 
                     {/* Time */}
@@ -451,7 +431,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                         color: KINSHIP_COLORS.green
                       }}
                     >
-                      8:00am - 2:00pm
+                      {homaData?.brunchTime || "8:00am - 2:00pm"}
                     </p>
 
                     {/* Description */}
@@ -463,7 +443,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                         opacity: 0.9
                       }}
                     >
-                      Created by our chefs featuring the best ingredients the season has to offer!
+                      {homaData?.brunchDescription || "Created by our chefs featuring the best ingredients the season has to offer!"}
                     </p>
                   </div>
 
@@ -479,7 +459,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                       clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                     }}
                   >
-                    View Brunch Menu
+                    {homaData?.brunchCtaText || "View Brunch Menu"}
                   </a>
                 </div>
               </div>
@@ -515,7 +495,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                         clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                       }}
                     >
-                      Community
+                      {homaData?.eventsBadge || "Community"}
                     </span>
 
                     {/* Title */}
@@ -526,7 +506,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                         color: KINSHIP_COLORS.greenDark
                       }}
                     >
-                      Upcoming Events
+                      {homaData?.eventsTitle || "Upcoming Events"}
                     </h3>
 
                     {/* Description */}
@@ -538,13 +518,13 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                         opacity: 0.9
                       }}
                     >
-                      Find cool stuff to do in Colorado Springs. Meet like-minded folks. Learn from experts.
+                      {homaData?.eventsDescription || "Find cool stuff to do in Colorado Springs. Meet like-minded folks. Learn from experts."}
                     </p>
                   </div>
 
                   {/* CTA Button - Anchored to bottom */}
                   <a
-                    href="/community"
+                    href={homaData?.eventsCtaUrl || "/community"}
                     className="inline-flex items-center justify-center min-h-[48px] w-full px-6 py-3 text-base font-semibold transition-all duration-300 hover:scale-105 active:scale-95 mt-6"
                     style={{
                       backgroundColor: KINSHIP_COLORS.greenDark,
@@ -552,7 +532,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                       clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                     }}
                   >
-                    View Events at Kinship
+                    {homaData?.eventsCtaText || "View Events at Kinship"}
                   </a>
                 </div>
               </div>
@@ -711,7 +691,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                       color: KINSHIP_COLORS.greenDark
                     }}
                   >
-                    Café Fireplace
+                    {homaData?.seatingSectionTitle || "Café Fireplace"}
                   </h2>
                 </div>
 
@@ -723,7 +703,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                     opacity: 0.9
                   }}
                 >
-                  A cozy, semi-private space with mixed seating for up to 20 guests. Perfect for intimate gatherings, small meetings, or casual celebrations. Order from Homa Café or book full catering to make your event complete.
+                  {homaData?.seatingDescription || "A cozy, semi-private space with mixed seating for up to 20 guests. Perfect for intimate gatherings, small meetings, or casual celebrations. Order from Homa Café or book full catering to make your event complete."}
                 </p>
 
                 {/* Features */}
@@ -817,10 +797,21 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
         <HomaReviews />
 
         {/* HOMA Loyalty & Rewards */}
-        <HomaLoyalty />
+        <HomaLoyalty
+          title={homaData?.loyaltyTitle}
+          description={homaData?.loyaltyDescription}
+          ctaText={homaData?.loyaltyCtaText}
+          ctaUrl={homaData?.loyaltyCtaUrl}
+          fineprint={homaData?.loyaltyFineprint}
+          imageUrl={homaData?.loyaltyImageUrl}
+        />
 
         {/* FAQ */}
-        <HomaFAQ />
+        <HomaFAQ
+          sectionTitle={homaData?.faqSectionTitle}
+          sectionSubtitle={homaData?.faqSectionSubtitle}
+          faqItems={homaData?.faqItems}
+        />
       </main>
 
       <Footer variant="homa" />
