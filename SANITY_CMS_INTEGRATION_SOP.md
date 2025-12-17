@@ -912,6 +912,93 @@ SANITY_API_TOKEN=$SANITY_API_TOKEN node scripts/audit-all-urls.js
 
 ---
 
+### Lesson 12: Migrate Data BEFORE Changing Schema Field Types
+
+**Problem:** Changing a schema field from `string`/`text` to `richText` (Portable Text) breaks Sanity Studio with "Invalid property value" errors.
+
+**Cause:** Existing data is still plain strings, but schema now expects Portable Text arrays.
+
+**Impact:** Sanity Studio becomes unusable for that document until data is migrated.
+
+**The Rule:** When changing field types, ALWAYS migrate data BEFORE deploying schema changes.
+
+**Correct Order:**
+```
+1. CREATE migration script
+2. RUN migration script to convert existing data
+3. VERIFY data is in correct format in Sanity Vision
+4. THEN deploy schema changes: npx sanity deploy
+5. THEN update Next.js components
+```
+
+**WRONG Order (causes errors):**
+```
+1. Change schema ❌
+2. Deploy schema ❌
+3. Now Sanity Studio shows errors!
+```
+
+**Migration Script Example:**
+```javascript
+#!/usr/bin/env node
+const { createClient } = require('@sanity/client');
+
+const client = createClient({
+  projectId: 'u2qzrboc',
+  dataset: 'production',
+  apiVersion: '2024-01-01',
+  token: process.env.SANITY_API_TOKEN,  // Must have Editor permissions
+  useCdn: false,
+});
+
+// Convert plain text to Portable Text format
+function textToPortableText(text) {
+  if (!text || typeof text !== 'string') return null;
+  const paragraphs = text.split(/\n\n+/).filter(p => p.trim());
+  return paragraphs.map((paragraph, index) => ({
+    _type: 'block',
+    _key: `block-${Date.now()}-${index}`,
+    style: 'normal',
+    markDefs: [],
+    children: [{
+      _type: 'span',
+      _key: `span-${Date.now()}-${index}`,
+      text: paragraph.trim(),
+      marks: [],
+    }],
+  }));
+}
+
+async function migrate() {
+  // Fetch document
+  const doc = await client.fetch(`*[_type == "myDocument"][0]`);
+
+  // Convert field if it's a string
+  if (typeof doc.myField === 'string') {
+    const portableText = textToPortableText(doc.myField);
+    await client.patch(doc._id).set({ myField: portableText }).commit();
+    console.log('✅ Migration complete');
+  }
+}
+
+migrate().catch(console.error);
+```
+
+**API Token Location:**
+- Stored in `/sanity-test-sandbox/.env.local`
+- Also available in `/sanity-hostinger-test/.env.local`
+- Token needs Editor permissions for data writes
+
+**Prevention Checklist:**
+- [ ] Plan migration script BEFORE changing schema
+- [ ] Test migration on drafts first if possible
+- [ ] Run migration script
+- [ ] Verify data in Sanity Vision query
+- [ ] THEN deploy schema changes
+- [ ] THEN update frontend components
+
+---
+
 ## DEPLOYMENT
 
 ### CRITICAL: Use GitHub for Deployment
