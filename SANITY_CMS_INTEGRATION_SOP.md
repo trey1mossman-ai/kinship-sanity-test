@@ -873,3 +873,82 @@ await client.patch('documentId').set({ events: eventsWithImages }).commit();
 - Array items need `_key` for Sanity to track them
 - Image fields in arrays use same `{ _type: 'image', asset: { _ref } }` structure
 - Upload all images before building the array to ensure IDs are available
+
+---
+
+### Lesson 11: NEVER Make Up URLs - Use Ground Truth Only
+
+**Problem:** Seed scripts contained made-up URLs like `https://www.tripleseat.com/kinship-landing` instead of the actual booking URL.
+
+**Impact:** CTA buttons linked to non-existent pages, breaking user experience.
+
+**Root Cause:** URLs were guessed based on field names instead of extracted from component fallbacks.
+
+**CORRECT URL:** `https://kinshiplanding.tripleseat.com/booking_request/42351`
+
+**The Rule:** URLs MUST come from component fallback values, just like images.
+
+**How to Find Correct URLs:**
+
+```typescript
+// In EventsPageClient.tsx, search for the fallback:
+const bookingUrl = pageData?.gatheringsCtaUrl || 'https://kinshiplanding.tripleseat.com/booking_request/42351';
+//                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//                                                THIS is the correct URL to seed
+```
+
+**URL Audit Script:**
+```bash
+# Run to audit all URLs across Sanity documents
+SANITY_API_TOKEN=$SANITY_API_TOKEN node scripts/audit-all-urls.js
+```
+
+**Prevention Checklist:**
+- [ ] NEVER guess or make up URLs
+- [ ] ALWAYS search component for the fallback value
+- [ ] External URLs come from the codebase, not assumptions
+- [ ] Run URL audit script after seeding
+- [ ] Verify URLs in Sanity Studio before deployment
+
+---
+
+## DEPLOYMENT
+
+### CRITICAL: Use GitHub for Deployment
+
+**DO NOT USE:**
+- FTP
+- Manual file uploads
+- Hostinger File Manager
+
+### Deployment Workflow
+
+**Step 1: Deploy Sanity Schema (if changed)**
+```bash
+cd "/Volumes/Trey's Macbook TB/Kinship Landing/boutique-hotel/sanity-test-sandbox"
+npx sanity deploy
+```
+
+**Step 2: Build and Push to GitHub**
+```bash
+cd "/Volumes/Trey's Macbook TB/Kinship Landing/boutique-hotel/sanity-hostinger-test"
+npm run build
+git add -A
+git commit -m "feat: Description of changes"
+git push origin main
+```
+
+**Step 3: Verify Deployment**
+- Check live site for changes
+- Verify all pages render correctly
+- Test CTA buttons and links
+
+### Quick Reference
+
+| Action | Command |
+|--------|---------|
+| Deploy Sanity Studio | `cd sanity-test-sandbox && npx sanity deploy` |
+| Build website | `npm run build` |
+| Push to GitHub | `git add -A && git commit -m "msg" && git push origin main` |
+
+For complete deployment instructions, see **DEPLOYMENT_SOP.md**
