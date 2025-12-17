@@ -4,7 +4,8 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
-import { OffersPage } from '@/lib/sanity/queries';
+import { OffersPage, PortableTextBlock } from '@/lib/sanity/queries';
+import { RichTextRenderer, textToPortableText } from '@/components/ui/RichTextRenderer';
 
 // Critical above-fold components
 import { HeaderNav } from '@/components/layout/HeaderNav';
@@ -30,8 +31,18 @@ const KINSHIP_FONTS = {
   body: '"europa", "Hind", system-ui, sans-serif'
 };
 
+// Fallback intro text (converted to Portable Text format)
+const fallbackIntroText = 'Take advantage of our limited-time offers and experience outrageous hospitality at special rates. Click any offer to view full details.';
+
 // Fallback offers data (used when Sanity data is not available)
-const fallbackOffers = [
+const fallbackOffers: Array<{
+  _key: string;
+  title: string;
+  description: PortableTextBlock[] | string;
+  imageUrl: string;
+  alt: string;
+  bookingUrl: string;
+}> = [
   {
     _key: 'nye-offer',
     title: 'Ring in the New Year',
@@ -62,8 +73,12 @@ export default function OffersPageClient({ data }: OffersPageClientProps) {
   const heroSubtitle = data?.heroSubtitle || 'Discover exclusive deals and packages for your Colorado Springs adventure';
   const heroImageUrl = data?.heroImageUrl || '/images/Offers/aligarciaphotography-72.webp';
   const introTitle = data?.introTitle || 'Current Promotions';
-  const introText = data?.introText || 'Take advantage of our limited-time offers and experience outrageous hospitality at special rates. Click any offer to view full details.';
   const introBadge = data?.introBadge || 'Save on Your Stay';
+
+  // Handle intro text - could be rich text (Portable Text) or plain string fallback
+  const introTextContent = data?.introText && data.introText.length > 0
+    ? data.introText
+    : textToPortableText(fallbackIntroText);
 
   // Use Sanity offers or fallback - only use Sanity data if offers have images
   const sanityOffersHaveImages = data?.offers?.some(offer => offer.imageUrl);
@@ -140,16 +155,16 @@ export default function OffersPageClient({ data }: OffersPageClientProps) {
             >
               {introTitle}
             </h2>
-            <p
-              className="text-base sm:text-lg md:text-xl leading-relaxed"
+            <div
+              className="text-base sm:text-lg md:text-xl leading-relaxed [&_p]:mb-0"
               style={{
                 fontFamily: KINSHIP_FONTS.body,
                 color: KINSHIP_COLORS.greenDark,
                 opacity: 0.85
               }}
             >
-              {introText}
-            </p>
+              <RichTextRenderer value={introTextContent} />
+            </div>
           </div>
         </div>
       </section>
@@ -189,12 +204,17 @@ export default function OffersPageClient({ data }: OffersPageClientProps) {
                       {offer.title}
                     </h2>
                     {offer.description && (
-                      <p
-                        className="text-kinship-text/80 text-base sm:text-lg leading-relaxed"
+                      <div
+                        className="text-kinship-text/80 text-base sm:text-lg leading-relaxed [&_p]:mb-2 [&_p:last-child]:mb-0"
                         style={{ fontFamily: KINSHIP_FONTS.body }}
                       >
-                        {offer.description}
-                      </p>
+                        {/* Handle both rich text (Portable Text) and plain string fallback */}
+                        {Array.isArray(offer.description) ? (
+                          <RichTextRenderer value={offer.description} />
+                        ) : (
+                          <RichTextRenderer value={textToPortableText(offer.description)} />
+                        )}
+                      </div>
                     )}
                   </div>
 

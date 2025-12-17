@@ -1254,12 +1254,33 @@ export async function getJobPostings(): Promise<JobPosting[]> {
 // ============================================
 // OFFERS PAGE (Complete - all content editable including images)
 // ============================================
+
+// Portable Text block type (for rich text fields)
+export interface PortableTextBlock {
+  _type: string
+  _key?: string
+  children?: Array<{
+    _type: string
+    _key?: string
+    text?: string
+    marks?: string[]
+  }>
+  style?: string
+  listItem?: string
+  markDefs?: Array<{
+    _type: string
+    _key: string
+    href?: string
+    openInNewTab?: boolean
+  }>
+}
+
 export interface OffersPageOffer {
   _key: string
   title: string
   imageUrl?: string
   alt?: string
-  description?: string
+  description?: PortableTextBlock[]  // Rich text (Portable Text array)
   bookingUrl?: string
   isActive?: boolean
 }
@@ -1272,7 +1293,7 @@ export interface OffersPage {
   // Introduction
   introBadge?: string
   introTitle?: string
-  introText?: string
+  introText?: PortableTextBlock[]  // Rich text (Portable Text array)
   // Offers array with images
   offers?: OffersPageOffer[]
   // SEO
