@@ -1083,6 +1083,24 @@ const fallback = 'Default description text...';
 - Manual file uploads
 - Hostinger File Manager
 
+### CRITICAL: Documentation Files Stay Local
+
+**DO NOT DEPLOY** these files to production - they are for local development reference only:
+
+| File | Purpose |
+|------|---------|
+| `PROGRESS.md` | Session handoffs, current state |
+| `SANITY_CMS_INTEGRATION_SOP.md` | Development procedures |
+| `RICH_TEXT_MIGRATION_PLAYBOOK.md` | Migration guide |
+| `DEPLOYMENT_SOP.md` | Deployment instructions |
+| `DECISIONS.md` | Architectural decisions |
+| `*.md` in root (except README) | All documentation |
+| `scripts/*.js` | Migration and utility scripts |
+
+**Why:** These files contain internal development context, API token references, and workflow documentation that shouldn't be exposed on the production website.
+
+**How to Exclude:** These files are tracked in git for version control but should NOT be included in the production build output. The Next.js build naturally excludes `.md` files and `/scripts` from the output.
+
 ### Deployment Workflow
 
 **Step 1: Deploy Sanity Schema (if changed)**
