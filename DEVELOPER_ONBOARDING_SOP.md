@@ -396,3 +396,37 @@ Before your first commit, verify you understand:
 8. **Client requirements are sacred** - They drive business value
 
 **Welcome to the Kinship Landing development team! 🎉**
+
+---
+
+## 🔍 Source of Truth for Content Verification
+
+### CRITICAL: Use Local Files, NOT Web Searches
+
+When verifying existing website content (copy, settings, URLs, etc.):
+
+1. **NEVER use web searches or WebFetch** to check what the live site says
+2. **ALWAYS check the local production files first**:
+   - `KINSHIP_LIVE_PRODUCTION/` - Current production build
+   - `sanity-hostinger-test/out/` - Latest exported build (if exists)
+
+### Why This Matters
+- The live website may not be updated yet
+- Web searches can return cached or outdated content
+- Local files are the source of truth for what SHOULD be deployed
+- Avoids wasted time debugging non-issues
+
+### Example: Checking Footer Copyright
+```bash
+# ✅ CORRECT: Check local production files
+grep -o '©.*reserved' KINSHIP_LIVE_PRODUCTION/index.html
+
+# ❌ WRONG: Using WebFetch to check live site
+# The live site may show old content if not deployed yet
+```
+
+### File Priority Order
+1. **`KINSHIP_LIVE_PRODUCTION/`** - What's ready for deployment
+2. **`sanity-hostinger-test/out/`** - Latest build output
+3. **Sanity Studio** - For CMS-managed content
+4. **Component source files** - For hardcoded fallbacks
