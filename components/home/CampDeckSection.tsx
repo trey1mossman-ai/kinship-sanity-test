@@ -4,12 +4,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { RichTextRenderer } from '@/components/ui/RichTextRenderer';
+import type { PortableTextBlock } from '@portabletext/types';
 
 // Props interface for Sanity data
 interface CampDeckSectionProps {
   sanityData?: {
     name?: string;
-    description?: string;
+    description?: string | PortableTextBlock[];
     heroImage?: string;
     gallery?: string[];
     capacity?: { seated?: number; standing?: number };
@@ -31,7 +33,8 @@ export function CampDeckSection({ sanityData }: CampDeckSectionProps) {
 
   // Use Sanity data with fallbacks
   const venueName = sanityData?.name || 'Camp Deck';
-  const venueDescription = sanityData?.description || 'A truly unique overnight experience our outdoor camping deck offers mountain views, private restroom access, and hammock hooks for the ultimate urban camping adventure. Flat turf camping area perfect for bringing your own tent and sleeping gear while staying in the heart of downtown Colorado Springs.';
+  const venueDescription = sanityData?.description;
+  const venueDescriptionFallback = 'A truly unique overnight experience our outdoor camping deck offers mountain views, private restroom access, and hammock hooks for the ultimate urban camping adventure. Flat turf camping area perfect for bringing your own tent and sleeping gear while staying in the heart of downtown Colorado Springs.';
 
   // Use Sanity gallery if available, otherwise fallback
   const galleryImages = (sanityData?.gallery && sanityData.gallery.length > 0)
@@ -77,12 +80,16 @@ export function CampDeckSection({ sanityData }: CampDeckSectionProps) {
               {venueName}
             </h2>
 
-            <p
+            <div
               className="text-sm sm:text-base md:text-lg leading-relaxed"
               style={{ fontFamily: '"europa", "Hind", system-ui, sans-serif', color: '#667C58', opacity: 0.9 }}
             >
-              {venueDescription}
-            </p>
+              {Array.isArray(venueDescription) ? (
+                <RichTextRenderer value={venueDescription} />
+              ) : (
+                <p>{venueDescription || venueDescriptionFallback}</p>
+              )}
+            </div>
 
             {/* Features */}
             <div className="space-y-2 sm:space-y-3">

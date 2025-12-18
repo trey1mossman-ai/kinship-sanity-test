@@ -4,12 +4,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { RichTextRenderer } from '@/components/ui/RichTextRenderer';
+import type { PortableTextBlock } from '@portabletext/types';
 
 // Props interface for Sanity data
 interface FireplaceSectionProps {
   sanityData?: {
     name?: string;
-    description?: string;
+    description?: string | PortableTextBlock[];
     heroImage?: string;
     gallery?: string[];
     capacity?: { seated?: number; standing?: number };
@@ -30,7 +32,8 @@ export function FireplaceSection({ sanityData }: FireplaceSectionProps) {
 
   // Use Sanity data with fallbacks
   const venueName = sanityData?.name || 'Café Fireplace';
-  const venueDescription = sanityData?.description || 'A cozy, semi-private space with mixed seating for up to 20 guests. Perfect for intimate gatherings, small meetings, or casual celebrations. Order from Homa Café or book full catering to make your event complete.';
+  const venueDescription = sanityData?.description;
+  const venueDescriptionFallback = 'A cozy, semi-private space with mixed seating for up to 20 guests. Perfect for intimate gatherings, small meetings, or casual celebrations. Order from Homa Café or book full catering to make your event complete.';
   const venueCapacity = sanityData?.capacity?.seated || 20;
 
   // Use Sanity gallery if available, otherwise fallback
@@ -78,12 +81,16 @@ export function FireplaceSection({ sanityData }: FireplaceSectionProps) {
               {venueName}
             </h2>
 
-            <p
+            <div
               className="text-sm sm:text-base md:text-lg leading-relaxed"
               style={{ fontFamily: '"europa", "Hind", system-ui, sans-serif', color: '#667C58', opacity: 0.9 }}
             >
-              {venueDescription}
-            </p>
+              {Array.isArray(venueDescription) ? (
+                <RichTextRenderer value={venueDescription} />
+              ) : (
+                <p>{venueDescription || venueDescriptionFallback}</p>
+              )}
+            </div>
 
             {/* Features */}
             <div className="space-y-2 sm:space-y-3">

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EventsPage as EventsPageData } from '@/lib/sanity/queries';
+import { RichTextRenderer, textToPortableText } from '@/components/ui/RichTextRenderer';
 
 // Performance optimizations - CSS animations and critical styles
 import './carousel-animations.css';
@@ -284,15 +285,19 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                   {heroTitle}
                 </h1>
                 {heroSubtitle && (
-                  <p
+                  <div
                     className="text-white/90 text-lg sm:text-xl md:text-2xl mb-4"
                     style={{
                       fontFamily: '"europa", "Hind", system-ui, sans-serif',
                       textShadow: 'rgba(0, 0, 0, 0.3) 0px 2px 4px',
                     }}
                   >
-                    {heroSubtitle}
-                  </p>
+                    {Array.isArray(heroSubtitle) ? (
+                      <RichTextRenderer value={heroSubtitle} className="text-white/90" />
+                    ) : (
+                      <p>{heroSubtitle}</p>
+                    )}
+                  </div>
                 )}
                 <EventsTestimonials testimonials={eventsData?.testimonials} />
               </motion.div>
@@ -378,9 +383,13 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                   {eventsData?.gatheringsTitle || 'Gatherings'}
                 </h2>
 
-                <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  {eventsData?.gatheringsDescription || 'Planning a gathering? The GreenHaus offers a unique, intimate setting for up to 80 guests: perfect for celebrations, workshops, and retreats. Pair your event with a room block and give your guests the full Kinship Landing experience, complete with stylish accommodations and all the perks of being downtown.'}
-                </p>
+                <div className="text-sm sm:text-base md:text-lg leading-relaxed">
+                  {Array.isArray(eventsData?.gatheringsDescription) ? (
+                    <RichTextRenderer value={eventsData.gatheringsDescription} />
+                  ) : (
+                    <p>{eventsData?.gatheringsDescription || 'Planning a gathering? The GreenHaus offers a unique, intimate setting for up to 80 guests: perfect for celebrations, workshops, and retreats. Pair your event with a room block and give your guests the full Kinship Landing experience, complete with stylish accommodations and all the perks of being downtown.'}</p>
+                  )}
+                </div>
 
                 <a
                   href={eventsData?.gatheringsCtaUrl || 'https://kinshiplanding.tripleseat.com/booking_request/42351'}
@@ -462,12 +471,20 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                     {eventsData?.weddingsTitle || 'Weddings'}
                   </h2>
 
-                  <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                    {eventsData?.weddingsDescription || 'Your wedding deserves more than just a venue—it deserves a celebration that feels uniquely yours. At Kinship, we specialize in intimate gatherings for up to 80 guests, pairing warm hospitality with the energy of downtown Colorado Springs and the natural beauty of the Front Range.'}
-                  </p>
-                  <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                    {eventsData?.weddingsDescription2 || 'From heartfelt "I do\'s" to unforgettable receptions, our team will help you create a day that\'s personal, joyful, and truly memorable. With catering from our onsite Homa Café, your celebration is infused with fresh, locally inspired flavors. Pair it all with a room block to keep your favorite people close and the party going all weekend long.'}
-                  </p>
+                  <div className="text-sm sm:text-base md:text-lg leading-relaxed">
+                    {Array.isArray(eventsData?.weddingsDescription) ? (
+                      <RichTextRenderer value={eventsData.weddingsDescription} />
+                    ) : (
+                      <p>{eventsData?.weddingsDescription || 'Your wedding deserves more than just a venue—it deserves a celebration that feels uniquely yours. At Kinship, we specialize in intimate gatherings for up to 80 guests, pairing warm hospitality with the energy of downtown Colorado Springs and the natural beauty of the Front Range.'}</p>
+                    )}
+                  </div>
+                  <div className="text-sm sm:text-base md:text-lg leading-relaxed">
+                    {Array.isArray(eventsData?.weddingsDescription2) ? (
+                      <RichTextRenderer value={eventsData.weddingsDescription2} />
+                    ) : (
+                      <p>{eventsData?.weddingsDescription2 || 'From heartfelt "I do\'s" to unforgettable receptions, our team will help you create a day that\'s personal, joyful, and truly memorable. With catering from our onsite Homa Café, your celebration is infused with fresh, locally inspired flavors. Pair it all with a room block to keep your favorite people close and the party going all weekend long.'}</p>
+                    )}
+                  </div>
 
                   {/* CTA Buttons */}
                   <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -544,19 +561,35 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                   {eventsData?.meetingsTitle || 'Meetings & Retreats'}
                 </h2>
 
-                <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  {eventsData?.meetingsDescription || 'The best ideas happen when teams have space to connect. Kinship is ideal for retreats and offsite meetings in the 30–45 guest range, with a max capacity of 85. Our intimate scale keeps gatherings personal and collaborative while still giving you room to breathe and create.'}
-                </p>
-                <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  {eventsData?.meetingsDescription2 || 'Fuel your team with fresh catering from Homa Café, featuring locally inspired menus that make every meal memorable. And to make your retreat truly stand out, our team partners with local experts to curate one-of-a-kind experiences—think ropes courses, guided hikes, yoga on the camp deck, and more.'}
-                </p>
-                <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  {eventsData?.meetingsDescription3 || 'Pair your retreat with a room block for a seamless multi-day experience—complete with unique accommodations, downtown Colorado Springs at your doorstep, and our signature hospitality throughout.'}
-                </p>
+                <div className="text-sm sm:text-base md:text-lg leading-relaxed">
+                  {Array.isArray(eventsData?.meetingsDescription) ? (
+                    <RichTextRenderer value={eventsData.meetingsDescription} />
+                  ) : (
+                    <p>{eventsData?.meetingsDescription || 'The best ideas happen when teams have space to connect. Kinship is ideal for retreats and offsite meetings in the 30–45 guest range, with a max capacity of 85. Our intimate scale keeps gatherings personal and collaborative while still giving you room to breathe and create.'}</p>
+                  )}
+                </div>
+                <div className="text-sm sm:text-base md:text-lg leading-relaxed">
+                  {Array.isArray(eventsData?.meetingsDescription2) ? (
+                    <RichTextRenderer value={eventsData.meetingsDescription2} />
+                  ) : (
+                    <p>{eventsData?.meetingsDescription2 || 'Fuel your team with fresh catering from Homa Café, featuring locally inspired menus that make every meal memorable. And to make your retreat truly stand out, our team partners with local experts to curate one-of-a-kind experiences—think ropes courses, guided hikes, yoga on the camp deck, and more.'}</p>
+                  )}
+                </div>
+                <div className="text-sm sm:text-base md:text-lg leading-relaxed">
+                  {Array.isArray(eventsData?.meetingsDescription3) ? (
+                    <RichTextRenderer value={eventsData.meetingsDescription3} />
+                  ) : (
+                    <p>{eventsData?.meetingsDescription3 || 'Pair your retreat with a room block for a seamless multi-day experience—complete with unique accommodations, downtown Colorado Springs at your doorstep, and our signature hospitality throughout.'}</p>
+                  )}
+                </div>
                 {(eventsData?.meetingsNote || true) && (
-                  <p className="text-xs sm:text-sm md:text-base leading-relaxed italic" style={{ opacity: 0.8 }}>
-                    {eventsData?.meetingsNote || 'Because of our size and event spaces, Kinship is best suited for active leadership gatherings and small group retreats rather than traditional corporate gatherings. Share a few details with us—we would love to explore how we can bring your event to life.'}
-                  </p>
+                  <div className="text-xs sm:text-sm md:text-base leading-relaxed italic" style={{ opacity: 0.8 }}>
+                    {Array.isArray(eventsData?.meetingsNote) ? (
+                      <RichTextRenderer value={eventsData.meetingsNote} />
+                    ) : (
+                      <p>{eventsData?.meetingsNote || 'Because of our size and event spaces, Kinship is best suited for active leadership gatherings and small group retreats rather than traditional corporate gatherings. Share a few details with us—we would love to explore how we can bring your event to life.'}</p>
+                    )}
+                  </div>
                 )}
 
                 <a
@@ -637,15 +670,27 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                   {eventsData?.roomBlocksTitle || 'Room Blocks'}
                 </h2>
 
-                <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  {eventsData?.roomBlocksDescription || 'Keep your favorite people close. Whether it\'s a wedding weekend, a family reunion, or a team retreat, reserving a room block at Kinship makes it easy for everyone to stay together under one roof.'}
-                </p>
-                <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  {eventsData?.roomBlocksDescription2 || 'Your crew will love our unique rooms, downtown location, and the chance to gather around the fire pit, share a meal at Homa Café, or head out on an adventure right from our front door.'}
-                </p>
-                <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  {eventsData?.roomBlocksDescription3 || 'Ask us about setting up a block so your group can focus on making memories, not logistics.'}
-                </p>
+                <div className="text-sm sm:text-base md:text-lg leading-relaxed">
+                  {Array.isArray(eventsData?.roomBlocksDescription) ? (
+                    <RichTextRenderer value={eventsData.roomBlocksDescription} />
+                  ) : (
+                    <p>{eventsData?.roomBlocksDescription || 'Keep your favorite people close. Whether it\'s a wedding weekend, a family reunion, or a team retreat, reserving a room block at Kinship makes it easy for everyone to stay together under one roof.'}</p>
+                  )}
+                </div>
+                <div className="text-sm sm:text-base md:text-lg leading-relaxed">
+                  {Array.isArray(eventsData?.roomBlocksDescription2) ? (
+                    <RichTextRenderer value={eventsData.roomBlocksDescription2} />
+                  ) : (
+                    <p>{eventsData?.roomBlocksDescription2 || 'Your crew will love our unique rooms, downtown location, and the chance to gather around the fire pit, share a meal at Homa Café, or head out on an adventure right from our front door.'}</p>
+                  )}
+                </div>
+                <div className="text-sm sm:text-base md:text-lg leading-relaxed">
+                  {Array.isArray(eventsData?.roomBlocksDescription3) ? (
+                    <RichTextRenderer value={eventsData.roomBlocksDescription3} />
+                  ) : (
+                    <p>{eventsData?.roomBlocksDescription3 || 'Ask us about setting up a block so your group can focus on making memories, not logistics.'}</p>
+                  )}
+                </div>
 
                 <a
                   href={eventsData?.roomBlocksCtaUrl || 'https://kinshiplanding.tripleseat.com/booking_request/42351'}
@@ -695,12 +740,20 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                   {eventsData?.takeoverTitle || 'Make Kinship Yours'}
                 </h2>
 
-                <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  {eventsData?.takeoverDescription || 'Sometimes the best way to gather is to have the whole place to yourself. With a full hotel buyout, Kinship Landing becomes your group\'s home base, complete with 40 guest rooms, our GreenHaus event space, The Yard, and all the cozy corners in between.'}
-                </p>
-                <p className="text-sm sm:text-base md:text-lg leading-relaxed">
-                  {eventsData?.takeoverDescription2 || 'Perfect for weddings, reunions, company retreats, or any gathering that deserves its own downtown adventure. Add catering from Homa Café and custom experiences with our local partners, and you\'ve got the makings of an unforgettable takeover.'}
-                </p>
+                <div className="text-sm sm:text-base md:text-lg leading-relaxed">
+                  {Array.isArray(eventsData?.takeoverDescription) ? (
+                    <RichTextRenderer value={eventsData.takeoverDescription} />
+                  ) : (
+                    <p>{eventsData?.takeoverDescription || 'Sometimes the best way to gather is to have the whole place to yourself. With a full hotel buyout, Kinship Landing becomes your group\'s home base, complete with 40 guest rooms, our GreenHaus event space, The Yard, and all the cozy corners in between.'}</p>
+                  )}
+                </div>
+                <div className="text-sm sm:text-base md:text-lg leading-relaxed">
+                  {Array.isArray(eventsData?.takeoverDescription2) ? (
+                    <RichTextRenderer value={eventsData.takeoverDescription2} />
+                  ) : (
+                    <p>{eventsData?.takeoverDescription2 || 'Perfect for weddings, reunions, company retreats, or any gathering that deserves its own downtown adventure. Add catering from Homa Café and custom experiences with our local partners, and you\'ve got the makings of an unforgettable takeover.'}</p>
+                  )}
+                </div>
 
                 <a
                   href={eventsData?.takeoverCtaUrl || 'https://kinshiplanding.tripleseat.com/booking_request/42351'}

@@ -4,12 +4,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { RichTextRenderer } from '@/components/ui/RichTextRenderer';
+import type { PortableTextBlock } from '@portabletext/types';
 
 // Props interface for Sanity data
 interface ConferenceRoomSectionProps {
   sanityData?: {
     name?: string;
-    description?: string;
+    description?: string | PortableTextBlock[];
     heroImage?: string;
     gallery?: string[];
     capacity?: { seated?: number; standing?: number };
@@ -29,7 +31,8 @@ export function ConferenceRoomSection({ sanityData }: ConferenceRoomSectionProps
 
   // Use Sanity data with fallbacks
   const venueName = sanityData?.name || 'The Conference Room';
-  const venueDescription = sanityData?.description || 'A private, tech-ready meeting space for focused work sessions, board meetings, or intimate workshops with natural light and mountain views.';
+  const venueDescription = sanityData?.description;
+  const venueDescriptionFallback = 'A private, tech-ready meeting space for focused work sessions, board meetings, or intimate workshops with natural light and mountain views.';
   const venueCapacity = sanityData?.capacity?.seated || 12;
 
   // Use Sanity gallery if available, otherwise fallback
@@ -69,12 +72,16 @@ export function ConferenceRoomSection({ sanityData }: ConferenceRoomSectionProps
               {venueName}
             </h2>
 
-            <p
+            <div
               className="text-sm sm:text-base md:text-lg leading-relaxed"
               style={{ fontFamily: '"europa", "Hind", system-ui, sans-serif', color: '#667C58', opacity: 0.9 }}
             >
-              {venueDescription}
-            </p>
+              {Array.isArray(venueDescription) ? (
+                <RichTextRenderer value={venueDescription} />
+              ) : (
+                <p>{venueDescription || venueDescriptionFallback}</p>
+              )}
+            </div>
 
             {/* Features */}
             <div className="space-y-2 sm:space-y-3">

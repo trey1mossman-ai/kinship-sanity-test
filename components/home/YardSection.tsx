@@ -3,12 +3,14 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { RichTextRenderer } from '@/components/ui/RichTextRenderer';
+import type { PortableTextBlock } from '@portabletext/types';
 
 // Props interface for Sanity data
 interface YardSectionProps {
   sanityData?: {
     name?: string;
-    description?: string;
+    description?: string | PortableTextBlock[];
     heroImage?: string;
     gallery?: string[];
     capacity?: { seated?: number; standing?: number };
@@ -37,7 +39,8 @@ export function YardSection({ sanityData }: YardSectionProps) {
 
   // Use Sanity data with fallbacks
   const venueName = sanityData?.name || 'The Yard';
-  const venueDescription = sanityData?.description || 'Our expansive outdoor event space wraps around the hotel, offering flexible areas for ceremonies, receptions, and private gatherings under the Colorado sky.';
+  const venueDescription = sanityData?.description;
+  const venueDescriptionFallback = 'Our expansive outdoor event space wraps around the hotel, offering flexible areas for ceremonies, receptions, and private gatherings under the Colorado sky.';
   const venueCapacity = sanityData?.capacity?.standing || 200;
 
   // Use Sanity gallery if available, otherwise fallback
@@ -84,12 +87,16 @@ export function YardSection({ sanityData }: YardSectionProps) {
               {venueName}
             </h2>
 
-            <p
+            <div
               className="text-sm sm:text-base md:text-lg leading-relaxed"
               style={{ fontFamily: '"europa", "Hind", system-ui, sans-serif', color: '#667C58', opacity: 0.9 }}
             >
-              {venueDescription}
-            </p>
+              {Array.isArray(venueDescription) ? (
+                <RichTextRenderer value={venueDescription} />
+              ) : (
+                <p>{venueDescription || venueDescriptionFallback}</p>
+              )}
+            </div>
 
             {/* Features */}
             <div className="space-y-2 sm:space-y-3">
