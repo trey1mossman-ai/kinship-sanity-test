@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { content } from '@/content/copy';
 import type { Homepage } from '@/lib/sanity/queries';
+import { RichTextRenderer } from '@/components/ui/RichTextRenderer';
+import type { PortableTextBlock } from '@portabletext/types';
 
 interface NewsletterProps {
   sanityData?: Homepage | null;
@@ -19,7 +21,7 @@ const defaults = {
 export function Newsletter({ sanityData }: NewsletterProps) {
   // Use Sanity data if provided, otherwise use fallback defaults
   const title = sanityData?.newsletterTitle || defaults.title;
-  const description = sanityData?.newsletterDescription || defaults.description;
+  const newsletterDescription = sanityData?.newsletterDescription || defaults.description;
   const buttonText = sanityData?.newsletterButtonText || defaults.buttonText;
   const disclaimer = sanityData?.newsletterDisclaimer || defaults.disclaimer;
   const [email, setEmail] = useState('');
@@ -102,9 +104,13 @@ export function Newsletter({ sanityData }: NewsletterProps) {
             {title}
           </h2>
 
-          <p className="text-kinship-slate/80 mb-8">
-            {description}
-          </p>
+          <div className="text-kinship-slate/80 mb-8">
+            {Array.isArray(newsletterDescription) ? (
+              <RichTextRenderer value={newsletterDescription} />
+            ) : (
+              <p>{newsletterDescription || defaults.description}</p>
+            )}
+          </div>
 
           {/* Newsletter Form */}
           <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-3">

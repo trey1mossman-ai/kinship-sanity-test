@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { welcomeReveal, staggerContainer, staggerItem, viewportConfig } from '@/lib/utils/animations';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
 import type { Homepage } from '@/lib/sanity/queries';
+import { RichTextRenderer } from '@/components/ui/RichTextRenderer';
+import type { PortableTextBlock } from '@portabletext/types';
 
 interface HomaSectionEnhancedProps {
   sanityData?: Homepage | null;
@@ -93,7 +95,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
 
             {/* Description */}
             <motion.div variants={staggerItem} className="space-y-3 mb-4 mt-0">
-              <p
+              <div
                 className="text-base md:text-lg leading-snug"
                 style={{
                   fontFamily: KINSHIP_FONTS.body,
@@ -101,8 +103,12 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
                   opacity: 0.9,
                 }}
               >
-                {desc1}
-              </p>
+                {Array.isArray(desc1) ? (
+                  <RichTextRenderer value={desc1} />
+                ) : (
+                  <p>{desc1}</p>
+                )}
+              </div>
 
               {/* HOMA Homies Promo Callout - Clickable */}
               <a
@@ -125,7 +131,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
                 >
                   {promoTitle}
                 </p>
-                <p
+                <div
                   className="text-xs md:text-sm"
                   style={{
                     fontFamily: KINSHIP_FONTS.body,
@@ -133,11 +139,15 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
                     opacity: 0.9,
                   }}
                 >
-                  {promoDescription}
-                </p>
+                  {Array.isArray(promoDescription) ? (
+                    <RichTextRenderer value={promoDescription} />
+                  ) : (
+                    <p>{promoDescription}</p>
+                  )}
+                </div>
               </a>
 
-              <p
+              <div
                 className="text-base md:text-lg leading-snug"
                 style={{
                   fontFamily: KINSHIP_FONTS.body,
@@ -145,8 +155,12 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
                   opacity: 0.9,
                 }}
               >
-                {desc2}
-              </p>
+                {Array.isArray(desc2) ? (
+                  <RichTextRenderer value={desc2} />
+                ) : (
+                  <p>{desc2}</p>
+                )}
+              </div>
             </motion.div>
 
             {/* CTAs */}
@@ -215,7 +229,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
             variants={staggerContainer}
             className="order-2 lg:hidden mb-2 space-y-3"
           >
-            <motion.p
+            <motion.div
               variants={staggerItem}
               className="text-base md:text-lg leading-snug"
               style={{
@@ -224,8 +238,12 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
                 opacity: 0.9,
               }}
             >
-              {desc1}
-            </motion.p>
+              {Array.isArray(desc1) ? (
+                <RichTextRenderer value={desc1} />
+              ) : (
+                <p>{desc1}</p>
+              )}
+            </motion.div>
 
             {/* HOMA Homies Promo Callout - Mobile - Clickable */}
             <motion.a
@@ -249,7 +267,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
               >
                 {promoTitle}
               </p>
-              <p
+              <div
                 className="text-xs md:text-sm"
                 style={{
                   fontFamily: KINSHIP_FONTS.body,
@@ -257,8 +275,12 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
                   opacity: 0.9,
                 }}
               >
-                {promoDescription}
-              </p>
+                {Array.isArray(promoDescription) ? (
+                  <RichTextRenderer value={promoDescription} />
+                ) : (
+                  <p>{promoDescription}</p>
+                )}
+              </div>
             </motion.a>
           </motion.div>
 
@@ -404,7 +426,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
             variants={staggerContainer}
             className="order-4 lg:hidden mb-2"
           >
-            <motion.p
+            <motion.div
               variants={staggerItem}
               className="text-base md:text-lg leading-snug"
               style={{
@@ -413,8 +435,12 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
                 opacity: 0.9,
               }}
             >
-              {desc2}
-            </motion.p>
+              {Array.isArray(desc2) ? (
+                <RichTextRenderer value={desc2} />
+              ) : (
+                <p>{desc2}</p>
+              )}
+            </motion.div>
           </motion.div>
 
           {/* Bottom Bar Image - Mobile only, Order 5 */}

@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import reviewsData from '@/data/reviews.seed.json';
 import { KINSHIP_FONTS } from '@/lib/config/brand';
+import { RichTextRenderer } from '@/components/ui/RichTextRenderer';
+import type { PortableTextBlock } from '@portabletext/types';
 
 // Review structure matching Sanity featuredReviews
 interface Review {
@@ -15,7 +17,7 @@ interface Review {
 }
 
 interface InlineTestimonialsProps {
-  tagline?: string;
+  tagline?: string | PortableTextBlock[];  // Rich text support
   reviews?: Review[];  // From Sanity featuredReviews
 }
 
@@ -78,15 +80,19 @@ export function InlineTestimonials({ tagline, reviews }: InlineTestimonialsProps
     return (
       <div className="h-20 sm:h-24 flex items-start justify-center lg:justify-start">
         <div className="text-center lg:text-left max-w-2xl pt-2">
-          <p
+          <div
             className="text-white text-lg sm:text-xl md:text-2xl font-light leading-relaxed"
             style={{
               fontFamily: KINSHIP_FONTS.body,
               textShadow: 'rgba(0, 0, 0, 0.3) 0px 2px 4px',
             }}
           >
-            {displayTagline}
-          </p>
+            {Array.isArray(tagline) ? (
+              <RichTextRenderer value={tagline} />
+            ) : (
+              <p>{displayTagline}</p>
+            )}
+          </div>
         </div>
       </div>
     );
@@ -106,15 +112,19 @@ export function InlineTestimonials({ tagline, reviews }: InlineTestimonialsProps
             className="text-center lg:text-left max-w-2xl pt-2"
           >
             {/* Original tagline - positioned higher than testimonials */}
-            <p
+            <div
               className="text-white text-lg sm:text-xl md:text-2xl font-light leading-relaxed"
               style={{
                 fontFamily: KINSHIP_FONTS.body,
                 textShadow: 'rgba(0, 0, 0, 0.3) 0px 2px 4px',
               }}
             >
-              {displayTagline}
-            </p>
+              {Array.isArray(tagline) ? (
+                <RichTextRenderer value={tagline} />
+              ) : (
+                <p>{displayTagline}</p>
+              )}
+            </div>
           </motion.div>
         ) : (
           <motion.div

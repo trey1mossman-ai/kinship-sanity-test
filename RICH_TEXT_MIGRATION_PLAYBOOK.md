@@ -450,6 +450,7 @@ DO NOT change schema or run migrations - only update component rendering.
 | Offers | 2 (introText, description) | Dec 2024 | Ground zero - first implementation |
 | Events | 18 (hero, gatherings, weddings, meetings, roomBlocks, takeover, venues) | Dec 2024 | Includes 5 venue section components |
 | Rooms | 23 (room descriptions, roomBlocks, FAQ answers) | Dec 2024 | Handles nested arrays (rooms[], faqItems[]) |
+| Homepage | 9 (heroSubtitle, guideParagraph1-3, homaParagraph1-2, homaPromoDescription, newsletterDescription, seoDescription) | Dec 2024 | Sub-agents used for parallel audit & component updates |
 
 ---
 

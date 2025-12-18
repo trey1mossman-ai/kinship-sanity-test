@@ -1,4 +1,5 @@
 import { client } from './client'
+import type { PortableTextBlock } from '@portabletext/types'
 
 // Types matching the Sanity schema
 export interface SanityRoom {
@@ -184,7 +185,7 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
 export interface Homepage {
   // Hero
   heroTitle?: string
-  heroSubtitle?: string
+  heroSubtitle?: string | PortableTextBlock[]  // Rich text (Portable Text array)
   heroImageUrl?: string
   heroVideo?: string
   heroCtaText?: string
@@ -194,9 +195,9 @@ export interface Homepage {
   guideBackgroundImageUrl?: string
   guideStampImageUrl?: string
   guideTitle?: string
-  guideParagraph1?: string
-  guideParagraph2?: string
-  guideParagraph3?: string
+  guideParagraph1?: string | PortableTextBlock[]  // Rich text (Portable Text array)
+  guideParagraph2?: string | PortableTextBlock[]  // Rich text (Portable Text array)
+  guideParagraph3?: string | PortableTextBlock[]  // Rich text (Portable Text array)
   guideCta1Text?: string
   guideCta1Url?: string
   guideCta2Text?: string
@@ -235,10 +236,10 @@ export interface Homepage {
   // HOMA Café Section
   homaBackgroundImageUrl?: string
   homaLogoImageUrl?: string
-  homaParagraph1?: string
-  homaParagraph2?: string
+  homaParagraph1?: string | PortableTextBlock[]  // Rich text (Portable Text array)
+  homaParagraph2?: string | PortableTextBlock[]  // Rich text (Portable Text array)
   homaPromoTitle?: string
-  homaPromoDescription?: string
+  homaPromoDescription?: string | PortableTextBlock[]  // Rich text (Portable Text array)
   homaPromoUrl?: string
   homaCtaText?: string
   homaCtaUrl?: string
@@ -253,7 +254,7 @@ export interface Homepage {
 
   // Newsletter
   newsletterTitle?: string
-  newsletterDescription?: string
+  newsletterDescription?: string | PortableTextBlock[]  // Rich text (Portable Text array)
   newsletterButtonText?: string
   newsletterDisclaimer?: string
 
@@ -267,7 +268,7 @@ export interface Homepage {
 
   // SEO
   seoTitle?: string
-  seoDescription?: string
+  seoDescription?: string | PortableTextBlock[]  // Rich text (Portable Text array)
 }
 
 export async function getHomepage(): Promise<Homepage | null> {

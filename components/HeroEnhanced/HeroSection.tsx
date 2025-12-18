@@ -6,6 +6,7 @@ import { BookingWidget } from './BookingWidget';
 import { InlineTestimonials } from './InlineTestimonials';
 import { KINSHIP_FONTS } from '@/lib/config/brand';
 import { content } from '@/content/copy';
+import type { PortableTextBlock } from '@portabletext/types';
 
 // Review structure matching Sanity featuredReviews
 interface Review {
@@ -17,7 +18,7 @@ interface Review {
 
 interface HeroSectionProps {
   headline?: string;
-  subheadline?: string;
+  subheadline?: string | PortableTextBlock[];  // Rich text support
   reviews?: Review[];  // From Sanity featuredReviews
   heroVideoUrl?: string;  // From Sanity heroVideo
   heroImageUrl?: string;  // From Sanity heroImage (fallback while video loads)

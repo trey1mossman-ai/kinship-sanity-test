@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { welcomeReveal, viewportConfig } from '@/lib/utils/animations';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
 import type { Homepage } from '@/lib/sanity/queries';
+import { RichTextRenderer } from '@/components/ui/RichTextRenderer';
+import type { PortableTextBlock } from '@portabletext/types';
 
 // Default content for fallback
 const defaults = {
@@ -81,7 +83,7 @@ export function KinshipGuideAsymmetric({ sanityData }: KinshipGuideAsymmetricPro
             >
               {guideTitle}
             </h2>
-            <p
+            <div
               className="text-base md:text-lg leading-relaxed mb-3"
               style={{
                 fontFamily: KINSHIP_FONTS.body,
@@ -89,9 +91,13 @@ export function KinshipGuideAsymmetric({ sanityData }: KinshipGuideAsymmetricPro
                 opacity: 0.9,
               }}
             >
-              {paragraph1}
-            </p>
-            <p
+              {Array.isArray(paragraph1) ? (
+                <RichTextRenderer value={paragraph1} />
+              ) : (
+                <p>{paragraph1}</p>
+              )}
+            </div>
+            <div
               className="text-base md:text-lg leading-relaxed mb-3"
               style={{
                 fontFamily: KINSHIP_FONTS.body,
@@ -99,9 +105,13 @@ export function KinshipGuideAsymmetric({ sanityData }: KinshipGuideAsymmetricPro
                 opacity: 0.9,
               }}
             >
-              {paragraph2}
-            </p>
-            <p
+              {Array.isArray(paragraph2) ? (
+                <RichTextRenderer value={paragraph2} />
+              ) : (
+                <p>{paragraph2}</p>
+              )}
+            </div>
+            <div
               className="text-base md:text-lg leading-relaxed mb-6"
               style={{
                 fontFamily: KINSHIP_FONTS.body,
@@ -109,8 +119,12 @@ export function KinshipGuideAsymmetric({ sanityData }: KinshipGuideAsymmetricPro
                 opacity: 0.9,
               }}
             >
-              {paragraph3}
-            </p>
+              {Array.isArray(paragraph3) ? (
+                <RichTextRenderer value={paragraph3} />
+              ) : (
+                <p>{paragraph3}</p>
+              )}
+            </div>
 
             {/* Three CTAs - Full Width on Mobile */}
             <div className="flex gap-2 sm:gap-3 w-full">
