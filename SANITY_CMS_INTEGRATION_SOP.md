@@ -999,6 +999,81 @@ migrate().catch(console.error);
 
 ---
 
+### Lesson 13: Child Components Need Union Type for Rich Text
+
+**Problem:** When parent components pass rich text data to child components (like venue sections), the child's TypeScript interface may still expect `string`.
+
+**Cause:** The child component interface wasn't updated to accept Portable Text arrays.
+
+**Real Example (Venue Sections):**
+```typescript
+// BEFORE - Only accepts string
+interface GreenHausSectionProps {
+  sanityData?: {
+    description?: string;  // ❌ Can't accept Portable Text array
+  };
+}
+
+// AFTER - Accepts both string and Portable Text
+import type { PortableTextBlock } from '@portabletext/types';
+
+interface GreenHausSectionProps {
+  sanityData?: {
+    description?: string | PortableTextBlock[];  // ✅ Union type
+  };
+}
+```
+
+**Pattern for Rendering Union Types:**
+```typescript
+import { RichTextRenderer } from '@/components/ui/RichTextRenderer';
+
+// In the component:
+const venueDescription = sanityData?.description;
+const fallback = 'Default description text...';
+
+// Render with type check
+<div>
+  {Array.isArray(venueDescription) ? (
+    <RichTextRenderer value={venueDescription} />
+  ) : (
+    <p>{venueDescription || fallback}</p>
+  )}
+</div>
+```
+
+**When Updating Child Components for Rich Text:**
+1. Import `PortableTextBlock` type from `@portabletext/types`
+2. Import `RichTextRenderer` component
+3. Update interface to use union type: `string | PortableTextBlock[]`
+4. Use `Array.isArray()` check in render
+5. Keep string fallback for backwards compatibility
+
+**Files That Often Need This Pattern:**
+- Venue section components (`GreenHausSection`, `YardSection`, etc.)
+- Card components that receive descriptions
+- Any reusable component that displays text from parent
+
+---
+
+### Lesson 14: Rich Text Migration is a Repeatable Process
+
+**Discovery:** After implementing rich text for Offers and Events pages, a clear pattern emerged that can be automated.
+
+**The 6-Step Process:**
+1. **Audit** - Identify text fields that need rich formatting
+2. **Create Migration Script** - Convert existing text to Portable Text
+3. **Run Migration** - Execute script BEFORE schema changes
+4. **Update Schema** - Change field types to `richText`
+5. **Update Components** - Add RichTextRenderer with Array.isArray() checks
+6. **Build & Deploy** - Verify and push changes
+
+**See:** `RICH_TEXT_MIGRATION_PLAYBOOK.md` for the complete checklist and templates.
+
+**Sub-Agent Potential:** This process is structured enough that sub-agents could handle steps 1, 2, and 5 with proper prompts, while human oversight remains for steps 3, 4, and 6.
+
+---
+
 ## DEPLOYMENT
 
 ### CRITICAL: Use GitHub for Deployment

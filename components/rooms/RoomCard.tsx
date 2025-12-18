@@ -2,7 +2,20 @@ import { memo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getRoomIcon } from '@/components/ui/RoomIcons';
-import type { RoomTeaser } from '@/lib/data/rooms';
+import { RichTextRenderer } from '@/components/ui/RichTextRenderer';
+import type { PortableTextBlock } from '@portabletext/types';
+
+// Room type definition with union type for rich text support
+interface RoomTeaser {
+  id: string;
+  name: string;
+  slug: string;
+  category: 'suites' | 'junior' | 'family' | 'specialty';
+  heroImage: string;
+  galleryImages?: string[];
+  features: string[];
+  description: string | PortableTextBlock[];
+}
 
 interface RoomCardProps {
   room: RoomTeaser;
@@ -37,9 +50,13 @@ export const RoomCard = memo(function RoomCard({ room, index, onImageClick }: Ro
           >
             {room.name}
           </h2>
-          <p className="text-kinship-text/80 text-base sm:text-lg leading-relaxed">
-            {room.description}
-          </p>
+          <div className="text-kinship-text/80 text-base sm:text-lg leading-relaxed">
+            {Array.isArray(room.description) ? (
+              <RichTextRenderer value={room.description} />
+            ) : (
+              <p>{room.description}</p>
+            )}
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-y-3 gap-x-4">

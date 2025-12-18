@@ -14,6 +14,8 @@ import { roomsFaqs as defaultRoomsFaqs } from '@/components/rooms/faq-data';
 import { buildFAQSchema } from '@/lib/utils/faq-schema';
 import { RoomsPage } from '@/lib/sanity/queries';
 import { roomTeasers as fallbackRoomTeasers } from '@/lib/data/rooms';
+import { RichTextRenderer } from '@/components/ui/RichTextRenderer';
+import type { PortableTextBlock } from '@portabletext/types';
 
 // Room type definition
 interface RoomTeaser {
@@ -24,7 +26,7 @@ interface RoomTeaser {
   heroImage: string;
   galleryImages?: string[];
   features: string[];
-  description: string;
+  description: string | PortableTextBlock[];
 }
 
 interface RoomsPageClientProps {
@@ -128,9 +130,12 @@ export default function RoomsPageClient({ roomsPageData }: RoomsPageClientProps)
   // Room Blocks content from Sanity
   const roomBlocksTitle = roomsPageData?.roomBlocksTitle || 'Book a Bunch of Rooms';
   const roomBlocksTagline = roomsPageData?.roomBlocksTagline || 'Keep Your Crew Close';
-  const roomBlocksDescription1 = roomsPageData?.roomBlocksDescription1 || 'Keep your favorite people close. Whether it\'s a wedding weekend, a family reunion, or a team retreat, reserving a room block at Kinship makes it easy for everyone to stay together under one roof.';
-  const roomBlocksDescription2 = roomsPageData?.roomBlocksDescription2 || 'Your crew will love our unique rooms, downtown location, and the chance to gather around the fire pit, share a meal at Homa Café, or head out on an adventure right from our front door.';
-  const roomBlocksDescription3 = roomsPageData?.roomBlocksDescription3 || 'Ask us about setting up a block so your group can focus on making memories, not logistics.';
+  const roomBlocksDescription1 = roomsPageData?.roomBlocksDescription1;
+  const roomBlocksDescription1Fallback = 'Keep your favorite people close. Whether it\'s a wedding weekend, a family reunion, or a team retreat, reserving a room block at Kinship makes it easy for everyone to stay together under one roof.';
+  const roomBlocksDescription2 = roomsPageData?.roomBlocksDescription2;
+  const roomBlocksDescription2Fallback = 'Your crew will love our unique rooms, downtown location, and the chance to gather around the fire pit, share a meal at Homa Café, or head out on an adventure right from our front door.';
+  const roomBlocksDescription3 = roomsPageData?.roomBlocksDescription3;
+  const roomBlocksDescription3Fallback = 'Ask us about setting up a block so your group can focus on making memories, not logistics.';
   const roomBlocksCtaText = roomsPageData?.roomBlocksCtaText || 'Book Your Gathering at Kinship Landing';
   const roomBlocksCtaUrl = roomsPageData?.roomBlocksCtaUrl || 'https://kinshiplanding.tripleseat.com/booking_request/42351';
 
@@ -534,17 +539,29 @@ export default function RoomsPageClient({ roomsPageData }: RoomsPageClientProps)
                     opacity: 0.95
                   }}
                 >
-                  <p>
-                    {roomBlocksDescription1}
-                  </p>
+                  <div>
+                    {Array.isArray(roomBlocksDescription1) ? (
+                      <RichTextRenderer value={roomBlocksDescription1} />
+                    ) : (
+                      <p>{roomBlocksDescription1 || roomBlocksDescription1Fallback}</p>
+                    )}
+                  </div>
 
-                  <p>
-                    {roomBlocksDescription2}
-                  </p>
+                  <div>
+                    {Array.isArray(roomBlocksDescription2) ? (
+                      <RichTextRenderer value={roomBlocksDescription2} />
+                    ) : (
+                      <p>{roomBlocksDescription2 || roomBlocksDescription2Fallback}</p>
+                    )}
+                  </div>
 
-                  <p>
-                    {roomBlocksDescription3}
-                  </p>
+                  <div>
+                    {Array.isArray(roomBlocksDescription3) ? (
+                      <RichTextRenderer value={roomBlocksDescription3} />
+                    ) : (
+                      <p>{roomBlocksDescription3 || roomBlocksDescription3Fallback}</p>
+                    )}
+                  </div>
                 </div>
 
                 <a

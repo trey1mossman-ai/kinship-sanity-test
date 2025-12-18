@@ -7,9 +7,42 @@
 
 ## Current State
 
-### Rich Text Editing - Offers Page (COMPLETE)
+### Rich Text Editing - Events Page (COMPLETE)
 
 **Client Request:** Ability to edit text with formatting (bold, italic, bullet points, line spacing) in Sanity Studio.
+
+**Implementation Status:** ✅ Complete for Events Page (18 fields)
+
+**What was done:**
+1. Created migration script to convert 18 text fields to Portable Text
+2. Ran migration BEFORE schema changes (correct order!)
+3. Updated `eventsPage.ts` schema - 18 fields changed to `richText` type
+4. Updated `EventsPageClient.tsx` to use RichTextRenderer for all descriptions
+5. Updated 5 venue section components to handle Portable Text:
+   - GreenHausSection, ConferenceRoomSection, FireplaceSection, YardSection, CampDeckSection
+
+**Fields Now Rich Text Editable:**
+- Hero subtitle
+- Gatherings description
+- Weddings descriptions (2 fields)
+- Meetings descriptions (3 + note = 4 fields)
+- Room blocks descriptions (3 fields)
+- Takeover descriptions (2 fields)
+- All 5 venue descriptions (GreenHaus, Yard, Conference Room, Fireplace, Camp Deck)
+
+**Files Modified:**
+- `/sanity-test-sandbox/schemaTypes/singletons/eventsPage.ts`
+- `/sanity-hostinger-test/scripts/migrate-events-to-richtext.js` (NEW)
+- `/sanity-hostinger-test/app/events/EventsPageClient.tsx`
+- `/sanity-hostinger-test/components/home/GreenHausSection.tsx`
+- `/sanity-hostinger-test/components/home/ConferenceRoomSection.tsx`
+- `/sanity-hostinger-test/components/home/FireplaceSection.tsx`
+- `/sanity-hostinger-test/components/home/YardSection.tsx`
+- `/sanity-hostinger-test/components/home/CampDeckSection.tsx`
+
+---
+
+### Rich Text Editing - Offers Page (COMPLETE)
 
 **Implementation Status:** ✅ Complete for Offers Page
 
@@ -60,21 +93,14 @@ Use `SANITY_API_TOKEN` environment variable when running migration scripts.
 
 ### Roll Out Rich Text to Other Pages
 
-The Offers page is "ground 0" for rich text implementation. When ready to expand:
+The Offers page was "ground 0" and Events page is now complete. When ready to expand:
 
-1. **Events Page** - Has descriptions, captions that could benefit
+1. ~~**Events Page**~~ - ✅ COMPLETE (18 fields)
 2. **About Page** - Mission statement, team bios
 3. **HOMA Page** - Menu descriptions, welcome text
 4. **Community Page** - Event descriptions
 
-**Process for each page:**
-1. Audit current schema for text fields that need rich formatting
-2. Create migration script for existing data
-3. Run migration script
-4. Update schema to use `richText` type
-5. Deploy schema: `npx sanity deploy`
-6. Update frontend components to use `RichTextRenderer`
-7. Build and deploy: `npm run build && git push`
+**Process for each page:** See `RICH_TEXT_MIGRATION_PLAYBOOK.md` for the complete repeatable workflow.
 
 ---
 

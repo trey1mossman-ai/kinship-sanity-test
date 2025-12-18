@@ -607,7 +607,7 @@ export interface RoomsPageRoom {
   name: string
   slug: string
   category: 'suites' | 'junior' | 'family' | 'specialty'
-  description: string
+  description: string | PortableTextBlock[]  // Rich text (Portable Text array)
   features?: string[]
   heroImageUrl?: string
   galleryImages?: string[]
@@ -619,8 +619,8 @@ export interface RoomsPageFAQ {
   _key: string
   id?: string
   question: string
-  answerShort: string
-  answerLong: string
+  answerShort: string | PortableTextBlock[]  // Rich text (Portable Text array)
+  answerLong: string | PortableTextBlock[]  // Rich text (Portable Text array)
 }
 
 export interface RoomsPage {
@@ -640,9 +640,9 @@ export interface RoomsPage {
   // Room Blocks
   roomBlocksTitle?: string
   roomBlocksTagline?: string
-  roomBlocksDescription1?: string
-  roomBlocksDescription2?: string
-  roomBlocksDescription3?: string
+  roomBlocksDescription1?: string | PortableTextBlock[]  // Rich text (Portable Text array)
+  roomBlocksDescription2?: string | PortableTextBlock[]  // Rich text (Portable Text array)
+  roomBlocksDescription3?: string | PortableTextBlock[]  // Rich text (Portable Text array)
   roomBlocksCtaText?: string
   roomBlocksCtaUrl?: string
   roomBlocksImage1Url?: string

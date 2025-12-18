@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
 import { roomsFaqs as defaultRoomsFaqs } from './faq-data';
+import { RichTextRenderer } from '@/components/ui/RichTextRenderer';
+import type { PortableTextBlock } from '@portabletext/types';
 
 interface FAQ {
   id?: string;
   question: string;
-  answer_short: string;
-  answer_long: string;
+  answer_short: string | PortableTextBlock[];
+  answer_long: string | PortableTextBlock[];
 }
 
 interface RoomsFAQProps {
@@ -19,8 +21,8 @@ interface RoomsFAQProps {
     _key: string;
     id?: string;
     question: string;
-    answerShort: string;
-    answerLong: string;
+    answerShort: string | PortableTextBlock[];
+    answerLong: string | PortableTextBlock[];
   }>;
 }
 
@@ -196,7 +198,11 @@ export function RoomsFAQ({ sectionTitle, sectionSubtitle, faqItems }: RoomsFAQPr
                           color: KINSHIP_COLORS.greenDark,
                         }}
                       >
-                        {faq.answer_short}
+                        {Array.isArray(faq.answer_short) ? (
+                          <RichTextRenderer value={faq.answer_short} />
+                        ) : (
+                          faq.answer_short
+                        )}
                       </div>
 
                       {/* Divider Line */}
@@ -216,7 +222,11 @@ export function RoomsFAQ({ sectionTitle, sectionSubtitle, faqItems }: RoomsFAQPr
                           opacity: 0.85,
                         }}
                       >
-                        {faq.answer_long.replace(/\n/g, ' ')}
+                        {Array.isArray(faq.answer_long) ? (
+                          <RichTextRenderer value={faq.answer_long} />
+                        ) : (
+                          typeof faq.answer_long === 'string' ? faq.answer_long.replace(/\n/g, ' ') : faq.answer_long
+                        )}
                       </div>
                     </motion.div>
                   </motion.div>
