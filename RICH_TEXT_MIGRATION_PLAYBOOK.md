@@ -449,6 +449,7 @@ DO NOT change schema or run migrations - only update component rendering.
 |------|-----------------|------|-------|
 | Offers | 2 (introText, description) | Dec 2024 | Ground zero - first implementation |
 | Events | 18 (hero, gatherings, weddings, meetings, roomBlocks, takeover, venues) | Dec 2024 | Includes 5 venue section components |
+| Rooms | 23 (room descriptions, roomBlocks, FAQ answers) | Dec 2024 | Handles nested arrays (rooms[], faqItems[]) |
 
 ---
 
@@ -474,3 +475,85 @@ DO NOT change schema or run migrations - only update component rendering.
 **Cause:** Null/undefined data passed to RichTextRenderer.
 **Impact:** Non-critical, just a warning. Fallback will render.
 **Fix:** Ensure proper null checks before rendering.
+
+---
+
+## SUB-AGENT EVALUATION
+
+### When to Use Sub-Agents
+
+After evaluating sub-agent usage for the Rooms page migration (23 fields), here are the findings:
+
+**Sub-agents are BEST for:**
+- Auditing multiple pages simultaneously
+- Generating migration scripts (no side effects)
+- Updating multiple child components in parallel
+
+**Sub-agents are NOT recommended for:**
+- Running migrations (needs human oversight + token security)
+- Schema deployment (sequential dependency)
+- Build verification (single process, needs error context)
+
+### Why Sequential is Often Better for Single Pages
+
+For migrating one page at a time:
+1. **Context flows forward** - Audit results inform script, script output informs schema changes
+2. **Error debugging** - Full history when something breaks
+3. **Overhead** - Sub-agent context switching ~= direct execution time
+
+### Parallel Strategy for Multiple Pages
+
+When migrating 3+ pages at once, use this pattern:
+
+```
+PHASE 1 - Audit (Parallel Sub-Agents)
+├── Agent 1: Audit Page A schema
+├── Agent 2: Audit Page B schema
+└── Agent 3: Audit Page C schema
+
+PHASE 2 - Script Generation (Parallel Sub-Agents)
+├── Agent 1: Generate Page A migration script
+├── Agent 2: Generate Page B migration script
+└── Agent 3: Generate Page C migration script
+
+PHASE 3 - Execution (Sequential Main Agent)
+├── Run all migrations
+├── Deploy all schemas
+├── Update all components
+└── Build and verify
+```
+
+### Sub-Agent Task Prompt Examples
+
+**Audit Task:**
+```
+TASK: Audit [PAGE] page schema for rich text migration
+
+Read: /sanity-test-sandbox/schemaTypes/singletons/[page]Page.ts
+
+OUTPUT:
+1. List all fields with type: 'text' that need rich text
+2. Note any nested arrays (e.g., rooms[], faqItems[])
+3. List child components that receive these fields
+
+DO NOT modify any files.
+```
+
+**Script Generation Task:**
+```
+TASK: Generate migration script for [PAGE] page
+
+INPUTS:
+- Document type: [page]Page
+- Top-level fields: [list]
+- Array fields: [list with parent array name]
+
+Use template from RICH_TEXT_MIGRATION_PLAYBOOK.md Phase 2.
+Save to: /sanity-hostinger-test/scripts/migrate-[page]-to-richtext.js
+
+DO NOT run the script.
+```
+
+### Key Insight
+
+The playbook structure already enables sub-agent parallelization. The templates are deterministic enough that sub-agents can execute Phases 1 and 2 independently. Human oversight remains critical for Phase 3-6 where side effects occur.

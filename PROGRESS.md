@@ -7,6 +7,34 @@
 
 ## Current State
 
+### Rich Text Editing - Rooms Page (COMPLETE)
+
+**Implementation Status:** ✅ Complete for Rooms Page (23 fields)
+
+**What was done:**
+1. Created migration script to convert 23 text fields to Portable Text
+2. Ran migration BEFORE schema changes (correct order!)
+3. Updated `roomsPage.ts` schema - 6 field definitions changed to `richText` type
+4. Updated `RoomsPageClient.tsx` to use RichTextRenderer for room blocks section
+5. Updated `RoomCard.tsx` component with union type interface for rich text
+6. Updated `RoomsFAQ.tsx` component with union type interface for FAQ answers
+
+**Fields Now Rich Text Editable:**
+- Room descriptions (10 fields - one per room type)
+- Room blocks descriptions (3 paragraph fields)
+- FAQ answerShort (5 fields)
+- FAQ answerLong (5 fields)
+
+**Files Modified:**
+- `/sanity-test-sandbox/schemaTypes/singletons/roomsPage.ts`
+- `/sanity-hostinger-test/scripts/migrate-rooms-to-richtext.js` (NEW)
+- `/sanity-hostinger-test/app/rooms/RoomsPageClient.tsx`
+- `/sanity-hostinger-test/components/rooms/RoomCard.tsx`
+- `/sanity-hostinger-test/components/rooms/RoomsFAQ.tsx`
+- `/sanity-hostinger-test/lib/sanity/queries.ts`
+
+---
+
 ### Rich Text Editing - Events Page (COMPLETE)
 
 **Client Request:** Ability to edit text with formatting (bold, italic, bullet points, line spacing) in Sanity Studio.
@@ -93,12 +121,13 @@ Use `SANITY_API_TOKEN` environment variable when running migration scripts.
 
 ### Roll Out Rich Text to Other Pages
 
-The Offers page was "ground 0" and Events page is now complete. When ready to expand:
+The Offers page was "ground 0", followed by Events and Rooms. When ready to expand:
 
 1. ~~**Events Page**~~ - ✅ COMPLETE (18 fields)
-2. **About Page** - Mission statement, team bios
-3. **HOMA Page** - Menu descriptions, welcome text
-4. **Community Page** - Event descriptions
+2. ~~**Rooms Page**~~ - ✅ COMPLETE (23 fields)
+3. **About Page** - Mission statement, team bios
+4. **HOMA Page** - Menu descriptions, welcome text
+5. **Community Page** - Event descriptions
 
 **Process for each page:** See `RICH_TEXT_MIGRATION_PLAYBOOK.md` for the complete repeatable workflow.
 
@@ -108,7 +137,17 @@ The Offers page was "ground 0" and Events page is now complete. When ready to ex
 
 ### December 2024
 
-**Rich Text Implementation:**
+**Rich Text Implementation - Rooms Page:**
+- Implemented rich text for Rooms page (23 fields total)
+- Created migration script handling nested arrays (rooms[], faqItems[])
+- Updated 3 components: RoomsPageClient, RoomCard, RoomsFAQ
+- Evaluated sub-agent approach - documented findings below
+
+**Rich Text Implementation - Events Page:**
+- Implemented rich text for Events page (18 fields)
+- Updated 5 venue section components
+
+**Rich Text Implementation - Offers Page:**
 - Implemented rich text editing for Offers page per client request
 - Created reusable `RichTextRenderer` component
 - Documented migration process in SOPs (Lesson 12)
@@ -117,4 +156,76 @@ The Offers page was "ground 0" and Events page is now complete. When ready to ex
 **SOP Updates:**
 - Created `DEPLOYMENT_SOP.md` with GitHub deployment workflow
 - Removed outdated FTP deployment instructions
-- Added Lesson 11 (URL ground truth) and Lesson 12 (schema migrations)
+- Added Lesson 11-14 to SANITY_CMS_INTEGRATION_SOP.md
+- Created `RICH_TEXT_MIGRATION_PLAYBOOK.md`
+
+---
+
+## Sub-Agent Evaluation for Rich Text Migrations
+
+### Context
+When asked to evaluate using sub-agents for the rich text migration workflow, I assessed the feasibility of parallelizing the work.
+
+### Findings
+
+**Why Sub-Agents Were NOT Used for Rooms Page:**
+
+1. **Sequential Dependencies** - The 6-step process has hard dependencies:
+   - Data migration MUST complete before schema deployment
+   - Schema MUST deploy before components can be verified
+   - Build MUST pass before push
+
+2. **Shared Context Needed** - Each step informs the next:
+   - Audit identifies exact fields → migration script uses those fields
+   - Migration output confirms count → schema changes must match
+   - Schema structure → component interfaces must match
+
+3. **Error Recovery** - When something breaks, I need full context:
+   - If migration fails, need to understand which fields had issues
+   - If build fails, need to trace back to which component change caused it
+
+4. **Token Management** - The SANITY_API_TOKEN is sensitive:
+   - Better to have single context managing credentials
+   - Sub-agents would each need secure access
+
+### When Sub-Agents WOULD Help
+
+Sub-agents could parallelize these specific tasks:
+
+| Task | Sub-Agent Safe? | Why |
+|------|-----------------|-----|
+| **Audit multiple pages** | ✅ Yes | Independent schema reads |
+| **Generate migration scripts** | ✅ Yes | No side effects, template-based |
+| **Update multiple child components** | ✅ Yes | Independent file edits |
+| **Run migration + deploy** | ❌ No | Sequential, needs human oversight |
+| **Build verification** | ❌ No | Single process, needs context |
+
+### Recommended Approach for Future Migrations
+
+**For a single page (like Rooms):** Sequential execution is more efficient because:
+- Context switching overhead exceeds parallelization gains
+- Error debugging is simpler with full history
+- Total time ~30-45 minutes either way
+
+**For multiple pages at once (e.g., About + HOMA + Community):**
+```
+Phase 1 (Parallel - Sub-Agents):
+  - Agent 1: Audit About page schema
+  - Agent 2: Audit HOMA page schema
+  - Agent 3: Audit Community page schema
+
+Phase 2 (Parallel - Sub-Agents):
+  - Agent 1: Generate About migration script
+  - Agent 2: Generate HOMA migration script
+  - Agent 3: Generate Community migration script
+
+Phase 3 (Sequential - Main Agent):
+  - Run all migrations
+  - Deploy all schema changes
+  - Update all components
+  - Build and verify
+```
+
+### Conclusion
+
+The rich text migration process is **well-structured for sub-agents** but the current workload (one page at a time) doesn't benefit significantly. The playbook templates enable future parallelization when migrating 3+ pages simultaneously.
