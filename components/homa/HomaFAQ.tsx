@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
-import { buildFAQSchema } from '@/lib/utils/faq-schema';
 
 interface FAQ {
   question: string;
@@ -97,26 +96,6 @@ export default function HomaFAQ({ sectionTitle, sectionSubtitle, faqItems }: Hom
 
   // Show first 5 FAQs initially, or all if showAll is true
   const displayedFaqs = showAll ? faqs : faqs.slice(0, 5);
-
-  // Inject JSON-LD schema for SEO/AEO
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.text = JSON.stringify(buildFAQSchema(
-      faqs,
-      'https://kinshiplanding.com/homa',
-      'Homa Café + Bar FAQs'
-    ));
-    script.id = 'homa-faq-schema';
-    document.head.appendChild(script);
-
-    return () => {
-      const existingScript = document.getElementById('homa-faq-schema');
-      if (existingScript) {
-        document.head.removeChild(existingScript);
-      }
-    };
-  }, [faqs]);
 
   const toggleItem = (index: number) => {
     const newOpenItems = new Set(openItems);

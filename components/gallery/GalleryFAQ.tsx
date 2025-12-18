@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
-import { buildFAQSchema } from '@/lib/utils/faq-schema';
 
 interface FAQ {
   question: string;
@@ -84,26 +83,6 @@ export function GalleryFAQ({ sectionTitle, sectionSubtitle, faqItems }: GalleryF
 
   // Show first 5 FAQs initially, or all if showAll is true
   const displayedFaqs = showAll ? galleryFaqs : galleryFaqs.slice(0, 5);
-
-  // Inject JSON-LD schema for SEO/AEO
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.text = JSON.stringify(buildFAQSchema(
-      galleryFaqs,
-      'https://kinshiplanding.com/gallery',
-      'Kinship Landing Gallery FAQs'
-    ));
-    script.id = 'gallery-faq-schema';
-    document.head.appendChild(script);
-
-    return () => {
-      const existingScript = document.getElementById('gallery-faq-schema');
-      if (existingScript) {
-        document.head.removeChild(existingScript);
-      }
-    };
-  }, [galleryFaqs]);
 
   const toggleItem = (index: number) => {
     const newOpenItems = new Set(openItems);
