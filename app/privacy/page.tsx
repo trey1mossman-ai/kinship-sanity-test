@@ -10,6 +10,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: data?.seoTitle || 'Privacy Policy | Kinship Landing',
     description: data?.seoDescription || 'Learn how Kinship Landing protects your privacy and personal information.',
+    alternates: {
+      canonical: 'https://www.kinshiplanding.com/privacy',
+    },
   };
 }
 

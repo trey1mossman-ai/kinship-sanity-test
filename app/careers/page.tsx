@@ -57,6 +57,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: data?.seoTitle || 'Careers | Kinship Landing',
     description: data?.seoDescription || 'Join the Kinship Landing team in Colorado Springs. Work-life balance, career growth, and outrageous hospitality await.',
+    alternates: {
+      canonical: 'https://www.kinshiplanding.com/careers',
+    },
   };
 }
 

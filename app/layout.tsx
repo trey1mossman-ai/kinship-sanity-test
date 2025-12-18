@@ -170,8 +170,6 @@ export default function RootLayout({
         <meta name="theme-color" content="#647B56" />
         <meta name="format-detection" content="telephone=yes" />
 
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://www.kinshiplanding.com" />
 
         {/* Schema.org Structured Data - Hotel */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({

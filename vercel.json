@@ -1,0 +1,73 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "kinshiplanding.com" }],
+      "destination": "https://www.kinshiplanding.com/:path*",
+      "permanent": true
+    },
+
+    { "source": "/home", "destination": "/", "permanent": true },
+    { "source": "/teamresources", "destination": "/about", "permanent": true },
+    { "source": "/cookie-policy", "destination": "/privacy", "permanent": true },
+    { "source": "/hotel-policies", "destination": "/policies", "permanent": true },
+    { "source": "/privacy-policy", "destination": "/privacy", "permanent": true },
+    { "source": "/newsletter-sign-up", "destination": "/", "permanent": true },
+    { "source": "/covid", "destination": "/policies", "permanent": true },
+    { "source": "/faq", "destination": "/about", "permanent": true },
+    { "source": "/contact", "destination": "/about", "permanent": true },
+    { "source": "/$", "destination": "/", "permanent": true },
+
+    { "source": "/about/specials", "destination": "/offers", "permanent": true },
+    { "source": "/about/our-story", "destination": "/about", "permanent": true },
+    { "source": "/about/gallery", "destination": "/gallery", "permanent": true },
+    { "source": "/about/careers", "destination": "/careers", "permanent": true },
+    { "source": "/about/reviews", "destination": "/about", "permanent": true },
+    { "source": "/about/Press", "destination": "/about", "permanent": true },
+    { "source": "/about/press", "destination": "/about", "permanent": true },
+    { "source": "/about/contact", "destination": "/about", "permanent": true },
+    { "source": "/about/localinsight", "destination": "/explore", "permanent": true },
+    { "source": "/about/getoutdoors", "destination": "/explore", "permanent": true },
+    { "source": "/about/faq", "destination": "/about", "permanent": true },
+    { "source": "/about/welcome-writer", "destination": "/about", "permanent": true },
+
+    { "source": "/explore/eatseedo", "destination": "/explore", "permanent": true },
+    { "source": "/explore/eat-see-do", "destination": "/explore", "permanent": true },
+    { "source": "/explore/localinsight", "destination": "/explore", "permanent": true },
+    { "source": "/explore/local-lineup", "destination": "/explore", "permanent": true },
+    { "source": "/explore/dogfriendlyitinerary", "destination": "/explore", "permanent": true },
+    { "source": "/explore/getoutdoors", "destination": "/explore", "permanent": true },
+    { "source": "/explore/get-outdoors", "destination": "/explore", "permanent": true },
+    { "source": "/explore/sip-and-slurp", "destination": "/explore", "permanent": true },
+    { "source": "/explore/traveltips", "destination": "/explore", "permanent": true },
+    { "source": "/explore/experiences", "destination": "/explore", "permanent": true },
+    { "source": "/explore/Pet-Friendly", "destination": "/explore", "permanent": true },
+
+    { "source": "/events/weddings", "destination": "/events", "permanent": true },
+    { "source": "/events/takeover", "destination": "/events", "permanent": true },
+    { "source": "/events/kinship-events", "destination": "/events", "permanent": true },
+    { "source": "/events/KinshipEvents", "destination": "/events", "permanent": true },
+    { "source": "/events/host-an-event", "destination": "/events", "permanent": true },
+    { "source": "/events/host-an-", "destination": "/events", "permanent": true },
+    { "source": "/events/kinship-", "destination": "/events", "permanent": true },
+    { "source": "/events/event-inquiry", "destination": "/events", "permanent": true },
+
+    { "source": "/rooms/queen-suite", "destination": "/rooms", "permanent": true },
+    { "source": "/rooms/private-room-mountain-view", "destination": "/rooms", "permanent": true },
+    { "source": "/rooms/private-room-double", "destination": "/rooms", "permanent": true },
+    { "source": "/rooms/camp-deck", "destination": "/rooms", "permanent": true },
+    { "source": "/rooms/family-suite", "destination": "/rooms", "permanent": true },
+    { "source": "/rooms/junior-suites", "destination": "/rooms", "permanent": true },
+    { "source": "/rooms/luxury-suite-ada", "destination": "/rooms", "permanent": true },
+    { "source": "/rooms/suites", "destination": "/rooms", "permanent": true },
+    { "source": "/rooms/reserve-rooms", "destination": "/rooms", "permanent": true },
+    { "source": "/rooms/rooms", "destination": "/rooms", "permanent": true },
+
+    { "source": "/homa/our-menu", "destination": "/homa", "permanent": true },
+    { "source": "/homa.", "destination": "/homa", "permanent": true },
+
+    { "source": "/accommodation/room", "destination": "/rooms", "permanent": true },
+    { "source": "/accommodation/:path*", "destination": "/rooms", "permanent": true }
+  ],
+  "trailingSlash": false
+}

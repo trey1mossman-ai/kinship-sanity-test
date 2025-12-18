@@ -79,7 +79,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://kinshiplanding.com',
+    canonical: 'https://www.kinshiplanding.com',
   },
   verification: {
     google: '0oV-MEhRaBJ_PHbTZGXfXwVhT0tQZHq9pzACjYYzfaQ',
