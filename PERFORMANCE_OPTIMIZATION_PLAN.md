@@ -1,128 +1,146 @@
-# Kinship Website Performance Optimization Plan
+# Kinship Website Performance Optimization
 
-> **Created:** January 6, 2026
-> **Status:** In Progress
-> **Target:** 80+ Lighthouse Performance Score
-> **Constraint:** All CMS functionality must remain intact
+> **Created:** January 6, 2026  
+> **Status:** Complete  
+> **Target:** 80+ Performance Score ✅ ACHIEVED
 
 ---
 
-## Current State
+## Final Scores (January 6, 2026)
 
-| Date | Action | Score | Change |
-|------|--------|-------|--------|
-| Jan 6 (before) | Baseline | 56 | - |
-| Jan 6 (after video lazy-load) | Deployed to dev | 73 | +17 |
+| Tool | Score |
+|------|-------|
+| Google PageSpeed Insights | 84 |
+| GTmetrix | 88 |
+| Pingdom | 79 (may be cached) |
 
 **Dev Site:** https://mediumblue-chamois-837591.hostingersite.com/
-**Production:** https://www.kinshiplanding.com/ (separate deployment)
+
+---
+
+## Score Progression
+
+| Date | Action | Google Score | Change |
+|------|--------|--------------|--------|
+| Jan 6 | Baseline | 56 | - |
+| Jan 6 | Video lazy-load | 73 | +17 |
+| Jan 6 | Local image compression | 79 | +6 |
+| Jan 6 | Footer CLS fix | 82 | +3 |
+| Jan 6 | Sanity image transforms | 84 | +2 |
+
+**Total improvement: +28 points (56 → 84)**
 
 ---
 
 ## Completed Optimizations
 
-### 1. Hero Video Lazy Load (DONE - Jan 6, 2026)
+### 1. Hero Video Lazy Load
 
-**Problem:** 27.9 MB video from GHL loading immediately, blocking page render.
+**Problem:** 27.9 MB video from GHL loading immediately, blocking LCP.
 
-**Solution:** 
+**Solution:**
 - Added 2-second delay before video element renders
-- Changed preload from metadata to none
+- Changed `preload` from `metadata` to `none`
 - Poster image shows immediately for fast LCP
 
-**File Changed:** components/HeroEnhanced/BackgroundMedia.tsx
+**File:** `components/HeroEnhanced/BackgroundMedia.tsx`
 
-**Result:** 56 to 73 (+17 points)
-
-**CMS Impact:** None - video URL still comes from Sanity or fallback as before.
+**Result:** +17 points
 
 ---
 
-## Remaining Optimizations
+### 2. Local Image Compression
 
-### 2. Sanity Image Transforms (NOT STARTED)
+**Problem:** Oversized local images in `/public/`.
 
-**Problem:** 
-All Sanity images use raw URLs with no optimization. Example:
-- Image uploaded at 1920x1414
-- Displayed at 380x507
-- Full 1920px image downloaded anyway
-- No WebP/AVIF conversion
+**Changes:**
+- Pikes Peak texture: 2.7MB → 1.1MB (resized 4518w → 1200w)
+- 6 room/event images compressed to 800w (saved ~3.2MB total)
 
-Lighthouse identified 2.2 MB of wasted image bytes.
+**Files compressed:**
+- `public/textures/KL-Pikes-Peak-Topo-Map-Gray.webp`
+- `public/images/Rooms Page:section/Camp Deck/CampDeck-RichardSeldomridge (1)-optimized.webp`
+- `public/images/events-page/Weddings/event image-optimized.webp`
+- `public/images/events-page/The Yard/IMG_1494.webp`
+- `public/images/events-page/Meetings:Retreats/Kinship-4G3A9437-1 (1).webp`
+- `public/images/Rooms Page:section/King Suite/CityKingSuite-RichardSeldomridge (1) (1)-optimized.webp`
+- `public/images/Rooms Page:section/Mountain Jr. Queen/MountainJrQueenSuite-RichardSeldomridge-optimized.webp`
 
-**Solution:**
-Use Sanity image URL builder to add transform parameters.
+**Result:** +6 points
 
-BEFORE: https://cdn.sanity.io/images/.../abc123.jpg
-AFTER:  https://cdn.sanity.io/images/.../abc123.jpg?w=800&auto=format&q=80
+---
 
-**Implementation:**
+### 3. Footer Image CLS Fix
 
-1. Create lib/sanity/image.ts with urlForImage helper
-2. Update GROQ queries to return asset reference instead of raw URL
-3. Update components to use helper with width/format params
+**Problem:** Two footer images missing width/height attributes caused layout shift.
 
-**Why This Works:**
-- Sanity CDN processes images on-the-fly
-- Same image in database, optimized delivery via URL params
-- auto=format serves WebP to Chrome, AVIF to Safari
-- Responsive sizing means smaller downloads
+**Solution:** Added explicit dimensions:
+- `KL-Values-Badge-GREEN.webp`: width=160 height=161
+- `HOMA-at-Kinship-BLACK.webp`: width=160 height=66
 
-**CMS Impact:** 
-- Sanity Studio: No change
-- Schemas: No change
+**Files:** `components/Footer.tsx`, `components/FooterClient.tsx`
+
+**Result:** +3 points (improved CLS)
+
+---
+
+### 4. Sanity Image Transforms
+
+**Problem:** Sanity images served at full resolution without optimization.
+
+**Solution:** Created utility to append CDN transform params to Sanity URLs.
+
+**New Files:**
+- `lib/sanity/imageTransform.ts` - URL transform utility
+- `components/OptimizedImage.tsx` - Image wrapper with presets
+
+**Presets:**
+| Preset | Width | Quality | Use Case |
+|--------|-------|---------|----------|
+| hero | 1920 | 80 | Full-width hero images |
+| card | 800 | 80 | Room cards, grid items |
+| gallery | 1200 | 80 | Lightbox, galleries |
+| thumbnail | 400 | 75 | Small previews |
+| background | 1920 | 70 | Decorative backgrounds |
+
+**How it works:**
+```
+BEFORE: https://cdn.sanity.io/images/.../abc.jpg
+AFTER:  https://cdn.sanity.io/images/.../abc.jpg?w=800&auto=format&q=80
+```
+
+**Files updated:**
+- `components/home/RoomsGridSanity.tsx`
+- `app/gallery/GalleryPageClient.tsx`
+
+**Result:** +2 points
+
+---
+
+## CMS Impact
+
+**None.** All optimizations are code-side only:
+- Sanity Studio: No changes
+- Schemas: No changes
+- Client workflow: Unchanged
 - Existing content: No re-upload needed
-- Client workflow: Unchanged - future uploads auto-optimize
-
-**Expected Result:** Save 1-2 MB, gain 3-5 points (73 to 76-78)
+- Future uploads: Auto-optimized via CDN transforms
 
 ---
 
-### 3. Local Texture Optimization (NOT STARTED)
+## Remaining Opportunities
 
-**Problem:**
-/public/textures/KL-Pikes-Peak-Topo-Map-Gray.webp is 2.7 MB.
-This is a decorative background texture, not content the client manages.
-
-**Solution:**
-One-time compression using sharp at 75% quality.
-Target: 200-400 KB (same visual quality)
-
-**CMS Impact:** None - this is a local file, not in Sanity.
-
-**Expected Result:** Save 2+ MB, gain 2-4 points (76-78 to 78-82)
-
----
-
-## Projected Final Score
-
-| Optimization | Points Gained | Running Total |
-|--------------|---------------|---------------|
-| Baseline | - | 56 |
-| Video lazy-load | +17 | 73 |
-| Sanity image transforms | +3-5 | 76-78 |
-| Local texture compression | +2-4 | 78-82 |
-
-**Target of 80+ is achievable with these three optimizations.**
-
----
-
-## What Does NOT Need to Change
-
-- Sanity Studio interface
-- Sanity schemas
-- Existing CMS content
-- Client upload workflow
-- Any re-uploading of images
-
-All optimizations are code-side only. The CMS remains exactly as it is.
+| Issue | Potential Gain | Notes |
+|-------|----------------|-------|
+| Video compression | +5-10 | 27.9MB GHL video - needs external compression |
+| Legacy JavaScript | Minor | Next.js bundle optimization, diminishing returns |
+| Cache headers | Minor | Hostinger config, not code-side |
 
 ---
 
 ## Deployment Notes
 
-- This repo (sanity-hostinger-test) deploys to dev site only
-- Dev URL: https://mediumblue-chamois-837591.hostingersite.com/
-- Production (kinshiplanding.com) has a separate deployment process
-- Test all changes on dev before promoting to production
+- This repo deploys to **dev site only**
+- Dev: https://mediumblue-chamois-837591.hostingersite.com/
+- Production: https://www.kinshiplanding.com/ (separate deployment)
+- Sanity webhook triggers rebuild on content publish
