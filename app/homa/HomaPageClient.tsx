@@ -449,7 +449,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
 
                   {/* CTA Button - Anchored to bottom */}
                   <a
-                    href="https://document-tc.galaxy.tf/wdpdf-i5ynhwy6cvn23rwdb6ybfb0d/homa-cafe-bar_cms-document.pdf"
+                    href={homaData?.brunchMenuPdfUrl || "https://document-tc.galaxy.tf/wdpdf-i5ynhwy6cvn23rwdb6ybfb0d/homa-cafe-bar_cms-document.pdf"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center min-h-[48px] w-full px-6 py-3 text-base font-semibold transition-all duration-300 hover:scale-105 active:scale-95 mt-6"

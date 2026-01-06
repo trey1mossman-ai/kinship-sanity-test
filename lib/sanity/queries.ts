@@ -771,6 +771,7 @@ export interface HomaPage {
   brunchTime?: string
   brunchDescription?: string
   brunchCtaText?: string
+  brunchMenuPdfUrl?: string
   brunchImageUrl?: string
   eventsTitle?: string
   eventsBadge?: string
@@ -856,6 +857,7 @@ export async function getHomaPage(): Promise<HomaPage | null> {
     brunchTime,
     brunchDescription,
     brunchCtaText,
+    "brunchMenuPdfUrl": brunchMenuPdf.asset->url,
     "brunchImageUrl": brunchImage.asset->url,
     eventsTitle,
     eventsBadge,
