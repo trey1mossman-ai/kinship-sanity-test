@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { OptimizedImage } from '@/components/OptimizedImage';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from '@/components/icons';
@@ -279,8 +280,8 @@ function RoomCarousel({
                           }}
                           transition={{ duration: 0.6, ease: 'easeOut' }}
                         >
-                          <Image
-                            src={room.heroImage}
+                          <OptimizedImage
+                            src={room.heroImage} preset="card"
                             alt={room.name}
                             fill
                             className="object-cover"
@@ -501,8 +502,8 @@ function GalleryCarousel({
                         }}
                         transition={{ duration: 0.6, ease: 'easeOut' }}
                       >
-                        <Image
-                          src={galleryImages[currentIndex]}
+                        <OptimizedImage
+                          src={galleryImages[currentIndex]} preset="gallery"
                           alt={`${room.name} - Image ${currentIndex + 1}`}
                           fill
                           className="object-cover"

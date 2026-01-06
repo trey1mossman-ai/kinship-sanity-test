@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { OptimizedImage } from '@/components/OptimizedImage';
 import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 
@@ -240,8 +241,8 @@ export function GalleryPageClient({ galleryData }: GalleryPageClientProps) {
       {/* Hero Section */}
       <section className="relative min-h-[60vh] md:min-h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <Image
-            src={galleryData?.heroImageUrl || "/images/events-page/Make Kinship Yours/HomaNightlife-GregCeo.webp"}
+          <OptimizedImage
+            src={galleryData?.heroImageUrl || "/images/events-page/Make Kinship Yours/HomaNightlife-GregCeo.webp"} preset="hero"
             alt="Kinship Landing Gallery - Explore our spaces"
             fill
             className="object-cover"
@@ -390,8 +391,8 @@ export function GalleryPageClient({ galleryData }: GalleryPageClientProps) {
                   style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' }}
                   onClick={() => openLightbox(index)}
                 >
-                  <Image
-                    src={image.src}
+                  <OptimizedImage
+                    src={image.src} preset="card"
                     alt={image.alt}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -480,8 +481,8 @@ export function GalleryPageClient({ galleryData }: GalleryPageClientProps) {
               className="relative w-full h-full max-w-7xl max-h-[90vh] mx-4"
               onClick={(e) => e.stopPropagation()}
             >
-              <Image
-                src={filteredImages[lightboxIndex].src}
+              <OptimizedImage
+                src={filteredImages[lightboxIndex].src} preset="gallery"
                 alt={filteredImages[lightboxIndex].alt}
                 fill
                 className="object-contain"
