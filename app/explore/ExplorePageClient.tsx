@@ -1520,7 +1520,11 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
         </section>
 
         {/* FAQ Section */}
-        <ExploreFAQ />
+        <ExploreFAQ
+          sectionTitle={exploreData?.faqSectionTitle}
+          sectionSubtitle={exploreData?.faqSectionSubtitle}
+          faqItems={exploreData?.faqItems}
+        />
 
         {/* Newsletter */}
         <Newsletter />

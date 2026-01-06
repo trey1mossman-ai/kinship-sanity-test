@@ -280,6 +280,16 @@ export interface Homepage {
   mapCtaUrl?: string
 
   // SEO
+  // FAQ
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: Array<{
+    _key: string
+    question: string
+    answerShort: string
+    answerLong: string
+  }>
+
   seoTitle?: string
   seoDescription?: string | PortableTextBlock[]  // Rich text (Portable Text array)
 }
@@ -681,6 +691,16 @@ export interface RoomsPage {
   faqSectionSubtitle?: string
   faqItems?: RoomsPageFAQ[]
   // SEO
+  // FAQ
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: Array<{
+    _key: string
+    question: string
+    answerShort: string
+    answerLong: string
+  }>
+
   seoTitle?: string
   seoDescription?: string
 }
@@ -818,6 +838,16 @@ export interface HomaPage {
   loyaltyFineprint?: string
   loyaltyImageUrl?: string
   // SEO
+  // FAQ
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: Array<{
+    _key: string
+    question: string
+    answerShort: string
+    answerLong: string
+  }>
+
   seoTitle?: string
   seoDescription?: string
 }
@@ -940,6 +970,16 @@ export interface AboutPage {
   contactAddress?: string
   googleMapsUrl?: string
   // SEO
+  // FAQ
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: Array<{
+    _key: string
+    question: string
+    answerShort: string
+    answerLong: string
+  }>
+
   seoTitle?: string
   seoDescription?: string
 }
@@ -1061,6 +1101,16 @@ export interface ExplorePage {
   }>
 
   // SEO
+  // FAQ
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: Array<{
+    _key: string
+    question: string
+    answerShort: string
+    answerLong: string
+  }>
+
   seoTitle?: string
   seoDescription?: string
 }
@@ -1094,6 +1144,9 @@ export async function getExplorePage(): Promise<ExplorePage | null> {
     "desserts": desserts[]{ _key, name, description, distance, suggested, link, "imageUrl": image.asset->url },
     wellnessTitle,
     "wellness": wellness[]{ _key, name, description, link, "imageUrl": image.asset->url },
+    faqSectionTitle,
+    faqSectionSubtitle,
+    "faqItems": faqItems[]{ _key, question, answerShort, answerLong },
     seoTitle,
     seoDescription
   }`
@@ -1140,6 +1193,16 @@ export interface GalleryPage {
   faqSectionSubtitle?: string
   faqItems?: GalleryPageFAQ[]
   // SEO
+  // FAQ
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: Array<{
+    _key: string
+    question: string
+    answerShort: string
+    answerLong: string
+  }>
+
   seoTitle?: string
   seoDescription?: string
 }
@@ -1232,6 +1295,16 @@ export interface CareersPage {
   ctaButtonText?: string
   ctaButtonUrl?: string
   // SEO
+  // FAQ
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: Array<{
+    _key: string
+    question: string
+    answerShort: string
+    answerLong: string
+  }>
+
   seoTitle?: string
   seoDescription?: string
 }
@@ -1326,6 +1399,16 @@ export interface OffersPage {
   // Offers array with images
   offers?: OffersPageOffer[]
   // SEO
+  // FAQ
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: Array<{
+    _key: string
+    question: string
+    answerShort: string
+    answerLong: string
+  }>
+
   seoTitle?: string
   seoDescription?: string
 }
@@ -1384,6 +1467,16 @@ export interface CommunityPage {
   // Events
   events?: CommunityEvent[]
   // SEO
+  // FAQ
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: Array<{
+    _key: string
+    question: string
+    answerShort: string
+    answerLong: string
+  }>
+
   seoTitle?: string
   seoDescription?: string
 }
@@ -1436,6 +1529,16 @@ export interface PoliciesPage {
   contactEmail?: string
   contactPhone?: string
   // SEO
+  // FAQ
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: Array<{
+    _key: string
+    question: string
+    answerShort: string
+    answerLong: string
+  }>
+
   seoTitle?: string
   seoDescription?: string
 }
@@ -1479,6 +1582,16 @@ export interface PrivacyPage {
   contactPhone?: string
   contactAddress?: string
   // SEO
+  // FAQ
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: Array<{
+    _key: string
+    question: string
+    answerShort: string
+    answerLong: string
+  }>
+
   seoTitle?: string
   seoDescription?: string
 }
@@ -1525,6 +1638,16 @@ export interface AccessibilityPage {
   contactEmail?: string
   contactPhone?: string
   // SEO
+  // FAQ
+  faqSectionTitle?: string
+  faqSectionSubtitle?: string
+  faqItems?: Array<{
+    _key: string
+    question: string
+    answerShort: string
+    answerLong: string
+  }>
+
   seoTitle?: string
   seoDescription?: string
 }

@@ -4,6 +4,17 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
 
+interface ExploreFAQProps {
+  sectionTitle?: string;
+  sectionSubtitle?: string;
+  faqItems?: Array<{
+    _key: string;
+    question: string;
+    answerShort: string;
+    answerLong: string;
+  }>;
+}
+
 interface FAQ {
   question: string;
   answer_short: string;
@@ -78,12 +89,21 @@ const exploreFaqs: FAQ[] = [
   }
 ];
 
-export function ExploreFAQ() {
+export function ExploreFAQ({ sectionTitle, sectionSubtitle, faqItems }: ExploreFAQProps) {
   const [openItems, setOpenItems] = useState<Set<number>>(new Set());
   const [showAll, setShowAll] = useState(false);
 
+  // Use CMS data if available, otherwise fall back to hardcoded data
+  const faqs: FAQ[] = faqItems?.length
+    ? faqItems.map(item => ({
+        question: item.question,
+        answer_short: item.answerShort,
+        answer_long: item.answerLong
+      }))
+    : exploreFaqs;
+
   // Show first 5 FAQs initially, or all if showAll is true
-  const displayedFaqs = showAll ? exploreFaqs : exploreFaqs.slice(0, 5);
+  const displayedFaqs = showAll ? faqs : faqs.slice(0, 5);
 
   const toggleItem = (index: number) => {
     const newOpenItems = new Set(openItems);
@@ -240,7 +260,7 @@ export function ExploreFAQ() {
         </div>
 
         {/* Show More/Less Button - Blocky Design */}
-        {exploreFaqs.length > 5 && (
+        {faqs.length > 5 && (
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -265,7 +285,7 @@ export function ExploreFAQ() {
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              {showAll ? 'Show Less' : `Show All ${exploreFaqs.length} Questions`}
+              {showAll ? 'Show Less' : `Show All ${faqs.length} Questions`}
               <svg
                 className={`w-5 h-5 transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`}
                 fill="none"
