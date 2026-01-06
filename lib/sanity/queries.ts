@@ -230,7 +230,11 @@ export interface Homepage {
   eventsSectionSubtitle?: string
   eventsCtaText?: string
   eventsCtaUrl?: string
+  greenhausName?: string
+  greenhausCapacity?: string
   greenhausCarouselImages?: string[]
+  yardName?: string
+  yardCapacity?: string
   yardCarouselImages?: string[]
 
   // HOMA Café Section
@@ -320,7 +324,11 @@ export async function getHomepage(): Promise<Homepage | null> {
     eventsSectionSubtitle,
     eventsCtaText,
     eventsCtaUrl,
+    greenhausName,
+    greenhausCapacity,
     "greenhausCarouselImages": greenhausCarouselImages[].asset->url,
+    yardName,
+    yardCapacity,
     "yardCarouselImages": yardCarouselImages[].asset->url,
 
     // HOMA Section

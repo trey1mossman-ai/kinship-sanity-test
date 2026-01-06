@@ -175,7 +175,11 @@ export default async function HomePage() {
           subtitle={homepageData?.eventsSectionSubtitle}
           ctaText={homepageData?.eventsCtaText}
           ctaUrl={homepageData?.eventsCtaUrl}
+          greenhausName={homepageData?.greenhausName}
+          greenhausCapacity={homepageData?.greenhausCapacity}
           greenhausCarouselImages={homepageData?.greenhausCarouselImages}
+          yardName={homepageData?.yardName}
+          yardCapacity={homepageData?.yardCapacity}
           yardCarouselImages={homepageData?.yardCarouselImages}
         />
 

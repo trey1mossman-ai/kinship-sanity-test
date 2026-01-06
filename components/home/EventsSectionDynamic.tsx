@@ -11,7 +11,11 @@ interface EventsSectionDynamicProps {
   subtitle?: string;
   ctaText?: string;
   ctaUrl?: string;
+  greenhausName?: string;
+  greenhausCapacity?: string;
   greenhausCarouselImages?: string[];
+  yardName?: string;
+  yardCapacity?: string;
   yardCarouselImages?: string[];
 }
 
@@ -26,7 +30,11 @@ export function EventsSectionDynamic({
   subtitle,
   ctaText,
   ctaUrl,
+  greenhausName,
+  greenhausCapacity,
   greenhausCarouselImages,
+  yardName,
+  yardCapacity,
   yardCarouselImages
 }: EventsSectionDynamicProps) {
   // Use Sanity data if available, otherwise fallback to hardcoded
@@ -90,8 +98,8 @@ export function EventsSectionDynamic({
   const venues = [
     {
       id: 'greenhaus',
-      name: 'GreenHaus',
-      capacity: '80',
+      name: greenhausName || 'GreenHaus',
+      capacity: greenhausCapacity?.replace(/\D/g, '') || '80',
       image: '/images/home/green-haus.webp',
       href: '/events#greenhaus',
       position: 'left',
@@ -99,8 +107,8 @@ export function EventsSectionDynamic({
     },
     {
       id: 'the-yard',
-      name: 'The Yard',
-      capacity: '200',
+      name: yardName || 'The Yard',
+      capacity: yardCapacity?.replace(/\D/g, '') || '200',
       image: '/images/home/kinship yard.webp',
       href: '/events#the-yard',
       position: 'right',
