@@ -216,7 +216,10 @@ export default async function HomePage() {
         </section>
 
         {/* 8. FAQs */}
-        <FAQSection />
+        <FAQSection 
+          sectionTitle={homepageData?.faqSectionTitle}
+          faqItems={homepageData?.faqItems}
+        />
 
         {/* 9. Location Map */}
         <MapBlock

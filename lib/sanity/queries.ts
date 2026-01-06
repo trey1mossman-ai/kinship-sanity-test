@@ -237,6 +237,15 @@ export interface Homepage {
   yardCapacity?: string
   yardCarouselImages?: string[]
 
+  // FAQ Section
+  faqSectionTitle?: string
+  faqItems?: {
+    id: string
+    question: string
+    answerShort: string
+    answerLong: string
+  }[]
+
   // HOMA Café Section
   homaBackgroundImageUrl?: string
   homaLogoImageUrl?: string
@@ -330,6 +339,15 @@ export async function getHomepage(): Promise<Homepage | null> {
     yardName,
     yardCapacity,
     "yardCarouselImages": yardCarouselImages[].asset->url,
+
+    // FAQ Section
+    faqSectionTitle,
+    faqItems[] {
+      id,
+      question,
+      answerShort,
+      answerLong
+    },
 
     // HOMA Section
     "homaBackgroundImageUrl": homaBackgroundImage.asset->url,

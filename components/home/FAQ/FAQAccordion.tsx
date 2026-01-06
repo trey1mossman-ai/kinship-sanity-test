@@ -3,9 +3,30 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
-import { faqs } from './faq-data';
+import { faqs as fallbackFaqs } from './faq-data';
 
-export function FAQAccordion() {
+interface FAQAccordionProps {
+  sectionTitle?: string;
+  faqItems?: {
+    id: string;
+    question: string;
+    answerShort: string;
+    answerLong: string;
+  }[];
+}
+
+export function FAQAccordion({ sectionTitle, faqItems }: FAQAccordionProps) {
+  // Use CMS data if available, otherwise fallback to hardcoded
+  const faqs = faqItems?.length ? faqItems.map(item => ({
+    id: item.id,
+    question: item.question,
+    answer_short: item.answerShort,
+    answer_long: item.answerLong,
+    updated_at: '',
+    sources: []
+  })) : fallbackFaqs;
+  
+  const displayTitle = sectionTitle || 'Frequently Asked Questions';
   const [openItems, setOpenItems] = useState<Set<number>>(new Set());
   const [showAll, setShowAll] = useState(false);
 
@@ -68,7 +89,7 @@ export function FAQAccordion() {
               color: KINSHIP_COLORS.greenDark,
             }}
           >
-            Frequently Asked Questions
+            {displayTitle}
           </h2>
           <p
             className="text-lg"
