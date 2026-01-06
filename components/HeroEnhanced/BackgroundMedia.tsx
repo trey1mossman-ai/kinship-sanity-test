@@ -20,6 +20,7 @@ export function BackgroundMedia({
 }: BackgroundMediaProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [loadVideo, setLoadVideo] = useState(false);
 
   useEffect(() => {
     // Check for mobile and reduced motion preferences
@@ -35,9 +36,13 @@ export function BackgroundMedia({
     window.addEventListener('resize', handleResize);
     mediaQuery.addEventListener('change', handleMotionChange);
 
+    // Delay video loading to prioritize poster image for LCP
+    const videoTimer = setTimeout(() => setLoadVideo(true), 2000);
+
     return () => {
       window.removeEventListener('resize', handleResize);
       mediaQuery.removeEventListener('change', handleMotionChange);
+      clearTimeout(videoTimer);
     };
   }, []);
 
@@ -56,18 +61,20 @@ export function BackgroundMedia({
             sizes="100vw"
           />
         )}
-        {/* Video loads after, overlays on top when ready */}
+        {/* Video loads after 2s delay, overlays on top when ready */}
+        {loadVideo && (
         <video
           autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
-          poster={fallback}
+          preload="none"
+          
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src={source} type="video/mp4" />
         </video>
+        )}
         {overlay && (
           <div
             className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/30"
