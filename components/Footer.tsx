@@ -182,7 +182,7 @@ export function Footer({ variant = 'default', siteSettings }: FooterProps) {
               <div>
               <Link href="/" className="inline-block transition-opacity hover:opacity-80 mb-6">
                 <img
-                  src="/brand/KL-Values-Badge-GREEN.webp"
+                  src="/brand/KL-Values-Badge-GREEN.webp" width={160} height={161}
                   alt="Kinship Landing"
                   className="w-40 h-auto object-contain mx-auto md:mx-0"
                 />
@@ -263,7 +263,7 @@ export function Footer({ variant = 'default', siteSettings }: FooterProps) {
               <div>
               <Link href="/homa" className="inline-block transition-opacity hover:opacity-80 mb-6">
                 <img
-                  src="/brand/HOMA-at-Kinship-BLACK.webp"
+                  src="/brand/HOMA-at-Kinship-BLACK.webp" width={160} height={66}
                   alt="HOMA Café + Bar"
                   className="w-40 h-auto object-contain mx-auto md:mx-0"
                 />
