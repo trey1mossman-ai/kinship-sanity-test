@@ -1466,6 +1466,9 @@ export interface CommunityPage {
   description?: string
   // Events
   events?: CommunityEvent[]
+  // No Events Message (shown when events array is empty)
+  noEventsTitle?: string
+  noEventsMessage?: string
   // SEO
   // FAQ
   faqSectionTitle?: string
@@ -1500,6 +1503,8 @@ export async function getCommunityPage(): Promise<CommunityPage | null> {
       buttonText,
       isActive
     },
+    noEventsTitle,
+    noEventsMessage,
     seoTitle,
     seoDescription
   }`
