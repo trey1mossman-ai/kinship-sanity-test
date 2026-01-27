@@ -1,6 +1,6 @@
 # PROGRESS LOG
 
-> **Last Updated:** 2026-01-06
+> **Last Updated:** 2026-01-27
 > **Project:** Kinship Landing Website - Sanity CMS Integration
 
 ---
@@ -15,6 +15,28 @@
 ---
 
 ## Session Log
+
+### 2026-01-27
+**Focus:** SEO Fixes - 301 Redirects and Canonical Handling
+
+**Completed:**
+- Fixed 35+ server 500 errors from old URL structure
+- Converted 55+ redirects from vercel.json (Vercel format) to Apache RewriteRules
+- Added canonical handling for tracking parameters (?wwpath=, ?gclid=, utm_*, fbclid)
+- Added www canonicalization (non-www → www)
+- Updated GitHub Actions workflow to copy .htaccess-production instead of generating new one
+- Deployed and verified all redirects working live
+
+**Files Changed:**
+.htaccess-production - Added all redirect rules and canonical handling
+.github/workflows/deploy-hostinger.yml - Updated to use .htaccess-production
+
+**Notes:**
+- Root cause: Redirects were in vercel.json but site runs on Apache/Hostinger
+- Lauren notified via email with Hostinger credentials, GTM tags, and SEO report
+- Lauren needs to request revalidation in Google Search Console
+
+---
 
 ### 2026-01-06
 **Focus:** Performance Optimization
