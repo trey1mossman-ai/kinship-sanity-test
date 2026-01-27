@@ -1,23 +1,123 @@
 # =============================================================================
 # KINSHIP LANDING - HOSTINGER PRODUCTION .htaccess
 # Performance-optimized Apache configuration for static Next.js export
+# Updated: 2026-01-27 - Added all 301 redirects and canonical handling
 # =============================================================================
 
 # ------------------------------------------------------------------------------
-# | HTTPS Redirect                                                             |
+# | HTTPS & WWW Redirect (FIRST - Most Important)                              |
 # ------------------------------------------------------------------------------
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    RewriteBase /
 
     # Force HTTPS
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-    # Remove trailing slashes (optional, for clean URLs)
+    # Force WWW (non-www to www)
+    RewriteCond %{HTTP_HOST} ^kinshiplanding\.com$ [NC]
+    RewriteRule ^(.*)$ https://www.kinshiplanding.com/$1 [L,R=301]
+
+    # Remove trailing slashes (for clean URLs)
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# | CANONICAL HANDLING - Strip tracking parameters from URLs                   |
+# | Handles ?wwpath= (TheKnot referrals) and ?gclid= (Google Ads tracking)     |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+    # Strip ?wwpath= parameter (TheKnot referrals) - redirect to clean canonical
+    RewriteCond %{QUERY_STRING} ^wwpath= [NC]
+    RewriteRule ^(.*)$ /$1? [R=301,L]
+
+    # Strip ?gclid= parameter (Google Ads) - redirect to clean canonical
+    RewriteCond %{QUERY_STRING} ^gclid= [NC]
+    RewriteRule ^(.*)$ /$1? [R=301,L]
+
+    # Strip any query string that starts with tracking params
+    RewriteCond %{QUERY_STRING} ^(wwpath|gclid|utm_source|utm_medium|utm_campaign|fbclid)= [NC]
+    RewriteRule ^(.*)$ /$1? [R=301,L]
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# | 301 REDIRECTS - Old URL Structure to New (SEO Critical)                    |
+# | Converted from vercel.json - All permanent 301 redirects                   |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+    # === ROOT LEVEL REDIRECTS ===
+    RewriteRule ^home$ / [R=301,L]
+    RewriteRule ^teamresources$ /about [R=301,L]
+    RewriteRule ^cookie-policy$ /privacy [R=301,L]
+    RewriteRule ^hotel-policies$ /policies [R=301,L]
+    RewriteRule ^privacy-policy$ /privacy [R=301,L]
+    RewriteRule ^newsletter-sign-up$ / [R=301,L]
+    RewriteRule ^covid$ /policies [R=301,L]
+    RewriteRule ^faq$ /about [R=301,L]
+    RewriteRule ^contact$ /about [R=301,L]
+
+    # === ABOUT SECTION REDIRECTS ===
+    RewriteRule ^about/specials$ /offers [R=301,L]
+    RewriteRule ^about/our-story$ /about [R=301,L]
+    RewriteRule ^about/gallery$ /gallery [R=301,L]
+    RewriteRule ^about/careers$ /careers [R=301,L]
+    RewriteRule ^about/reviews$ /about [R=301,L]
+    RewriteRule ^about/Press$ /about [R=301,L]
+    RewriteRule ^about/press$ /about [R=301,L]
+    RewriteRule ^about/contact$ /about [R=301,L]
+    RewriteRule ^about/localinsight$ /explore [R=301,L]
+    RewriteRule ^about/getoutdoors$ /explore [R=301,L]
+    RewriteRule ^about/faq$ /about [R=301,L]
+    RewriteRule ^about/welcome-writer$ /about [R=301,L]
+
+    # === EXPLORE SECTION REDIRECTS ===
+    RewriteRule ^explore/eatseedo$ /explore [R=301,L]
+    RewriteRule ^explore/eat-see-do$ /explore [R=301,L]
+    RewriteRule ^explore/localinsight$ /explore [R=301,L]
+    RewriteRule ^explore/local-lineup$ /explore [R=301,L]
+    RewriteRule ^explore/dogfriendlyitinerary$ /explore [R=301,L]
+    RewriteRule ^explore/getoutdoors$ /explore [R=301,L]
+    RewriteRule ^explore/get-outdoors$ /explore [R=301,L]
+    RewriteRule ^explore/sip-and-slurp$ /explore [R=301,L]
+    RewriteRule ^explore/traveltips$ /explore [R=301,L]
+    RewriteRule ^explore/experiences$ /explore [R=301,L]
+    RewriteRule ^explore/Pet-Friendly$ /explore [R=301,L]
+
+    # === EVENTS SECTION REDIRECTS ===
+    RewriteRule ^events/weddings$ /events [R=301,L]
+    RewriteRule ^events/takeover$ /events [R=301,L]
+    RewriteRule ^events/kinship-events$ /events [R=301,L]
+    RewriteRule ^events/KinshipEvents$ /events [R=301,L]
+    RewriteRule ^events/host-an-event$ /events [R=301,L]
+    RewriteRule ^events/host-an-$ /events [R=301,L]
+    RewriteRule ^events/kinship-$ /events [R=301,L]
+    RewriteRule ^events/event-inquiry$ /events [R=301,L]
+
+    # === ROOMS SECTION REDIRECTS ===
+    RewriteRule ^rooms/queen-suite$ /rooms [R=301,L]
+    RewriteRule ^rooms/private-room-mountain-view$ /rooms [R=301,L]
+    RewriteRule ^rooms/private-room-double$ /rooms [R=301,L]
+    RewriteRule ^rooms/camp-deck$ /rooms [R=301,L]
+    RewriteRule ^rooms/family-suite$ /rooms [R=301,L]
+    RewriteRule ^rooms/junior-suites$ /rooms [R=301,L]
+    RewriteRule ^rooms/luxury-suite-ada$ /rooms [R=301,L]
+    RewriteRule ^rooms/suites$ /rooms [R=301,L]
+    RewriteRule ^rooms/reserve-rooms$ /rooms [R=301,L]
+    RewriteRule ^rooms/rooms$ /rooms [R=301,L]
+
+    # === HOMA SECTION REDIRECTS ===
+    RewriteRule ^homa/our-menu$ /homa [R=301,L]
+    RewriteRule ^homa\.$ /homa [R=301,L]
+
+    # === ACCOMMODATION REDIRECTS (Catch-all for old structure) ===
+    RewriteRule ^accommodation/room$ /rooms [R=301,L]
+    RewriteRule ^accommodation/(.*)$ /rooms [R=301,L]
 </IfModule>
 
 # ------------------------------------------------------------------------------
@@ -25,7 +125,6 @@
 # ------------------------------------------------------------------------------
 
 <IfModule mod_deflate.c>
-    # Enable compression for text-based files
     AddOutputFilterByType DEFLATE text/html
     AddOutputFilterByType DEFLATE text/css
     AddOutputFilterByType DEFLATE text/javascript
@@ -43,20 +142,16 @@
     AddOutputFilterByType DEFLATE font/opentype
     AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
     AddOutputFilterByType DEFLATE application/x-font-ttf
-
-    # Don't compress images (already compressed)
     SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|webp|avif)$ no-gzip dont-vary
 </IfModule>
 
 # ------------------------------------------------------------------------------
-# | Browser Caching - AGGRESSIVE FOR PERFORMANCE                               |
+# | Browser Caching                                                            |
 # ------------------------------------------------------------------------------
 
 <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresDefault "access plus 1 month"
-
-    # IMAGES - 1 year cache (immutable, versioned)
     ExpiresByType image/webp "access plus 1 year"
     ExpiresByType image/avif "access plus 1 year"
     ExpiresByType image/jpeg "access plus 1 year"
@@ -65,8 +160,6 @@
     ExpiresByType image/gif "access plus 1 year"
     ExpiresByType image/svg+xml "access plus 1 year"
     ExpiresByType image/x-icon "access plus 1 year"
-
-    # FONTS - 1 year cache
     ExpiresByType font/woff "access plus 1 year"
     ExpiresByType font/woff2 "access plus 1 year"
     ExpiresByType font/ttf "access plus 1 year"
@@ -76,77 +169,47 @@
     ExpiresByType application/font-woff2 "access plus 1 year"
     ExpiresByType application/x-font-woff "access plus 1 year"
     ExpiresByType application/x-font-ttf "access plus 1 year"
-
-    # CSS & JAVASCRIPT - 1 year cache (Next.js hashes filenames)
     ExpiresByType text/css "access plus 1 year"
     ExpiresByType text/javascript "access plus 1 year"
     ExpiresByType application/javascript "access plus 1 year"
     ExpiresByType application/x-javascript "access plus 1 year"
-
-    # VIDEOS - 1 year cache
     ExpiresByType video/mp4 "access plus 1 year"
     ExpiresByType video/webm "access plus 1 year"
     ExpiresByType video/ogg "access plus 1 year"
-
-    # HTML - Short cache (1 hour) for content updates
     ExpiresByType text/html "access plus 1 hour"
-
-    # JSON/XML - 1 week cache
     ExpiresByType application/json "access plus 1 week"
     ExpiresByType application/xml "access plus 1 week"
     ExpiresByType text/xml "access plus 1 week"
-
-    # MANIFEST & SERVICE WORKER - No cache
     ExpiresByType application/manifest+json "access plus 0 seconds"
-    <FilesMatch "^(sw|service-worker)\.js$">
-        ExpiresDefault "access plus 0 seconds"
-    </FilesMatch>
 </IfModule>
 
 # ------------------------------------------------------------------------------
-# | Cache-Control Headers - MAXIMUM PERFORMANCE                                |
+# | Cache-Control & Security Headers                                           |
 # ------------------------------------------------------------------------------
 
 <IfModule mod_headers.c>
-    # Remove ETags (we use Cache-Control instead)
     Header unset ETag
     FileETag None
-
-    # IMAGES - Immutable, public, 1 year
     <FilesMatch "\.(webp|avif|jpg|jpeg|png|gif|svg|ico)$">
         Header set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
-
-    # FONTS - Immutable, public, 1 year
     <FilesMatch "\.(woff|woff2|ttf|otf|eot)$">
         Header set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
-
-    # CSS & JS - Immutable, public, 1 year (Next.js versioned)
     <FilesMatch "\.(css|js)$">
         Header set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
-
-    # VIDEOS - Public, 1 year
     <FilesMatch "\.(mp4|webm|ogg)$">
         Header set Cache-Control "public, max-age=31536000"
     </FilesMatch>
-
-    # HTML - Public, must-revalidate, short cache
     <FilesMatch "\.(html|htm)$">
         Header set Cache-Control "public, max-age=3600, must-revalidate"
     </FilesMatch>
-
-    # Security Headers
     Header always set X-Content-Type-Options "nosniff"
     Header always set X-Frame-Options "SAMEORIGIN"
     Header always set X-XSS-Protection "1; mode=block"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
-
-    # Permissions Policy (formerly Feature Policy)
     Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
-
-    # CORS for fonts and images (if using CDN)
     <FilesMatch "\.(woff|woff2|ttf|otf|eot|webp|avif)$">
         Header set Access-Control-Allow-Origin "*"
     </FilesMatch>
@@ -157,128 +220,56 @@
 # ------------------------------------------------------------------------------
 
 <IfModule mod_mime.c>
-    # Images
     AddType image/webp .webp
     AddType image/avif .avif
     AddType image/svg+xml .svg .svgz
-
-    # Fonts
     AddType font/woff .woff
     AddType font/woff2 .woff2
     AddType font/ttf .ttf
     AddType font/otf .otf
     AddType font/eot .eot
-
-    # JavaScript
     AddType text/javascript .js .mjs
     AddType application/javascript .js .mjs
-
-    # JSON
     AddType application/json .json
     AddType application/manifest+json .webmanifest
-
-    # Video
     AddType video/mp4 .mp4
     AddType video/webm .webm
-
-    # Text
     AddType text/css .css
     AddType text/html .html .htm
     AddType text/plain .txt
-
-    # Encoding for compressed files
     AddEncoding gzip .svgz
 </IfModule>
 
 # ------------------------------------------------------------------------------
-# | Performance Optimizations                                                  |
+# | Performance & Security                                                     |
 # ------------------------------------------------------------------------------
 
-# Disable directory browsing
 Options -Indexes
-
-# Follow symbolic links (if needed)
 Options +FollowSymLinks
 
-# Protect sensitive files
 <FilesMatch "\.(htaccess|htpasswd|ini|log|sh|sql|git)$">
     Order allow,deny
     Deny from all
 </FilesMatch>
 
-# Disable server signature
 ServerSignature Off
 
 # ------------------------------------------------------------------------------
-# | Image Optimization Headers                                                 |
-# ------------------------------------------------------------------------------
-
-<IfModule mod_headers.c>
-    # Enable WebP/AVIF support detection
-    # Browsers that support these formats will get optimized versions
-
-    # Vary header for image negotiation
-    <FilesMatch "\.(webp|avif|jpg|jpeg|png)$">
-        Header append Vary Accept
-    </FilesMatch>
-
-    # Preconnect hints for external resources (Google Fonts, CDNs)
-    <FilesMatch "\.html$">
-        Header add Link "<https://fonts.googleapis.com>; rel=preconnect; crossorigin"
-        Header add Link "<https://fonts.gstatic.com>; rel=preconnect; crossorigin"
-    </FilesMatch>
-</IfModule>
-
-# ------------------------------------------------------------------------------
-# | Next.js Static Export Routing                                             |
+# | Next.js Static Export Routing (MUST BE LAST)                              |
 # ------------------------------------------------------------------------------
 
 <IfModule mod_rewrite.c>
-    RewriteEngine On
-
-    # Serve .html files without extension (Next.js clean URLs)
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME}.html -f
     RewriteRule ^(.+)$ $1.html [L]
 
-    # Redirect to index.html for SPA-like behavior
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} !^/api
     RewriteRule ^ index.html [L]
 </IfModule>
 
-# ------------------------------------------------------------------------------
-# | PRIORITY RESOURCE HINTS (Critical Path Optimization)                      |
-# ------------------------------------------------------------------------------
-
-<IfModule mod_headers.c>
-    # Preload critical hero images (adjust paths as needed)
-    <FilesMatch "index\.html$">
-        # Homepage uses video hero with fallback - no static hero image to preload
-        # Header add Link "</images/HomePage/event image-optimized.webp>; rel=preload; as=image"
-
-        # Critical fonts (if using)
-        # Header add Link "</fonts/utopia-std-display.woff2>; rel=preload; as=font; type=font/woff2; crossorigin"
-    </FilesMatch>
-</IfModule>
-
 # =============================================================================
-# END OF CONFIGURATION
-#
-# This configuration provides:
-# ✅ Aggressive browser caching (1 year for static assets)
-# ✅ GZIP compression for all text-based files
-# ✅ Security headers (XSS, clickjacking protection)
-# ✅ Image optimization with immutable caching
-# ✅ HTTPS enforcement
-# ✅ Clean URL support for Next.js static export
-# ✅ CDN-ready with proper CORS headers
-#
-# Expected performance gains:
-# - 80%+ reduction in server requests (cached assets)
-# - 60%+ reduction in page load time
-# - Perfect scores on Google PageSpeed Insights
-# - A+ rating on GTmetrix
+# END - Updated 2026-01-27 with 55+ redirects and canonical handling
 # =============================================================================

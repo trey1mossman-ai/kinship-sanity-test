@@ -35,8 +35,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -59,58 +59,15 @@ jobs:
 
       - name: Clean state files (remove unnecessary build artifacts)
         run: |
-          find out -name '*.build-manifest.json' -delete
-          find out -name '*.app-build-manifest.json' -delete
+          find out -name "*.build-manifest.json" -delete
+          find out -name "*.app-build-manifest.json" -delete
           echo "✅ Cleaned state files"
 
-      - name: Create .htaccess for Hostinger
+      - name: Copy production .htaccess
         run: |
-          cat > out/.htaccess << 'EOF'
-          # Kinship Landing - Apache Configuration for Hostinger
-
-          # Enable Gzip compression
-          <IfModule mod_deflate.c>
-            AddOutputFilterByType DEFLATE text/html text/css text/javascript
-            AddOutputFilterByType DEFLATE application/javascript application/json
-          </IfModule>
-
-          # Handle Next.js static export routing
-          <IfModule mod_rewrite.c>
-            RewriteEngine On
-            RewriteBase /
-
-            # Serve existing files and directories as-is
-            RewriteCond %{REQUEST_FILENAME} !-f
-            RewriteCond %{REQUEST_FILENAME} !-d
-
-            # For requests without extension, try adding .html
-            RewriteCond %{REQUEST_FILENAME}.html -f
-            RewriteRule ^(.*)$ $1.html [L]
-
-            # If still not found and it's not a file request, serve index.html
-            RewriteCond %{REQUEST_FILENAME} !-f
-            RewriteCond %{REQUEST_FILENAME} !-d
-            RewriteRule ^(.*)$ /index.html [L]
-          </IfModule>
-
-          # Cache static assets
-          <IfModule mod_expires.c>
-            ExpiresActive On
-            ExpiresByType image/webp "access plus 1 year"
-            ExpiresByType image/avif "access plus 1 year"
-            ExpiresByType image/jpeg "access plus 1 year"
-            ExpiresByType image/png "access plus 1 year"
-            ExpiresByType text/css "access plus 1 month"
-            ExpiresByType application/javascript "access plus 1 month"
-          </IfModule>
-
-          # Security headers
-          <IfModule mod_headers.c>
-            Header set X-Content-Type-Options "nosniff"
-            Header set X-Frame-Options "SAMEORIGIN"
-          </IfModule>
-          EOF
-          echo "✅ .htaccess created with routing and caching rules"
+          # Use the comprehensive .htaccess-production file with all redirects
+          cp .htaccess-production out/.htaccess
+          echo "✅ Copied .htaccess-production with 55+ redirects and canonical handling"
 
       - name: Deploy to deploy branch
         run: |
@@ -129,7 +86,7 @@ jobs:
 
           # Remove all files except .git directory
           echo "🧹 Cleaning deploy branch..."
-          find . -maxdepth 1 ! -name '.git' ! -name '.' -exec rm -rf {} +
+          find . -maxdepth 1 ! -name ".git" ! -name "." -exec rm -rf {} +
 
           # Copy new build files
           echo "📋 Copying new build..."
@@ -166,6 +123,6 @@ jobs:
           echo ""
           echo "⏳ NEXT STEPS:"
           echo "1. Hostinger will auto-pull within 1-5 minutes"
-          echo "2. Check site: https://mediumblue-chamois-837591.hostingersite.com/"
+          echo "2. Check site: https://www.kinshiplanding.com/"
           echo ""
           echo "================================================"
