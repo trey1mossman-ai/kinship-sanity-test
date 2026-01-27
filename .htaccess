@@ -1,43 +1,275 @@
-# Kinship Landing - Apache Configuration for Hostinger
+# =============================================================================
+# KINSHIP LANDING - HOSTINGER PRODUCTION .htaccess
+# Performance-optimized Apache configuration for static Next.js export
+# Updated: 2026-01-27 - Added all 301 redirects and canonical handling
+# =============================================================================
 
-# Enable Gzip compression
-<IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/css text/javascript
-  AddOutputFilterByType DEFLATE application/javascript application/json
-</IfModule>
+# ------------------------------------------------------------------------------
+# | HTTPS & WWW Redirect (FIRST - Most Important)                              |
+# ------------------------------------------------------------------------------
 
-# Handle Next.js static export routing
 <IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
+    RewriteEngine On
+    RewriteBase /
 
-  # Serve existing files and directories as-is
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
+    # Force HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # For requests without extension, try adding .html
-  RewriteCond %{REQUEST_FILENAME}.html -f
-  RewriteRule ^(.*)$ $1.html [L]
+    # Force WWW (non-www to www)
+    RewriteCond %{HTTP_HOST} ^kinshiplanding\.com$ [NC]
+    RewriteRule ^(.*)$ https://www.kinshiplanding.com/$1 [L,R=301]
 
-  # If still not found and it's not a file request, serve index.html
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^(.*)$ /index.html [L]
+    # Remove trailing slashes (for clean URLs)
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
 </IfModule>
 
-# Cache static assets
+# ------------------------------------------------------------------------------
+# | CANONICAL HANDLING - Strip tracking parameters from URLs                   |
+# | Handles ?wwpath= (TheKnot referrals) and ?gclid= (Google Ads tracking)     |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+    # Strip ?wwpath= parameter (TheKnot referrals) - redirect to clean canonical
+    RewriteCond %{QUERY_STRING} ^wwpath= [NC]
+    RewriteRule ^(.*)$ /$1? [R=301,L]
+
+    # Strip ?gclid= parameter (Google Ads) - redirect to clean canonical
+    RewriteCond %{QUERY_STRING} ^gclid= [NC]
+    RewriteRule ^(.*)$ /$1? [R=301,L]
+
+    # Strip any query string that starts with tracking params
+    RewriteCond %{QUERY_STRING} ^(wwpath|gclid|utm_source|utm_medium|utm_campaign|fbclid)= [NC]
+    RewriteRule ^(.*)$ /$1? [R=301,L]
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# | 301 REDIRECTS - Old URL Structure to New (SEO Critical)                    |
+# | Converted from vercel.json - All permanent 301 redirects                   |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+    # === ROOT LEVEL REDIRECTS ===
+    RewriteRule ^home$ / [R=301,L]
+    RewriteRule ^teamresources$ /about [R=301,L]
+    RewriteRule ^cookie-policy$ /privacy [R=301,L]
+    RewriteRule ^hotel-policies$ /policies [R=301,L]
+    RewriteRule ^privacy-policy$ /privacy [R=301,L]
+    RewriteRule ^newsletter-sign-up$ / [R=301,L]
+    RewriteRule ^covid$ /policies [R=301,L]
+    RewriteRule ^faq$ /about [R=301,L]
+    RewriteRule ^contact$ /about [R=301,L]
+
+    # === ABOUT SECTION REDIRECTS ===
+    RewriteRule ^about/specials$ /offers [R=301,L]
+    RewriteRule ^about/our-story$ /about [R=301,L]
+    RewriteRule ^about/gallery$ /gallery [R=301,L]
+    RewriteRule ^about/careers$ /careers [R=301,L]
+    RewriteRule ^about/reviews$ /about [R=301,L]
+    RewriteRule ^about/Press$ /about [R=301,L]
+    RewriteRule ^about/press$ /about [R=301,L]
+    RewriteRule ^about/contact$ /about [R=301,L]
+    RewriteRule ^about/localinsight$ /explore [R=301,L]
+    RewriteRule ^about/getoutdoors$ /explore [R=301,L]
+    RewriteRule ^about/faq$ /about [R=301,L]
+    RewriteRule ^about/welcome-writer$ /about [R=301,L]
+
+    # === EXPLORE SECTION REDIRECTS ===
+    RewriteRule ^explore/eatseedo$ /explore [R=301,L]
+    RewriteRule ^explore/eat-see-do$ /explore [R=301,L]
+    RewriteRule ^explore/localinsight$ /explore [R=301,L]
+    RewriteRule ^explore/local-lineup$ /explore [R=301,L]
+    RewriteRule ^explore/dogfriendlyitinerary$ /explore [R=301,L]
+    RewriteRule ^explore/getoutdoors$ /explore [R=301,L]
+    RewriteRule ^explore/get-outdoors$ /explore [R=301,L]
+    RewriteRule ^explore/sip-and-slurp$ /explore [R=301,L]
+    RewriteRule ^explore/traveltips$ /explore [R=301,L]
+    RewriteRule ^explore/experiences$ /explore [R=301,L]
+    RewriteRule ^explore/Pet-Friendly$ /explore [R=301,L]
+
+    # === EVENTS SECTION REDIRECTS ===
+    RewriteRule ^events/weddings$ /events [R=301,L]
+    RewriteRule ^events/takeover$ /events [R=301,L]
+    RewriteRule ^events/kinship-events$ /events [R=301,L]
+    RewriteRule ^events/KinshipEvents$ /events [R=301,L]
+    RewriteRule ^events/host-an-event$ /events [R=301,L]
+    RewriteRule ^events/host-an-$ /events [R=301,L]
+    RewriteRule ^events/kinship-$ /events [R=301,L]
+    RewriteRule ^events/event-inquiry$ /events [R=301,L]
+
+    # === ROOMS SECTION REDIRECTS ===
+    RewriteRule ^rooms/queen-suite$ /rooms [R=301,L]
+    RewriteRule ^rooms/private-room-mountain-view$ /rooms [R=301,L]
+    RewriteRule ^rooms/private-room-double$ /rooms [R=301,L]
+    RewriteRule ^rooms/camp-deck$ /rooms [R=301,L]
+    RewriteRule ^rooms/family-suite$ /rooms [R=301,L]
+    RewriteRule ^rooms/junior-suites$ /rooms [R=301,L]
+    RewriteRule ^rooms/luxury-suite-ada$ /rooms [R=301,L]
+    RewriteRule ^rooms/suites$ /rooms [R=301,L]
+    RewriteRule ^rooms/reserve-rooms$ /rooms [R=301,L]
+    RewriteRule ^rooms/rooms$ /rooms [R=301,L]
+
+    # === HOMA SECTION REDIRECTS ===
+    RewriteRule ^homa/our-menu$ /homa [R=301,L]
+    RewriteRule ^homa\.$ /homa [R=301,L]
+
+    # === ACCOMMODATION REDIRECTS (Catch-all for old structure) ===
+    RewriteRule ^accommodation/room$ /rooms [R=301,L]
+    RewriteRule ^accommodation/(.*)$ /rooms [R=301,L]
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# | GZIP Compression                                                           |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/atom+xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE font/truetype
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|webp|avif)$ no-gzip dont-vary
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# | Browser Caching                                                            |
+# ------------------------------------------------------------------------------
+
 <IfModule mod_expires.c>
-  ExpiresActive On
-  ExpiresByType image/webp "access plus 1 year"
-  ExpiresByType image/avif "access plus 1 year"
-  ExpiresByType image/jpeg "access plus 1 year"
-  ExpiresByType image/png "access plus 1 year"
-  ExpiresByType text/css "access plus 1 month"
-  ExpiresByType application/javascript "access plus 1 month"
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/avif "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType font/eot "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    ExpiresByType application/x-font-woff "access plus 1 year"
+    ExpiresByType application/x-font-ttf "access plus 1 year"
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType application/x-javascript "access plus 1 year"
+    ExpiresByType video/mp4 "access plus 1 year"
+    ExpiresByType video/webm "access plus 1 year"
+    ExpiresByType video/ogg "access plus 1 year"
+    ExpiresByType text/html "access plus 1 hour"
+    ExpiresByType application/json "access plus 1 week"
+    ExpiresByType application/xml "access plus 1 week"
+    ExpiresByType text/xml "access plus 1 week"
+    ExpiresByType application/manifest+json "access plus 0 seconds"
 </IfModule>
 
-# Security headers
+# ------------------------------------------------------------------------------
+# | Cache-Control & Security Headers                                           |
+# ------------------------------------------------------------------------------
+
 <IfModule mod_headers.c>
-  Header set X-Content-Type-Options "nosniff"
-  Header set X-Frame-Options "SAMEORIGIN"
+    Header unset ETag
+    FileETag None
+    <FilesMatch "\.(webp|avif|jpg|jpeg|png|gif|svg|ico)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    <FilesMatch "\.(woff|woff2|ttf|otf|eot)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    <FilesMatch "\.(mp4|webm|ogg)$">
+        Header set Cache-Control "public, max-age=31536000"
+    </FilesMatch>
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "public, max-age=3600, must-revalidate"
+    </FilesMatch>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    <FilesMatch "\.(woff|woff2|ttf|otf|eot|webp|avif)$">
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
 </IfModule>
+
+# ------------------------------------------------------------------------------
+# | MIME Types                                                                 |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_mime.c>
+    AddType image/webp .webp
+    AddType image/avif .avif
+    AddType image/svg+xml .svg .svgz
+    AddType font/woff .woff
+    AddType font/woff2 .woff2
+    AddType font/ttf .ttf
+    AddType font/otf .otf
+    AddType font/eot .eot
+    AddType text/javascript .js .mjs
+    AddType application/javascript .js .mjs
+    AddType application/json .json
+    AddType application/manifest+json .webmanifest
+    AddType video/mp4 .mp4
+    AddType video/webm .webm
+    AddType text/css .css
+    AddType text/html .html .htm
+    AddType text/plain .txt
+    AddEncoding gzip .svgz
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# | Performance & Security                                                     |
+# ------------------------------------------------------------------------------
+
+Options -Indexes
+Options +FollowSymLinks
+
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|sql|git)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+ServerSignature Off
+
+# ------------------------------------------------------------------------------
+# | Next.js Static Export Routing (MUST BE LAST)                              |
+# ------------------------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}.html -f
+    RewriteRule ^(.+)$ $1.html [L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} !^/api
+    RewriteRule ^ index.html [L]
+</IfModule>
+
+# =============================================================================
+# END - Updated 2026-01-27 with 55+ redirects and canonical handling
+# =============================================================================
