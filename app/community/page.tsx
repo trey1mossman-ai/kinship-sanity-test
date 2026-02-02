@@ -6,7 +6,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const data = await getCommunityPage();
 
   return {
-    title: data?.seoTitle || 'Community Events | Kinship Landing',
+    title: data?.seoTitle || 'Community Events',
     description: data?.seoDescription || 'Join Kinship Landing for community events, gatherings, workshops, and experiences that bring the Colorado Springs community together.',
   };
 }

@@ -8,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const data = await getPrivacyPage();
 
   return {
-    title: data?.seoTitle || 'Privacy Policy | Kinship Landing',
+    title: data?.seoTitle || 'Privacy Policy',
     description: data?.seoDescription || 'Learn how Kinship Landing protects your privacy and personal information.',
     alternates: {
       canonical: 'https://www.kinshiplanding.com/privacy',

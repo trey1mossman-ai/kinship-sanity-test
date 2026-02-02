@@ -55,7 +55,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const data = await getCareersPage();
 
   return {
-    title: data?.seoTitle || 'Careers | Kinship Landing',
+    title: data?.seoTitle || 'Careers',
     description: data?.seoDescription || 'Join the Kinship Landing team in Colorado Springs. Work-life balance, career growth, and outrageous hospitality await.',
     alternates: {
       canonical: 'https://www.kinshiplanding.com/careers',

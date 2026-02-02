@@ -3,7 +3,7 @@ import { getGalleryPage } from '@/lib/sanity/queries';
 import { GalleryPageClient } from './GalleryPageClient';
 
 export const metadata: Metadata = {
-  title: 'Gallery | Kinship Landing',
+  title: 'Gallery',
   description: 'Explore Kinship Landing through our photo gallery featuring rooms, venues, Homa Café + Bar, weddings, and event spaces in downtown Colorado Springs.',
 };
 

@@ -666,6 +666,7 @@ export interface RoomsPage {
   heroSubtitle?: string
   heroImageUrl?: string
   heroImages?: Array<{ url: string; alt?: string }>
+  heroMobileImages?: Array<{ url: string; alt?: string }>
   // Filters
   filterAllLabel?: string
   filterKingLabel?: string
@@ -712,6 +713,7 @@ export async function getRoomsPage(): Promise<RoomsPage | null> {
     heroSubtitle,
     "heroImageUrl": heroImage.asset->url,
     "heroImages": heroImages[]{ "url": asset->url, alt },
+    "heroMobileImages": heroMobileImages[]{ "url": asset->url, alt },
     // Filters
     filterAllLabel,
     filterKingLabel,
@@ -774,6 +776,11 @@ export interface HomaPage {
   heroTriptychImage1Url?: string
   heroTriptychImage2Url?: string
   heroTriptychImage3Url?: string
+  // Mobile Hero Images (Portrait-Friendly)
+  heroMobileImage1Url?: string
+  heroMobileImage2Url?: string
+  heroMobileImage3Url?: string
+  heroMobileImage4Url?: string
   // About
   aboutParagraph1?: string
   aboutParagraph2?: string
@@ -872,6 +879,11 @@ export async function getHomaPage(): Promise<HomaPage | null> {
     "heroTriptychImage1Url": heroTriptychImage1.asset->url,
     "heroTriptychImage2Url": heroTriptychImage2.asset->url,
     "heroTriptychImage3Url": heroTriptychImage3.asset->url,
+    // Mobile Hero Images
+    "heroMobileImage1Url": heroMobileImage1.asset->url,
+    "heroMobileImage2Url": heroMobileImage2.asset->url,
+    "heroMobileImage3Url": heroMobileImage3.asset->url,
+    "heroMobileImage4Url": heroMobileImage4.asset->url,
     aboutParagraph1,
     aboutParagraph2,
     aboutParagraph3,

@@ -14,6 +14,7 @@ import './critical.css';
 
 // Critical above-fold components
 import { HeaderNav } from '@/components/layout/HeaderNav';
+import { BreadcrumbSchema, BREADCRUMBS } from '@/components/BreadcrumbSchema';
 import { ScrollEffectsWrapper } from '@/components/home/ScrollEffectsWrapper';
 import { InsaneCarousel } from '@/components/events/InsaneCarousel';
 import { EventsTestimonials } from '@/components/events/EventsTestimonials';
@@ -134,6 +135,7 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
   const showVenueSpaces = activeFilter === 'all' || activeFilter === 'spaces'; // Shows in "all" AND "spaces"
   return (
     <ScrollEffectsWrapper>
+      <BreadcrumbSchema items={BREADCRUMBS.events} />
       {/* FAQ Schema for SEO */}
       <script
         type="application/ld+json"

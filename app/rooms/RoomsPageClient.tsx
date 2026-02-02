@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 // Critical above-fold components
 import { HeaderNav } from '@/components/layout/HeaderNav';
+import { BreadcrumbSchema, BREADCRUMBS } from '@/components/BreadcrumbSchema';
 import { ScrollEffectsWrapper } from '@/components/home/ScrollEffectsWrapper';
 import { RoomCard } from '@/components/rooms/RoomCard';
 import { roomsFaqs as defaultRoomsFaqs } from '@/components/rooms/faq-data';
@@ -85,6 +86,7 @@ export default function RoomsPageClient({ roomsPageData }: RoomsPageClientProps)
   const [isPending, startTransition] = useTransition();
   const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string; images: string[]; index: number } | null>(null);
   const [heroImageIndex, setHeroImageIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Transform Sanity rooms to RoomTeaser format, or use fallback
   const roomTeasers: RoomTeaser[] = useMemo(() => {
@@ -110,13 +112,24 @@ export default function RoomsPageClient({ roomsPageData }: RoomsPageClientProps)
   const heroTitle = roomsPageData?.heroTitle || 'Stay With Us';
   const heroSubtitle = roomsPageData?.heroSubtitle || 'Your Colorado Springs basecamp';
 
-  // Hero images from Sanity with fallbacks
-  const HERO_IMAGES = useMemo(() => {
+  // Hero images from Sanity with fallbacks (desktop)
+  const HERO_IMAGES_DESKTOP = useMemo(() => {
     if (roomsPageData?.heroImages && roomsPageData.heroImages.length > 0) {
       return roomsPageData.heroImages.map(img => img.url);
     }
     return HERO_IMAGES_FALLBACK;
   }, [roomsPageData?.heroImages]);
+
+  // Mobile hero images from Sanity with fallbacks
+  const HERO_IMAGES_MOBILE = useMemo(() => {
+    if (roomsPageData?.heroMobileImages && roomsPageData.heroMobileImages.length > 0) {
+      return roomsPageData.heroMobileImages.map(img => img.url);
+    }
+    return HERO_IMAGES_FALLBACK;
+  }, [roomsPageData?.heroMobileImages]);
+
+  // Use mobile or desktop images based on screen size
+  const HERO_IMAGES = isMobile ? HERO_IMAGES_MOBILE : HERO_IMAGES_DESKTOP;
 
   // Individual hero images for desktop layout
   const heroImageMain = roomsPageData?.heroImageUrl || HERO_IMAGES_FALLBACK[0];
@@ -142,6 +155,14 @@ export default function RoomsPageClient({ roomsPageData }: RoomsPageClientProps)
   // Room Blocks images from Sanity with fallbacks
   const roomBlocksImage1 = roomsPageData?.roomBlocksImage1Url || '/images/Rooms Page:section/Book a bunch of rooms/MountainDoubleQueenSuite-AshleeKay-optimized.webp';
   const roomBlocksImage2 = roomsPageData?.roomBlocksImage2Url || '/images/Rooms Page:section/Book a bunch of rooms/BunkRoom5-SamStarr-optimized.webp';
+
+  // Detect mobile on mount and resize
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Preload critical images and preconnect to external services
   useEffect(() => {
@@ -232,6 +253,7 @@ export default function RoomsPageClient({ roomsPageData }: RoomsPageClientProps)
 
   return (
     <ScrollEffectsWrapper>
+      <BreadcrumbSchema items={BREADCRUMBS.rooms} />
       <HeaderNav />
 
       {/* Hero Section */}

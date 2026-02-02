@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic';
 
 // Critical above-fold components
 import { HeaderNav } from '@/components/layout/HeaderNav';
+import { BreadcrumbSchema, BREADCRUMBS } from '@/components/BreadcrumbSchema';
 import { ScrollEffectsWrapper } from '@/components/home/ScrollEffectsWrapper';
 import { BookingWidget } from '@/components/HeroEnhanced/BookingWidget';
 import { GalleryPage as GalleryPageData } from '@/lib/sanity/queries';
@@ -160,6 +161,8 @@ export function GalleryPageClient({ galleryData }: GalleryPageClientProps) {
 
   return (
     <ScrollEffectsWrapper>
+      {/* Breadcrumb Schema for SEO */}
+      <BreadcrumbSchema items={BREADCRUMBS.gallery} />
       {/* FAQ Schema for SEO */}
       <script
         type="application/ld+json"

@@ -81,7 +81,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const data = await getPoliciesPage();
 
   return {
-    title: data?.seoTitle || 'Hotel Policies | Kinship Landing',
+    title: data?.seoTitle || 'Hotel Policies',
     description: data?.seoDescription || 'Review hotel policies including check-in, check-out, parking, pets, cancellations and more at Kinship Landing in Colorado Springs.',
     alternates: {
       canonical: 'https://www.kinshiplanding.com/policies',

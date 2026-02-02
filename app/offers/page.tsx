@@ -6,7 +6,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const data = await getOffersPage();
 
   return {
-    title: data?.seoTitle || 'Special Offers | Kinship Landing',
+    title: data?.seoTitle || 'Special Offers',
     description: data?.seoDescription || 'Discover exclusive deals and packages for your Colorado Springs adventure at Kinship Landing.',
   };
 }

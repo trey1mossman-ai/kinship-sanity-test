@@ -6,6 +6,7 @@ import { AboutPage } from '@/lib/sanity/queries';
 
 // Critical above-fold components
 import { HeaderNav } from '@/components/layout/HeaderNav';
+import { BreadcrumbSchema, BREADCRUMBS } from '@/components/BreadcrumbSchema';
 import { ScrollEffectsWrapper } from '@/components/home/ScrollEffectsWrapper';
 import { AboutTestimonials } from '@/components/about/AboutTestimonials';
 
@@ -123,6 +124,7 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
 
   return (
     <ScrollEffectsWrapper>
+      <BreadcrumbSchema items={BREADCRUMBS.about} />
       <HeaderNav />
 
       {/* HERO SECTION */}

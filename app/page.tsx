@@ -41,11 +41,11 @@ import { buildFaqJsonLd } from '@/components/home/FAQ/faq-jsonld';
 import { getHomepage, getHomepageRooms } from '@/lib/sanity/queries';
 
 export const metadata: Metadata = {
-  title: 'Experience Colorado Springs like a local | Kinship Landing',
+  title: 'Experience Colorado Springs like a local',
   description: 'Your guide to insider adventures and authentic experiences in downtown Colorado Springs. Boutique hotel with local connections and mountain views.',
   keywords: 'Colorado Springs hotel, boutique hotel, downtown hotel, local experiences, Kinship Landing, Pikes Peak, Garden of the Gods',
   openGraph: {
-    title: 'Experience Colorado Springs like a local | Kinship Landing',
+    title: 'Experience Colorado Springs like a local',
     description: 'Your guide to insider adventures and authentic experiences in downtown Colorado Springs. Boutique hotel with local connections.',
     url: 'https://kinshiplanding.com',
     siteName: 'Kinship Landing',
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Experience Colorado Springs like a local | Kinship Landing',
+    title: 'Experience Colorado Springs like a local',
     description: 'Your guide to insider adventures and authentic experiences in downtown Colorado Springs.',
     images: ['/images/Rooms Page:section/King Suite/CityKingSuite-RichardSeldomridge (3)-optimized.webp'],
   },

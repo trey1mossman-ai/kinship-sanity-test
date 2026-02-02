@@ -33,7 +33,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const data = await getAccessibilityPage();
 
   return {
-    title: data?.seoTitle || 'Accessibility | Kinship Landing',
+    title: data?.seoTitle || 'Accessibility',
     description: data?.seoDescription || 'Learn about accessibility features and accommodations at Kinship Landing boutique hotel in Colorado Springs.',
     alternates: {
       canonical: 'https://www.kinshiplanding.com/accessibility',

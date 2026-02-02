@@ -3,7 +3,7 @@ import { getAboutPage } from '@/lib/sanity/queries';
 import { AboutPageClient } from './AboutPageClient';
 
 export const metadata: Metadata = {
-  title: 'About Us | Kinship Landing',
+  title: 'About Us',
   description: 'Learn about Kinship Landing - a boutique hotel in downtown Colorado Springs built by locals, for everyone. Our story, values, and mission.',
 };
 

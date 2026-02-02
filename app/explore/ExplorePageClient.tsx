@@ -8,6 +8,7 @@ import { Wine, Music, UtensilsCrossed, Coffee, Cake, Leaf } from 'lucide-react';
 
 // Critical above-fold components
 import { HeaderNav } from '@/components/layout/HeaderNav';
+import { BreadcrumbSchema, BREADCRUMBS } from '@/components/BreadcrumbSchema';
 import { ScrollEffectsWrapper } from '@/components/home/ScrollEffectsWrapper';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
 import { ExplorePage as ExplorePageData } from '@/lib/sanity/queries';
@@ -337,6 +338,7 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
 
   return (
     <ScrollEffectsWrapper>
+      <BreadcrumbSchema items={BREADCRUMBS.explore} />
       <HeaderNav />
 
       {/* FAQ Schema Markup */}

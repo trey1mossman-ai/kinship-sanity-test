@@ -6,7 +6,7 @@ import { EventsPageClient } from './EventsPageClient';
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: 'Events & Meetings | Kinship Landing',
+  title: 'Events & Meetings',
   description: 'Host your wedding, corporate retreat, or special event at Kinship Landing. Explore our venue spaces including the GreenHaus, Conference Room, Yard, Camp Deck, and Fireplace in downtown Colorado Springs.',
 };
 

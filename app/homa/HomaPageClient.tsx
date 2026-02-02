@@ -10,6 +10,7 @@ import { HomaPage as HomaPageData } from '@/lib/sanity/queries';
 
 // Critical above-fold components
 import { HeaderNav } from '@/components/layout/HeaderNav';
+import { BreadcrumbSchema, BREADCRUMBS } from '@/components/BreadcrumbSchema';
 import { ScrollEffectsWrapper } from '@/components/home/ScrollEffectsWrapper';
 import { HomaTestimonials } from '@/components/homa/HomaTestimonials';
 
@@ -76,10 +77,10 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
   ];
 
   const HERO_IMAGES_MOBILE = [
-    homaData?.heroTriptychImage1Url || HERO_IMAGES_MOBILE_FALLBACK[0],
-    homaData?.heroTriptychImage3Url || HERO_IMAGES_MOBILE_FALLBACK[1],
-    homaData?.heroTriptychImage2Url || HERO_IMAGES_MOBILE_FALLBACK[2],
-    HERO_IMAGES_MOBILE_FALLBACK[3], // Keep existing fallback
+    homaData?.heroMobileImage1Url || HERO_IMAGES_MOBILE_FALLBACK[0],
+    homaData?.heroMobileImage2Url || HERO_IMAGES_MOBILE_FALLBACK[1],
+    homaData?.heroMobileImage3Url || HERO_IMAGES_MOBILE_FALLBACK[2],
+    homaData?.heroMobileImage4Url || HERO_IMAGES_MOBILE_FALLBACK[3],
   ];
 
   // Build fireplace images array with Sanity images and fallbacks
@@ -108,6 +109,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
 
   return (
     <ScrollEffectsWrapper>
+      <BreadcrumbSchema items={BREADCRUMBS.homa} />
       <HeaderNav />
 
       {/* FAQ Schema Markup - 4 FAQs matching visible section */}
