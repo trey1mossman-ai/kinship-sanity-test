@@ -269,6 +269,37 @@ ServerSignature Off
     RewriteRule ^privacy-policy/?$ /privacy [R=301,L]
 
     # Other common old patterns
+
+    # ==========================================================================
+    # GSC INDEXED LEGACY URLS - Added 2026-02-05
+    # These URLs were indexed by Google from old site structure
+    # ==========================================================================
+
+    # /home → Homepage
+    RewriteRule ^home/?$ / [R=301,L]
+
+    # /hotel-policies → /policies
+    RewriteRule ^hotel-policies/?$ /policies [R=301,L]
+
+    # /about subpages → appropriate destinations
+    RewriteRule ^about/Press/?$ /about [R=301,L,NC]
+    RewriteRule ^about/our-story/?$ /about [R=301,L]
+    RewriteRule ^about/gallery/?$ /gallery [R=301,L]
+    RewriteRule ^about/careers/?$ /careers [R=301,L]
+
+    # /events subpages → /events
+    RewriteRule ^events/takeover/?$ /events [R=301,L]
+    RewriteRule ^events/weddings/?$ /events [R=301,L]
+    # Catch-all for any other old event subpages
+    RewriteRule ^events/[^/]+/?$ /events [R=301,L]
+
+    # /explore subpages → /explore
+    RewriteRule ^explore/dogfriendlyitinerary/?$ /explore [R=301,L]
+    RewriteRule ^explore/eatseedo/?$ /explore [R=301,L]
+    RewriteRule ^explore/localinsight/?$ /explore [R=301,L]
+    # Catch-all for any other old explore subpages
+    RewriteRule ^explore/[^/]+/?$ /explore [R=301,L]
+
     RewriteRule ^about-us/?$ /about [R=301,L]
     RewriteRule ^contact-us/?$ /about [R=301,L]
 </IfModule>
