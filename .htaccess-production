@@ -2,6 +2,10 @@
 # KINSHIP LANDING - HOSTINGER PRODUCTION .htaccess
 # Performance-optimized Apache configuration for static Next.js export
 # Updated: 2026-01-27 - Added all 301 redirects and canonical handling
+
+# Custom 404 Error Page
+ErrorDocument 404 /404.html
+
 # =============================================================================
 
 # ------------------------------------------------------------------------------
@@ -264,12 +268,14 @@ ServerSignature Off
     RewriteCond %{REQUEST_FILENAME}.html -f
     RewriteRule ^(.+)$ $1.html [L]
 
+    # CATCH-ALL: Return 404 for unmatched URLs (no SPA fallback)
+    # This prevents soft 404s that serve homepage for non-existent URLs
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} !^/api
-    RewriteRule ^ index.html [L]
+    RewriteCond %{REQUEST_FILENAME}.html !-f
+    RewriteRule ^ - [R=404,L]
 </IfModule>
 
 # =============================================================================
-# END - Updated 2026-01-27 with 55+ redirects and canonical handling
+# END - Updated 2026-02-09 with 55+ redirects, canonical handling, and proper 404s
 # =============================================================================
