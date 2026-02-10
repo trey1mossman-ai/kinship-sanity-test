@@ -190,7 +190,7 @@ export function CommunityPageClient({ communityData }: CommunityPageClientProps)
                         rel="noopener noreferrer"
                         className="inline-block text-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-white font-semibold transition-all duration-200 hover:shadow-lg hover:translate-y-[-2px] active:translate-y-0"
                         style={{
-                          backgroundColor: '#849e74',
+                          backgroundColor: '#5f7b4d',
                           clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                         }}
                       >
@@ -277,7 +277,7 @@ export function CommunityPageClient({ communityData }: CommunityPageClientProps)
                   rel="noopener noreferrer"
                   className="inline-block px-6 sm:px-8 py-3 sm:py-4 text-white font-semibold transition-all duration-200 hover:shadow-lg hover:translate-y-[-2px] active:translate-y-0"
                   style={{
-                    backgroundColor: '#849e74',
+                    backgroundColor: '#5f7b4d',
                     clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                   }}
                 >

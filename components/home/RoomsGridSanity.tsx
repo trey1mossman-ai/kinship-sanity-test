@@ -328,7 +328,7 @@ function RoomCarousel({
 
                           <p
                             className="text-sm sm:text-base md:text-lg leading-relaxed"
-                            style={{ color: KINSHIP_COLORS.greenDark, opacity: 0.8 }}
+                            style={{ color: KINSHIP_COLORS.greenDark }}
                           >
                             {room.shortDescription || room.description}
                           </p>
@@ -370,14 +370,18 @@ function RoomCarousel({
                     setTimeout(() => setIsTransitioning(false), 300);
                   }
                 }}
-                className={`h-2 rounded-full transition-all duration-300 touch-manipulation ${
-                  index === currentIndex ? 'w-6 sm:w-8' : 'w-2'
-                }`}
-                style={{
-                  backgroundColor: index === currentIndex ? KINSHIP_COLORS.greenDark : KINSHIP_COLORS.sage, padding: '18px', margin: '-18px', backgroundClip: 'content-box'
-                }}
+                className="flex items-center justify-center w-11 h-11 touch-manipulation"
                 aria-label={`Go to room ${index + 1}`}
-              />
+              >
+                <span
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    index === currentIndex ? 'w-6 sm:w-8' : 'w-2'
+                  }`}
+                  style={{
+                    backgroundColor: index === currentIndex ? KINSHIP_COLORS.greenDark : KINSHIP_COLORS.sage,
+                  }}
+                />
+              </button>
             ))}
           </div>
         )}
@@ -550,7 +554,7 @@ function GalleryCarousel({
 
                         <p
                           className="text-sm sm:text-base md:text-lg leading-relaxed"
-                          style={{ color: KINSHIP_COLORS.greenDark, opacity: 0.8 }}
+                          style={{ color: KINSHIP_COLORS.greenDark }}
                         >
                           {room.shortDescription || room.description}
                         </p>
@@ -590,14 +594,18 @@ function GalleryCarousel({
                     setTimeout(() => setIsTransitioning(false), 300);
                   }
                 }}
-                className={`h-2 rounded-full transition-all duration-300 touch-manipulation ${
-                  index === currentIndex ? 'w-6 sm:w-8' : 'w-2'
-                }`}
-                style={{
-                  backgroundColor: index === currentIndex ? KINSHIP_COLORS.greenDark : KINSHIP_COLORS.sage, padding: '18px', margin: '-18px', backgroundClip: 'content-box'
-                }}
+                className="flex items-center justify-center w-11 h-11 touch-manipulation"
                 aria-label={`Go to image ${index + 1}`}
-              />
+              >
+                <span
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    index === currentIndex ? 'w-6 sm:w-8' : 'w-2'
+                  }`}
+                  style={{
+                    backgroundColor: index === currentIndex ? KINSHIP_COLORS.greenDark : KINSHIP_COLORS.sage,
+                  }}
+                />
+              </button>
             ))}
           </div>
         )}

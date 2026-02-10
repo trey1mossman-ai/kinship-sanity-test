@@ -336,7 +336,7 @@ function RoomCarousel({
 
                           <p
                             className="text-sm sm:text-base md:text-lg leading-relaxed"
-                            style={{ color: KINSHIP_COLORS.greenDark, opacity: 0.8 }}
+                            style={{ color: KINSHIP_COLORS.greenDark }}
                           >
                             {room.description}
                           </p>
@@ -477,7 +477,7 @@ function SingleRoomDisplay({
 
                   <p
                     className="text-sm sm:text-base md:text-lg leading-relaxed"
-                    style={{ color: KINSHIP_COLORS.greenDark, opacity: 0.8 }}
+                    style={{ color: KINSHIP_COLORS.greenDark }}
                   >
                     {room.description}
                   </p>

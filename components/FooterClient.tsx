@@ -241,10 +241,10 @@ export function FooterClient({ variant = 'default', siteSettings }: FooterClient
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-8 sm:py-10">
             <div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-3 sm:gap-4 text-xs sm:text-sm text-center">
-              <p style={{ color: '#aec69a' }}>
+              <p style={{ color: '#5a6e4c' }}>
                 © {new Date().getFullYear()} {siteSettings.siteName}. All rights reserved.
               </p>
-              <p style={{ color: '#aec69a' }}>
+              <p style={{ color: '#5a6e4c' }}>
                 Crafted with care in Colorado Springs by{' '}
                 <a
                   href="https://voxeai.com"

@@ -241,7 +241,7 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
                   <div
                     className="w-12 h-12 flex items-center justify-center text-white font-bold text-xl mb-6 transition-transform duration-500 group-hover:scale-110"
                     style={{
-                      backgroundColor: '#849e74',
+                      backgroundColor: '#5f7b4d',
                       clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
                     }}
                   >
@@ -269,7 +269,7 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
                   <div
                     className="absolute bottom-0 left-0 right-0 h-1 transition-all duration-500 group-hover:h-2"
                     style={{
-                      background: 'linear-gradient(90deg, #849e74 0%, #667C58 100%)'
+                      background: 'linear-gradient(90deg, #5f7b4d 0%, #4a5e3e 100%)'
                     }}
                   />
                 </div>
@@ -333,7 +333,7 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
                   <div className="flex items-start gap-4">
                     <div
                       className="w-12 h-12 flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: '#849e74' }}
+                      style={{ backgroundColor: '#5f7b4d' }}
                     >
                       <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -365,7 +365,7 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
                   <div className="flex items-start gap-4">
                     <div
                       className="w-12 h-12 flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: '#849e74' }}
+                      style={{ backgroundColor: '#5f7b4d' }}
                     >
                       <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -397,7 +397,7 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
                   <div className="flex items-start gap-4">
                     <div
                       className="w-12 h-12 flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: '#849e74' }}
+                      style={{ backgroundColor: '#5f7b4d' }}
                     >
                       <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -472,7 +472,7 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
                     className="text-4xl font-bold mb-3"
                     style={{
                       fontFamily: '"utopia-std-display", "Source Serif Pro", Georgia, serif',
-                      color: '#849e74'
+                      color: '#5f7b4d'
                     }}
                   >
                     {milestone.year}
@@ -531,7 +531,7 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
                 >
                   <div
                     className="inline-flex items-center justify-center w-16 h-16 mb-4 transition-transform duration-300 group-hover:scale-110"
-                    style={{ color: '#849e74' }}
+                    style={{ color: '#5f7b4d' }}
                   >
                     {card.icon}
                   </div>

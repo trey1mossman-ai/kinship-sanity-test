@@ -96,7 +96,7 @@ export function FAQAccordion({ sectionTitle, faqItems }: FAQAccordionProps) {
             style={{
               fontFamily: KINSHIP_FONTS.body,
               color: KINSHIP_COLORS.greenDark,
-              opacity: 0.8
+              
             }}
           >
             Everything you need to know about your stay

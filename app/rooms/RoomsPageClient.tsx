@@ -412,7 +412,7 @@ export default function RoomsPageClient({ roomsPageData }: RoomsPageClientProps)
                         : 'text-white/90 hover:text-white hover:shadow-sm'
                     }`}
                     style={{
-                      backgroundColor: activeFilter === filter.id ? '#667C58' : '#849e74',
+                      backgroundColor: activeFilter === filter.id ? '#4a5e3e' : '#5f7b4d',
                       clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
                       transform: 'translateZ(0)',
                       WebkitFontSmoothing: 'antialiased'
@@ -795,7 +795,7 @@ export default function RoomsPageClient({ roomsPageData }: RoomsPageClientProps)
               >
                 <p
                   className="text-xs uppercase tracking-wider font-semibold"
-                  style={{ color: '#849e74', fontFamily: '"europa", "Hind", system-ui, sans-serif' }}
+                  style={{ color: '#5f7b4d', fontFamily: '"europa", "Hind", system-ui, sans-serif' }}
                 >
                   Kinship Landing
                 </p>

@@ -100,7 +100,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
                 style={{
                   fontFamily: KINSHIP_FONTS.body,
                   color: KINSHIP_COLORS.greenDark,
-                  opacity: 0.9,
+                  
                 }}
               >
                 {Array.isArray(desc1) ? (
@@ -136,7 +136,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
                   style={{
                     fontFamily: KINSHIP_FONTS.body,
                     color: KINSHIP_COLORS.greenDark,
-                    opacity: 0.9,
+                    
                   }}
                 >
                   {Array.isArray(promoDescription) ? (
@@ -152,7 +152,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
                 style={{
                   fontFamily: KINSHIP_FONTS.body,
                   color: KINSHIP_COLORS.greenDark,
-                  opacity: 0.9,
+                  
                 }}
               >
                 {Array.isArray(desc2) ? (
@@ -235,7 +235,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
               style={{
                 fontFamily: KINSHIP_FONTS.body,
                 color: KINSHIP_COLORS.greenDark,
-                opacity: 0.9,
+                
               }}
             >
               {Array.isArray(desc1) ? (
@@ -272,7 +272,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
                 style={{
                   fontFamily: KINSHIP_FONTS.body,
                   color: KINSHIP_COLORS.greenDark,
-                  opacity: 0.9,
+                  
                 }}
               >
                 {Array.isArray(promoDescription) ? (
@@ -432,7 +432,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
               style={{
                 fontFamily: KINSHIP_FONTS.body,
                 color: KINSHIP_COLORS.greenDark,
-                opacity: 0.9,
+                
               }}
             >
               {Array.isArray(desc2) ? (

@@ -214,7 +214,7 @@ export default async function CareersPage() {
             >
               {benefitsList.map((benefit, index) => (
                 <li key={index} className="flex items-start gap-3">
-                  <span className="block w-2 h-2 mt-2.5 flex-shrink-0 rounded-full" style={{ backgroundColor: '#849e74' }} />
+                  <span className="block w-2 h-2 mt-2.5 flex-shrink-0 rounded-full" style={{ backgroundColor: '#5f7b4d' }} />
                   <span>{benefit}</span>
                 </li>
               ))}
@@ -249,7 +249,7 @@ export default async function CareersPage() {
               rel="noopener noreferrer"
               className="inline-block px-8 py-4 text-white font-semibold text-lg transition-all duration-200 hover:shadow-lg hover:translate-y-[-2px] active:translate-y-0"
               style={{
-                backgroundColor: '#849e74',
+                backgroundColor: '#5f7b4d',
                 fontFamily: '"europa", "Hind", system-ui, sans-serif',
                 clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
               }}

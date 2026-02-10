@@ -363,7 +363,7 @@ export function GalleryPageClient({ galleryData }: GalleryPageClientProps) {
                 onClick={() => setActiveFilter(filter.id)}
                 className="px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-semibold text-white transition-all duration-200 hover:opacity-90 active:scale-95"
                 style={{
-                  backgroundColor: activeFilter === filter.id ? '#667C58' : '#849e74',
+                  backgroundColor: activeFilter === filter.id ? '#4a5e3e' : '#5f7b4d',
                   clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
                 }}
               >

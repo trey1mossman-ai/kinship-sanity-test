@@ -173,7 +173,7 @@ export function EventsSectionDynamic({
               href={displayCtaUrl}
               className="inline-flex items-center justify-center px-8 py-3 text-base font-semibold text-white transition-all duration-300 hover:scale-105"
               style={{
-                backgroundColor: KINSHIP_COLORS.green,
+                backgroundColor: '#5f7b4d',
                 clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
               }}
             >
@@ -626,7 +626,7 @@ export function EventsSectionDynamic({
           href={displayCtaUrl}
           className="inline-flex items-center gap-2 px-6 py-2.5 font-semibold transition-all duration-300"
           style={{
-            backgroundColor: KINSHIP_COLORS.green,
+            backgroundColor: '#5f7b4d',
             color: '#ffffff'
           }}
           onMouseEnter={(e) => {
