@@ -315,7 +315,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   <div className="absolute bottom-4 left-2 sm:bottom-6 sm:left-6 text-white">
-                    <h3 className="text-xs sm:text-2xl font-bold">{homaImages[0].title}</h3>
+                    <h4 className="text-xs sm:text-2xl font-bold">{homaImages[0].title}</h4>
                   </div>
                   {/* HOMA Overlay on Fresh & Local - Top Left */}
                   <div className="absolute top-2 left-2 z-10 opacity-90" style={{ filter: 'brightness(0) invert(1)' }}>
@@ -352,7 +352,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                     <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 text-white text-right">
-                      <h3 className="text-xs sm:text-xl font-bold">{homaImages[1].title}</h3>
+                      <h4 className="text-xs sm:text-xl font-bold">{homaImages[1].title}</h4>
                       {homaImages[1].subtitle && (
                         <p className="text-[10px] sm:text-sm opacity-90">{homaImages[1].subtitle}</p>
                       )}
@@ -380,7 +380,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                     <div className="absolute bottom-2 left-3 sm:bottom-4 sm:left-4 text-white">
-                      <h3 className="text-xs sm:text-xl font-bold">{homaImages[2].title}</h3>
+                      <h4 className="text-xs sm:text-xl font-bold">{homaImages[2].title}</h4>
                     </div>
                   </motion.div>
                 </Link>
@@ -408,7 +408,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
                   <div className="absolute bottom-2 left-2 sm:bottom-8 sm:left-8 text-white">
-                    <h3 className="text-xs sm:text-3xl font-bold mb-0 sm:mb-2">{homaImages[3].title}</h3>
+                    <h4 className="text-xs sm:text-3xl font-bold mb-0 sm:mb-2">{homaImages[3].title}</h4>
                     {homaImages[3].subtitle && (
                       <p className="text-xs sm:text-lg opacity-90">{homaImages[3].subtitle}</p>
                     )}
@@ -464,7 +464,7 @@ export function HomaSectionEnhanced({ sanityData }: HomaSectionEnhancedProps) {
               />
               <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent" />
               <div className="absolute bottom-2 left-2 text-white">
-                <h3 className="text-base font-bold mb-1">{homaImages[3].title}</h3>
+                <h4 className="text-base font-bold mb-1">{homaImages[3].title}</h4>
                 {homaImages[3].subtitle && (
                   <p className="text-xs opacity-90">{homaImages[3].subtitle}</p>
                 )}
