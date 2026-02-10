@@ -1236,7 +1236,7 @@ export function ExplorePageClient({ exploreData }: ExplorePageClientProps) {
                       className="inline-flex items-center gap-2 font-semibold transition-transform duration-300 hover:translate-x-2 mt-auto"
                       style={{ color: KINSHIP_COLORS.green }}
                     >
-                      <span>Learn More</span>
+                      <span>Visit {activity.name}</span>
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>

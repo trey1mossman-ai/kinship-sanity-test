@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { getAboutPage } from '@/lib/sanity/queries';
+import { optimizeSanityData } from '@/lib/sanity/imageTransform';
 import { AboutPageClient } from './AboutPageClient';
 
 export const metadata: Metadata = {
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const aboutData = await getAboutPage();
+  const aboutData = optimizeSanityData(await getAboutPage());
 
   return <AboutPageClient aboutData={aboutData} />;
 }

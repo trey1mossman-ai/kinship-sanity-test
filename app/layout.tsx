@@ -124,22 +124,28 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
       <head>
-        {/* Google Tag Manager - Primary Container */}
+        {/* Google Tag Manager - Deferred Loading for Performance */}
         <script dangerouslySetInnerHTML={{ __html: `
-          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-TL2MM4B');
-        ` }} />
-
-        {/* Google Tag Manager - Secondary Container */}
-        <script dangerouslySetInnerHTML={{ __html: `
-          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-PHJ4NJQ');
+          window.addEventListener('load', function() {
+            setTimeout(function() {
+              // Initialize dataLayer
+              window.dataLayer = window.dataLayer || [];
+              
+              // Load GTM Primary Container
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','GTM-TL2MM4B');
+              
+              // Load GTM Secondary Container
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','GTM-PHJ4NJQ');
+            }, 3500);
+          });
         ` }} />
 
         {/* Unregister any stale service workers */}
@@ -162,9 +168,7 @@ export default function RootLayout({
 
         {/* DNS prefetch for critical services */}
         <link rel="dns-prefetch" href="https://hotels.cloudbeds.com" />
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://hotels.cloudbeds.com" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
 
         {/* Resource hints for performance */}
         <meta name="theme-color" content="#647B56" />

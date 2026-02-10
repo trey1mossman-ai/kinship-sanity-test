@@ -87,6 +87,7 @@ export default function OffersPageClient({ data }: OffersPageClientProps) {
   return (
     <ScrollEffectsWrapper>
       <HeaderNav />
+      <main>
 
       {/* Hero Section */}
       <section className="relative min-h-[85vh] md:min-h-screen overflow-hidden bg-kinship-sage">
@@ -339,6 +340,7 @@ export default function OffersPageClient({ data }: OffersPageClientProps) {
       {/* Call to Book */}
       <CallToBook />
 
+      </main>
       {/* Footer */}
       <Footer />
     </ScrollEffectsWrapper>

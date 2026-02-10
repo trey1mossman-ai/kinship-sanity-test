@@ -100,3 +100,37 @@ export function sanityImageSrcSet(
     .map(w => `${transformSanityUrl(url, { width: w, autoFormat: true, quality: 80 })} ${w}w`)
     .join(', ')
 }
+
+/**
+ * Deep-transform all Sanity CDN URLs in a data object.
+ * Recursively walks the object and applies optimization params
+ * to any string that contains 'cdn.sanity.io' and doesn't already
+ * have query params.
+ *
+ * Use this after fetching Sanity data to ensure all images are optimized:
+ *   const data = optimizeSanityData(await getEventsPage())
+ */
+export function optimizeSanityData<T>(data: T, width = 1200, quality = 80): T {
+  if (data === null || data === undefined) return data
+
+  if (typeof data === 'string') {
+    if (data.includes('cdn.sanity.io') && !data.includes('?')) {
+      return `${data}?w=${width}&q=${quality}&auto=format` as T
+    }
+    return data
+  }
+
+  if (Array.isArray(data)) {
+    return data.map(item => optimizeSanityData(item, width, quality)) as T
+  }
+
+  if (typeof data === 'object') {
+    const result = {} as Record<string, unknown>
+    for (const [key, value] of Object.entries(data as Record<string, unknown>)) {
+      result[key] = optimizeSanityData(value, width, quality)
+    }
+    return result as T
+  }
+
+  return data
+}

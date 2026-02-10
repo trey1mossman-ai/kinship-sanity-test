@@ -55,6 +55,7 @@ export function CommunityPageClient({ communityData }: CommunityPageClientProps)
   return (
     <ScrollEffectsWrapper>
       <HeaderNav />
+      <main>
 
       {/* Hero Section */}
       <section className="relative min-h-[85vh] md:min-h-screen overflow-hidden bg-kinship-sage">
@@ -354,6 +355,7 @@ export function CommunityPageClient({ communityData }: CommunityPageClientProps)
       {/* Call to Book */}
       <CallToBook />
 
+      </main>
       {/* Footer */}
       <Footer />
     </ScrollEffectsWrapper>

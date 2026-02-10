@@ -4,7 +4,8 @@ export const imageLoader = ({ src, width, quality }: {
   quality?: number;
 }) => {
   // Apply Sanity CDN transforms for optimization
-  if (src && src.includes('cdn.sanity.io')) {
+  // Skip if already optimized (prevents double-params)
+  if (src && src.includes('cdn.sanity.io') && !src.includes('auto=format')) {
     const q = quality || 80;
     const separator = src.includes('?') ? '&' : '?';
     return `${src}${separator}w=${width}&q=${q}&auto=format`;
@@ -22,6 +23,7 @@ export function optimizeSanityUrl(
 ): string {
   if (!url) return '';
   if (!url.includes('cdn.sanity.io')) return url;
+  if (url.includes('auto=format')) return url; // Already optimized
 
   const { width = 1200, quality = 80, height } = options;
   const separator = url.includes('?') ? '&' : '?';

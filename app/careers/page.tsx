@@ -4,6 +4,7 @@ import { HeaderNav } from '@/components/layout/HeaderNav';
 import { Footer } from '@/components/Footer';
 import { ScrollEffectsWrapper } from '@/components/home/ScrollEffectsWrapper';
 import { getCareersPage, WhyJoinReason } from '@/lib/sanity/queries';
+import { optimizeSanityData } from '@/lib/sanity/imageTransform';
 
 // Default content (fallbacks)
 const defaultWhyJoinReasons: WhyJoinReason[] = [
@@ -52,7 +53,7 @@ const defaultContent = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const data = await getCareersPage();
+  const data = optimizeSanityData(await getCareersPage());
 
   return {
     title: data?.seoTitle || 'Careers',
@@ -64,7 +65,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function CareersPage() {
-  const careersData = await getCareersPage();
+  const careersData = optimizeSanityData(await getCareersPage());
 
   // Use Sanity data with fallbacks
   const heroTitle = careersData?.heroTitle || defaultContent.heroTitle;

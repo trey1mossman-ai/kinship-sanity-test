@@ -85,7 +85,7 @@ export const RoomCard = memo(function RoomCard({ room, index, onImageClick }: Ro
             clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
             transform: 'translateZ(0)'
           }}
-          aria-label={`Book ${room.name}`}
+          aria-label={`Book Your Room - ${room.name}`}
         >
           Book Your Room
         </Link>

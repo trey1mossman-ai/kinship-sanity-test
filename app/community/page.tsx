@@ -1,9 +1,10 @@
 import { Metadata } from 'next';
 import { getCommunityPage } from '@/lib/sanity/queries';
+import { optimizeSanityData } from '@/lib/sanity/imageTransform';
 import { CommunityPageClient } from './CommunityPageClient';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const data = await getCommunityPage();
+  const data = optimizeSanityData(await getCommunityPage());
 
   return {
     title: data?.seoTitle || 'Community Events',
@@ -12,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function CommunityPage() {
-  const communityData = await getCommunityPage();
+  const communityData = optimizeSanityData(await getCommunityPage());
 
   return <CommunityPageClient communityData={communityData} />;
 }

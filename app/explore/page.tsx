@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { getExplorePage } from '@/lib/sanity/queries';
+import { optimizeSanityData } from '@/lib/sanity/imageTransform';
 import { ExplorePageClient } from './ExplorePageClient';
 
 export const metadata: Metadata = {
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ExplorePage() {
-  const exploreData = await getExplorePage();
+  const exploreData = optimizeSanityData(await getExplorePage());
 
   return <ExplorePageClient exploreData={exploreData} />;
 }

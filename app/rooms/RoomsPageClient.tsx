@@ -436,7 +436,7 @@ export default function RoomsPageClient({ roomsPageData }: RoomsPageClientProps)
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.2 }}
                   className="text-center text-base sm:text-lg absolute inset-0"
-                  style={{ fontFamily: '"europa", "Hind", system-ui, sans-serif', color: '#667C58', opacity: 0.8 }}
+                  style={{ fontFamily: '"europa", "Hind", system-ui, sans-serif', color: '#667C58' }}
                 >
                   {isPending ? 'Filtering...' : `${filteredRooms.length} room ${filteredRooms.length === 1 ? 'type' : 'types'}`}
                 </motion.p>

@@ -805,7 +805,7 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                 </h2>
                 <p
                   className="text-lg md:text-xl max-w-3xl mx-auto font-sans"
-                  style={{ color: '#667C58', opacity: 0.8 }}
+                  style={{ color: '#667C58' }}
                 >
                   Explore each of our unique spaces designed for memorable gatherings
                 </p>

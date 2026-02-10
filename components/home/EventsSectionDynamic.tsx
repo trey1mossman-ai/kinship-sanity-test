@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState, useEffect } from 'react';
 import { KINSHIP_COLORS } from '@/lib/config/brand';
+import { transformSanityUrl } from '@/lib/sanity/imageTransform';
 
 interface EventsSectionDynamicProps {
   title?: string;
@@ -22,7 +23,7 @@ interface EventsSectionDynamicProps {
 // Fallback values (from current hardcoded text)
 const fallbackTitle = 'Gather Together';
 const fallbackSubtitle = 'Unique spaces for unforgettable events';
-const fallbackCtaText = 'Learn More';
+const fallbackCtaText = 'View Upcoming Events';
 const fallbackCtaUrl = '/events';
 
 export function EventsSectionDynamic({
@@ -40,7 +41,7 @@ export function EventsSectionDynamic({
   // Use Sanity data if available, otherwise fallback to hardcoded
   const displayTitle = title || fallbackTitle;
   const displaySubtitle = subtitle || fallbackSubtitle;
-  const displayCtaText = ctaText || fallbackCtaText;
+  const displayCtaText = (ctaText && ctaText !== 'Learn More') ? ctaText : fallbackCtaText;
   const displayCtaUrl = ctaUrl || fallbackCtaUrl;
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -76,8 +77,12 @@ export function EventsSectionDynamic({
   ];
 
   // Use Sanity data if available, otherwise fallback
-  const greenhausImages = greenhausCarouselImages?.length ? greenhausCarouselImages : fallbackGreenhausImages;
-  const yardImages = yardCarouselImages?.length ? yardCarouselImages : fallbackYardImages;
+  const greenhausImages = greenhausCarouselImages?.length 
+    ? greenhausCarouselImages.map(url => transformSanityUrl(url, { width: 800, quality: 75, autoFormat: true }))
+    : fallbackGreenhausImages;
+  const yardImages = yardCarouselImages?.length 
+    ? yardCarouselImages.map(url => transformSanityUrl(url, { width: 800, quality: 75, autoFormat: true }))
+    : fallbackYardImages;
 
   // Auto-advance GreenHaus carousel every 5 seconds (slower, more premium feel)
   useEffect(() => {

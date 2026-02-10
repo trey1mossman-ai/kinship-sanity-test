@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from '@/components/icons';
 import { KINSHIP_COLORS } from '@/lib/config/brand';
+import { transformSanityUrl } from '@/lib/sanity/imageTransform';
 
 // Room type from Sanity
 export interface SanityRoom {
@@ -373,7 +374,7 @@ function RoomCarousel({
                   index === currentIndex ? 'w-6 sm:w-8' : 'w-2'
                 }`}
                 style={{
-                  backgroundColor: index === currentIndex ? KINSHIP_COLORS.greenDark : KINSHIP_COLORS.sage
+                  backgroundColor: index === currentIndex ? KINSHIP_COLORS.greenDark : KINSHIP_COLORS.sage, padding: '18px', margin: '-18px', backgroundClip: 'content-box'
                 }}
                 aria-label={`Go to room ${index + 1}`}
               />
@@ -593,7 +594,7 @@ function GalleryCarousel({
                   index === currentIndex ? 'w-6 sm:w-8' : 'w-2'
                 }`}
                 style={{
-                  backgroundColor: index === currentIndex ? KINSHIP_COLORS.greenDark : KINSHIP_COLORS.sage
+                  backgroundColor: index === currentIndex ? KINSHIP_COLORS.greenDark : KINSHIP_COLORS.sage, padding: '18px', margin: '-18px', backgroundClip: 'content-box'
                 }}
                 aria-label={`Go to image ${index + 1}`}
               />
@@ -647,7 +648,7 @@ export function RoomsGridSanity({
             name: r.name,
             slug: r.slug,
             shortDescription: r.shortDescription,
-            heroImage: r.imageUrl || fallbackImage,
+            heroImage: r.imageUrl ? transformSanityUrl(r.imageUrl, { width: 800, quality: 80, autoFormat: true }) : fallbackImage,
             maxOccupancy: 2,
             features: [],
           };
@@ -662,7 +663,7 @@ export function RoomsGridSanity({
             name: r.name,
             slug: r.slug,
             shortDescription: r.shortDescription,
-            heroImage: r.imageUrl || fallbackImage,
+            heroImage: r.imageUrl ? transformSanityUrl(r.imageUrl, { width: 800, quality: 80, autoFormat: true }) : fallbackImage,
             maxOccupancy: 2,
             features: [],
           };
@@ -675,7 +676,7 @@ export function RoomsGridSanity({
           slug: familyRoomSlug || 'family-suite',
           shortDescription: familyRoomDescription || '',
           // Use Sanity familyRoomImageUrl if available, otherwise fallback
-          heroImage: familyRoomImageUrl || fallbackRoomsByType.family[0].heroImage,
+          heroImage: familyRoomImageUrl ? transformSanityUrl(familyRoomImageUrl, { width: 800, quality: 80, autoFormat: true }) : fallbackRoomsByType.family[0].heroImage,
           gallery: fallbackRoomsByType.family[0].gallery,
           maxOccupancy: 6,
           features: [],
@@ -688,7 +689,7 @@ export function RoomsGridSanity({
           slug: campDeckSlug || 'camp-deck',
           shortDescription: campDeckDescription || '',
           // Use Sanity campDeckImageUrl if available, otherwise fallback
-          heroImage: campDeckImageUrl || fallbackRoomsByType.campDeck[0].heroImage,
+          heroImage: campDeckImageUrl ? transformSanityUrl(campDeckImageUrl, { width: 800, quality: 80, autoFormat: true }) : fallbackRoomsByType.campDeck[0].heroImage,
           gallery: fallbackRoomsByType.campDeck[0].gallery,
           maxOccupancy: 2,
           features: [],

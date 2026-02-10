@@ -39,6 +39,7 @@ import { buildFaqJsonLd } from '@/components/home/FAQ/faq-jsonld';
 
 // Sanity data fetching
 import { getHomepage, getHomepageRooms } from '@/lib/sanity/queries';
+import { optimizeSanityData } from '@/lib/sanity/imageTransform';
 
 export const metadata: Metadata = {
   title: 'Experience Colorado Springs like a local',
@@ -90,8 +91,8 @@ export default async function HomePage() {
   // Fetch homepage data from Sanity (with fallback to defaults)
   // Press mentions are now included in homepageData.pressLogos
   const [homepageData, homepageRooms] = await Promise.all([
-    getHomepage(),
-    getHomepageRooms()
+    getHomepage().then(optimizeSanityData),
+    getHomepageRooms().then(optimizeSanityData)
   ]);
 
   const structuredData = {

@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { getGalleryPage } from '@/lib/sanity/queries';
+import { optimizeSanityData } from '@/lib/sanity/imageTransform';
 import { GalleryPageClient } from './GalleryPageClient';
 
 export const metadata: Metadata = {
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function GalleryPage() {
-  const galleryData = await getGalleryPage();
+  const galleryData = optimizeSanityData(await getGalleryPage());
 
   return <GalleryPageClient galleryData={galleryData} />;
 }

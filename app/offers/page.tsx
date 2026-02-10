@@ -1,9 +1,10 @@
 import { Metadata } from 'next';
 import { getOffersPage } from '@/lib/sanity/queries';
+import { optimizeSanityData } from '@/lib/sanity/imageTransform';
 import OffersPageClient from './OffersPageClient';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const data = await getOffersPage();
+  const data = optimizeSanityData(await getOffersPage());
 
   return {
     title: data?.seoTitle || 'Special Offers',
@@ -12,6 +13,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function OffersPage() {
-  const data = await getOffersPage();
+  const data = optimizeSanityData(await getOffersPage());
   return <OffersPageClient data={data} />;
 }

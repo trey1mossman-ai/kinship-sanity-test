@@ -84,7 +84,7 @@ export function GreenHausSection({ sanityData }: GreenHausSectionProps) {
 
             <div
               className="text-sm sm:text-base md:text-lg leading-relaxed"
-              style={{ fontFamily: '"europa", "Hind", system-ui, sans-serif', color: '#667C58', opacity: 0.9 }}
+              style={{ fontFamily: '"europa", "Hind", system-ui, sans-serif', color: '#667C58' }}
             >
               {Array.isArray(venueDescription) ? (
                 <RichTextRenderer value={venueDescription} />

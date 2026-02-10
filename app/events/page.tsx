@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { getEventsPage } from '@/lib/sanity/queries';
+import { optimizeSanityData } from '@/lib/sanity/imageTransform';
 import { EventsPageClient } from './EventsPageClient';
 
 // Revalidate every 60 seconds (ISR) - matches rooms page pattern
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 
 export default async function EventsPage() {
   // Fetch everything from the single eventsPage document
-  const eventsData = await getEventsPage();
+  const eventsData = optimizeSanityData(await getEventsPage());
 
   return <EventsPageClient eventsData={eventsData} />;
 }

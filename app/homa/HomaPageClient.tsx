@@ -534,7 +534,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                       clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)'
                     }}
                   >
-                    {homaData?.eventsCtaText || "View Events at Kinship"}
+                    {(homaData?.eventsCtaText && homaData.eventsCtaText !== 'Learn More') ? homaData.eventsCtaText : "View Events at Kinship"}
                   </a>
                 </div>
               </div>
