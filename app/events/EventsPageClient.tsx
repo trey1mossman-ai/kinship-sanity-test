@@ -332,7 +332,7 @@ export function EventsPageClient({ eventsData }: EventsPageClientProps) {
                   className={`px-4 sm:px-6 py-2 sm:py-3 font-semibold text-xs sm:text-sm md:text-base uppercase tracking-wider transition-colors duration-150 ${
                     activeFilter === filter.id
                       ? 'text-white shadow-md'
-                      : 'text-white/90 hover:text-white hover:shadow-sm'
+                      : 'text-white hover:shadow-sm'
                   }`}
                   style={{
                     backgroundColor: activeFilter === filter.id ? '#4a5e3e' : '#5f7b4d',
