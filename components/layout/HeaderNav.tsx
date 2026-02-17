@@ -199,9 +199,9 @@ export function HeaderNav() {
               Community
             </Link>
 
-            {/* Book Now Button - External Cloudbeds Link */}
+            {/* Book Now Button - External SiteMinder Link */}
             <a
-              href="https://hotels.cloudbeds.com/reservation/4nfQ6E"
+              href="https://direct-book.com/properties/kinshiplanding"
               target="_blank"
               rel="noopener noreferrer"
               className={`px-5 py-2 font-bold transition-all duration-300 whitespace-nowrap ${
@@ -305,7 +305,7 @@ export function HeaderNav() {
             </Link>
 
             <a
-              href="https://hotels.cloudbeds.com/reservation/4nfQ6E"
+              href="https://direct-book.com/properties/kinshiplanding"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsMobileMenuOpen(false)}

@@ -21,7 +21,7 @@ export function CallToBook() {
         <div className="pointer-events-auto px-3 pb-3 safe-area-bottom">
           <div className="mx-auto max-w-[640px]">
             <a
-              href="https://hotels.cloudbeds.com/reservation/4nfQ6E"
+              href="https://direct-book.com/properties/kinshiplanding"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Book your stay at Kinship Landing"

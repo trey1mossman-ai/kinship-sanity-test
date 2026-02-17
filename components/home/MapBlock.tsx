@@ -11,7 +11,7 @@ const defaults = {
   title: 'Location',
   subtitle: 'Convenience to Everything',
   ctaText: 'Book Your Stay',
-  ctaUrl: 'https://hotels.cloudbeds.com/reservation/4nfQ6E'
+  ctaUrl: 'https://direct-book.com/properties/kinshiplanding'
 };
 
 interface MapBlockProps {

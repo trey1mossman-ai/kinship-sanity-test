@@ -26,14 +26,14 @@ const offers = [
     title: 'Ring in the New Year',
     description: '', // Empty - can be edited in Sanity Studio
     imagePath: 'public/images/Offers/NYE Promo (1080 x 566 px).webp',
-    bookingUrl: 'https://hotels.cloudbeds.com/reservation/4nfQ6E',
+    bookingUrl: 'https://direct-book.com/properties/kinshiplanding',
     displayOrder: 1
   },
   {
     title: 'Take the Elevator Home',
     description: '', // Empty - can be edited in Sanity Studio
     imagePath: 'public/images/Offers/Take the Elevator Home (1080 x 1080 px) (1).webp',
-    bookingUrl: 'https://hotels.cloudbeds.com/reservation/4nfQ6E',
+    bookingUrl: 'https://direct-book.com/properties/kinshiplanding',
     displayOrder: 2
   }
 ];

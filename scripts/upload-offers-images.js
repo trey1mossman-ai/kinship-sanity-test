@@ -30,7 +30,7 @@ const imagesToUpload = {
       title: 'Ring in the New Year',
       alt: 'New Year\'s Eve Special Offer',
       description: 'Celebrate New Year\'s Eve at Kinship Landing with our special holiday package.',
-      bookingUrl: 'https://hotels.cloudbeds.com/reservation/4nfQ6E',
+      bookingUrl: 'https://direct-book.com/properties/kinshiplanding',
       isActive: true
     },
     {
@@ -39,7 +39,7 @@ const imagesToUpload = {
       title: 'Take the Elevator Home',
       alt: 'Take the Elevator Home - Special Accommodation Offer',
       description: 'Enjoy a night out at HOMA and skip the ride home. Book a room and get special rates.',
-      bookingUrl: 'https://hotels.cloudbeds.com/reservation/4nfQ6E',
+      bookingUrl: 'https://direct-book.com/properties/kinshiplanding',
       isActive: true
     }
   ]

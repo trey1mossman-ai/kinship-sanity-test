@@ -76,7 +76,7 @@ export const RoomCard = memo(function RoomCard({ room, index, onImageClick }: Ro
         </div>
 
         <Link
-          href="https://hotels.cloudbeds.com/reservation/4nfQ6E"
+          href="https://direct-book.com/properties/kinshiplanding"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block text-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-white font-semibold transition-all duration-200 hover:shadow-lg hover:translate-y-[-2px] active:translate-y-0"

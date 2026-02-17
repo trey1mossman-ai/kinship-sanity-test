@@ -26,7 +26,7 @@ export function BookingWidget({ variant = 'hero', className }: BookingWidgetProp
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Get Cloudbeds URL from env if available
+    // Get SiteMinder URL from env if available
     const cloudbedsUrl = process.env.NEXT_PUBLIC_CLOUDBEDS_URL;
     
     if (cloudbedsUrl) {
@@ -212,7 +212,7 @@ export function BookingWidget({ variant = 'hero', className }: BookingWidgetProp
   );
 }
 
-// Preconnect to Cloudbeds if URL is set
+// Preconnect to SiteMinder if URL is set
 if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_CLOUDBEDS_URL) {
   const link = document.createElement('link');
   link.rel = 'preconnect';

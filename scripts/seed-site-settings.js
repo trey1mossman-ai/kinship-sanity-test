@@ -77,7 +77,7 @@ const siteSettingsData = {
   // ============================================
   // BOOKING URLS
   // ============================================
-  bookingUrl: 'https://hotels.cloudbeds.com/en/reservation/BPdPxa',
+  bookingUrl: 'https://direct-book.com/properties/kinshiplanding',
   eventInquiryUrl: 'https://kinshiplanding.tripleseat.com/booking_request/42351',
   groupBookingUrl: 'https://kinshiplanding.tripleseat.com/booking_request/42351',
 

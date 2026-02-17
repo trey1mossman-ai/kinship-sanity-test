@@ -167,8 +167,8 @@ export default function RootLayout({
         ` }} />
 
         {/* DNS prefetch for critical services */}
-        <link rel="dns-prefetch" href="https://hotels.cloudbeds.com" />
-        <link rel="preconnect" href="https://hotels.cloudbeds.com" />
+        <link rel="dns-prefetch" href="https://direct-book.com" />
+        <link rel="preconnect" href="https://direct-book.com" />
 
         {/* Resource hints for performance */}
         <meta name="theme-color" content="#647B56" />

@@ -20,7 +20,7 @@ const defaults = {
   cta2Text: 'Explore',
   cta2Url: '/explore',
   cta3Text: 'Book Your Room',
-  cta3Url: 'https://hotels.cloudbeds.com/reservation/4nfQ6E'
+  cta3Url: 'https://direct-book.com/properties/kinshiplanding'
 };
 
 interface KinshipGuideAsymmetricProps {

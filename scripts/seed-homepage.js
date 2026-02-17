@@ -25,7 +25,7 @@ const homepageContent = {
   heroSubtitle: 'Sleep well. Meet locals. Launch adventures.',
   heroVideo: 'https://storage.googleapis.com/msgsndr/ZSnKlb7yt1OZGmrCwL7T/media/68defb5cd6c63ec71789ef67.mp4',
   heroCtaText: 'Book Your Stay',
-  heroCtaUrl: 'https://hotels.cloudbeds.com/reservation/4nfQ6E',
+  heroCtaUrl: 'https://direct-book.com/properties/kinshiplanding',
 
   // ==================== GUIDE SECTION (Kinship is Your Guide) ====================
   guideTitle: 'Kinship is Your Guide',
@@ -37,7 +37,7 @@ const homepageContent = {
   guideCta2Text: 'Explore',
   guideCta2Url: '/explore',
   guideCta3Text: 'Book Your Room',
-  guideCta3Url: 'https://hotels.cloudbeds.com/reservation/4nfQ6E',
+  guideCta3Url: 'https://direct-book.com/properties/kinshiplanding',
 
   // ==================== ROOMS SECTION ====================
   roomsSectionTitle: 'Find Your Perfect Room',
@@ -114,7 +114,7 @@ const homepageContent = {
     { _key: 'comedy-art', name: 'Comedy Shows, Art Classes, and Cooking Classes', time: 'Walk ~5 min', link: '/explore#entertainment' },
   ],
   mapCtaText: 'Book Your Stay',
-  mapCtaUrl: 'https://hotels.cloudbeds.com/reservation/4nfQ6E',
+  mapCtaUrl: 'https://direct-book.com/properties/kinshiplanding',
 
   // ==================== SEO ====================
   seoTitle: 'Experience Colorado Springs like a local | Kinship Landing',

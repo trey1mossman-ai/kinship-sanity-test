@@ -23,7 +23,7 @@ const defaultSettings: SiteSettings = {
   googleMapsUrl: 'https://www.google.com/maps/place/Kinship+Landing/@38.8284,-104.8253,17z',
   instagramUrl: 'https://www.instagram.com/kinshiplanding/',
   facebookUrl: 'https://www.facebook.com/kinshiplanding',
-  bookingUrl: 'https://hotels.cloudbeds.com/en/reservation/BPdPxa',
+  bookingUrl: 'https://direct-book.com/properties/kinshiplanding',
   eventInquiryUrl: 'https://kinshiplanding.tripleseat.com/booking_request/42351',
   groupBookingUrl: 'https://kinshiplanding.tripleseat.com/booking_request/42351',
   homaPhone: '(719) 245-0046',

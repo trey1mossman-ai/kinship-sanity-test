@@ -179,16 +179,16 @@ export default function RoomsPageClient({ roomsPageData }: RoomsPageClientProps)
       return link;
     });
 
-    // Preconnect to Cloudbeds for faster booking navigation
+    // Preconnect to SiteMinder for faster booking navigation
     const link = document.createElement('link');
     link.rel = 'preconnect';
-    link.href = 'https://hotels.cloudbeds.com';
+    link.href = 'https://direct-book.com';
     link.crossOrigin = 'anonymous';
     document.head.appendChild(link);
 
     const dnsPrefetch = document.createElement('link');
     dnsPrefetch.rel = 'dns-prefetch';
-    dnsPrefetch.href = 'https://hotels.cloudbeds.com';
+    dnsPrefetch.href = 'https://direct-book.com';
     document.head.appendChild(dnsPrefetch);
 
     return () => {

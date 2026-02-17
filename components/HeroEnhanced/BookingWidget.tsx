@@ -56,8 +56,8 @@ export function BookingWidget({ className = '', onBookingInitiated }: BookingWid
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Build Cloudbeds URL with parameters - maintaining existing integration
-    const baseUrl = 'https://hotels.cloudbeds.com/reservation/4nfQ6E';
+    // Build SiteMinder URL with parameters - maintaining existing integration
+    const baseUrl = 'https://direct-book.com/properties/kinshiplanding';
     const params = new URLSearchParams();
 
     if (checkIn) params.append('checkin', checkIn);

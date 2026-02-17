@@ -36,7 +36,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'hotels.cloudbeds.com',
+        hostname: 'direct-book.com',
       },
       {
         protocol: 'https',

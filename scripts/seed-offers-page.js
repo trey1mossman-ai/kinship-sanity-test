@@ -38,7 +38,7 @@ const offersPageContent = {
       title: 'Ring in the New Year',
       alt: 'New Year\'s Eve Special Offer',
       description: 'Celebrate the New Year in style at Kinship Landing. Book your stay and enjoy a memorable celebration in downtown Colorado Springs.',
-      bookingUrl: 'https://hotels.cloudbeds.com/reservation/4nfQ6E',
+      bookingUrl: 'https://direct-book.com/properties/kinshiplanding',
       isActive: true
     },
     {
@@ -46,7 +46,7 @@ const offersPageContent = {
       title: 'Take the Elevator Home',
       alt: 'Take the Elevator Home - Special Accommodation Offer',
       description: 'Enjoy dinner and drinks at HOMA, then take the elevator up to your room. No designated driver needed when you stay with us.',
-      bookingUrl: 'https://hotels.cloudbeds.com/reservation/4nfQ6E',
+      bookingUrl: 'https://direct-book.com/properties/kinshiplanding',
       isActive: true
     }
   ],
