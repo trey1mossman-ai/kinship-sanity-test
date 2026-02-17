@@ -10,7 +10,8 @@ import dynamic from 'next/dynamic';
 import { HeaderNav } from '@/components/layout/HeaderNav';
 import { BreadcrumbSchema, BREADCRUMBS } from '@/components/BreadcrumbSchema';
 import { ScrollEffectsWrapper } from '@/components/home/ScrollEffectsWrapper';
-import { BookingWidget } from '@/components/HeroEnhanced/BookingWidget';
+// TEMPORARILY REMOVED - SiteMinder widget config pending
+// import { BookingWidget } from '@/components/HeroEnhanced/BookingWidget';
 import { GalleryPage as GalleryPageData } from '@/lib/sanity/queries';
 
 // Dynamic imports for below-fold components
@@ -287,27 +288,7 @@ export function GalleryPageClient({ galleryData }: GalleryPageClientProps) {
                   </p>
                 </div>
 
-                {/* Right Side: Booking Widget - Desktop only, exact homepage placement */}
-                <div className="flex-1 lg:flex-none flex justify-center lg:justify-end">
-                  <div className="w-full max-w-md lg:max-w-none">
-                    {/* Desktop Booking Widget - pulled further from right */}
-                    <div className="hidden lg:block lg:mr-40">
-                      <BookingWidget
-                        onBookingInitiated={(data) => {
-                          // Track booking initiation
-                          if (typeof window !== 'undefined' && (window as any).gtag) {
-                            (window as any).gtag('event', 'booking_started', {
-                              checkin: data.checkIn,
-                              checkout: data.checkOut,
-                              guests: data.guests,
-                              source: 'gallery_hero_widget'
-                            });
-                          }
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
+                {/* TEMPORARILY REMOVED - Booking widget pending SiteMinder configuration */}
 
               </div>
             </div>

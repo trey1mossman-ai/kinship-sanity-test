@@ -2,9 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { BackgroundMedia } from './BackgroundMedia';
-import { BookingWidget } from './BookingWidget';
+// TEMPORARILY REMOVED - SiteMinder widget config pending
+// import { BookingWidget } from './BookingWidget';
 import { InlineTestimonials } from './InlineTestimonials';
 import { KINSHIP_FONTS } from '@/lib/config/brand';
+import { transformSanityUrl } from '@/lib/sanity/imageTransform';
 import { content } from '@/content/copy';
 import type { PortableTextBlock } from '@portabletext/types';
 
@@ -42,7 +44,9 @@ export function HeroSection({ headline, subheadline, reviews, heroVideoUrl, hero
   const displayHeadline = (headline || fallbackHeadline).replace('Colorado Springs', 'Colorado\nSprings');
   // Hero video with fallback image - use Sanity values or fallbacks
   const heroVideo = heroVideoUrl || fallbackVideoUrl;
-  const heroImageFallback = heroImageUrl || fallbackImageUrl;
+  const heroImageFallback = heroImageUrl 
+    ? transformSanityUrl(heroImageUrl, { width: 1200, quality: 85, autoFormat: true })
+    : fallbackImageUrl;
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden">
@@ -93,28 +97,7 @@ export function HeroSection({ headline, subheadline, reviews, heroVideoUrl, hero
 
               </motion.div>
 
-              {/* Right Side: Booking Widget - positioned right with breathing room */}
-              <div className="flex-1 lg:flex-none flex justify-center lg:justify-end">
-                <div className="w-full max-w-md lg:max-w-none">
-                  {/* Desktop Booking Widget - pulled further from right */}
-                  <div className="hidden lg:block lg:mr-40">
-                    <BookingWidget
-                      onBookingInitiated={(data) => {
-                        // Track booking initiation
-                        if (typeof window !== 'undefined' && (window as any).gtag) {
-                          (window as any).gtag('event', 'booking_started', {
-                            checkin: data.checkIn,
-                            checkout: data.checkOut,
-                            guests: data.guests,
-                            source: 'hero_widget'
-                          });
-                        }
-                      }}
-                    />
-                  </div>
-
-                </div>
-              </div>
+              {/* TEMPORARILY REMOVED - Booking widget pending SiteMinder configuration */}
             </div>
 
           </div>
