@@ -96,9 +96,25 @@ export function HeroSection({ headline, subheadline, reviews, heroVideoUrl, hero
 
               </motion.div>
 
-              {/* Right Side: Booking Widget */}
-              <div className="flex-shrink-0 w-full lg:w-auto">
-                <BookingWidget />
+              {/* Right Side: Booking Widget - positioned right with breathing room */}
+              <div className="flex-1 lg:flex-none flex justify-center lg:justify-end">
+                <div className="w-full max-w-md lg:max-w-none">
+                  {/* Desktop Booking Widget - pulled further from right */}
+                  <div className="hidden lg:block lg:mr-40">
+                    <BookingWidget
+                      onBookingInitiated={(data) => {
+                        if (typeof window !== 'undefined' && (window as any).gtag) {
+                          (window as any).gtag('event', 'booking_started', {
+                            checkin: data.checkIn,
+                            checkout: data.checkOut,
+                            guests: data.guests,
+                            source: 'hero_widget'
+                          });
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 
