@@ -56,15 +56,19 @@ export function BookingWidget({ className = '', onBookingInitiated }: BookingWid
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Build SiteMinder URL with parameters - maintaining existing integration
+    // Build SiteMinder URL with correct parameter format (from Lauren's booking link)
     const baseUrl = 'https://direct-book.com/properties/kinshiplanding';
     const params = new URLSearchParams();
 
-    if (checkIn) params.append('checkin', checkIn);
-    if (checkOut) params.append('checkout', checkOut);
-    if (guests) params.append('adults', guests);
-    if (rooms) params.append('rooms', rooms);
-    if (promo) params.append('promo', promo);
+    params.append('locale', 'en');
+    params.append('currency', 'USD');
+    if (checkIn) params.append('checkInDate', checkIn);
+    if (checkOut) params.append('checkOutDate', checkOut);
+    if (guests) params.append('items[0][adults]', guests);
+    params.append('items[0][children]', '0');
+    params.append('items[0][infants]', '0');
+    params.append('trackPage', 'yes');
+    if (promo) params.append('promotion_code', promo);
 
     const bookingUrl = `${baseUrl}?${params.toString()}`;
 

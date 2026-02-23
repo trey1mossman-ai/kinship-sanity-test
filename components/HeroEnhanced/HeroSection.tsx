@@ -2,8 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { BackgroundMedia } from './BackgroundMedia';
-// TEMPORARILY REMOVED - SiteMinder widget config pending
-// import { BookingWidget } from './BookingWidget';
+import { BookingWidget } from './BookingWidget';
 import { InlineTestimonials } from './InlineTestimonials';
 import { KINSHIP_FONTS } from '@/lib/config/brand';
 import { transformSanityUrl } from '@/lib/sanity/imageTransform';
@@ -97,7 +96,10 @@ export function HeroSection({ headline, subheadline, reviews, heroVideoUrl, hero
 
               </motion.div>
 
-              {/* TEMPORARILY REMOVED - Booking widget pending SiteMinder configuration */}
+              {/* Right Side: Booking Widget */}
+              <div className="flex-shrink-0 w-full lg:w-auto">
+                <BookingWidget />
+              </div>
             </div>
 
           </div>
