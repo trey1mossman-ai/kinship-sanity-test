@@ -64,9 +64,13 @@ export function BookingWidget({ className = '', onBookingInitiated }: BookingWid
     params.append('currency', 'USD');
     if (checkIn) params.append('checkInDate', checkIn);
     if (checkOut) params.append('checkOutDate', checkOut);
-    if (guests) params.append('items[0][adults]', guests);
-    params.append('items[0][children]', '0');
-    params.append('items[0][infants]', '0');
+    // Each room is a separate items[] entry with its own guest counts
+    const roomCount = parseInt(rooms) || 1;
+    for (let i = 0; i < roomCount; i++) {
+      params.append(`items[${i}][adults]`, guests);
+      params.append(`items[${i}][children]`, '0');
+      params.append(`items[${i}][infants]`, '0');
+    }
     params.append('trackPage', 'yes');
     if (promo) params.append('promotion_code', promo);
 
