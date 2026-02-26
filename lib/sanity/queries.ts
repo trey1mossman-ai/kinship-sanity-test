@@ -829,6 +829,7 @@ export interface HomaPage {
   seatingSectionTitle?: string
   seatingDescription?: string
   seatingImages?: string[]
+  cateringMenuPdfUrl?: string
   // FAQ
   faqSectionTitle?: string
   faqSectionSubtitle?: string
@@ -920,6 +921,7 @@ export async function getHomaPage(): Promise<HomaPage | null> {
     seatingSectionTitle,
     seatingDescription,
     "seatingImages": seatingImages[].asset->url,
+    "cateringMenuPdfUrl": cateringMenuPdf.asset->url,
     faqSectionTitle,
     faqSectionSubtitle,
     faqItems,

@@ -776,7 +776,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                     Book the Fireplace
                   </a>
                   <a
-                    href="/images/HOMA Page/Fall 2025  Kinship Events Catering Menu.pdf"
+                    href={homaData?.cateringMenuPdfUrl || "/images/HOMA Page/Fall 2025  Kinship Events Catering Menu.pdf"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center min-h-[48px] px-8 py-3 text-base font-semibold transition-all duration-300 hover:scale-105 active:scale-95 border-2"
