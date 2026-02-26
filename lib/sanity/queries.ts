@@ -969,6 +969,9 @@ export interface AboutPage {
   storyParagraph4?: string
   storyParagraph5?: string
   missionImageUrl?: string
+  missionTitle?: string
+  missionStatement?: string
+  missionPillars?: Array<{ title: string; description: string }>
   // Values
   valuesTitle?: string
   valuesIntro?: string
@@ -1012,6 +1015,9 @@ export async function getAboutPage(): Promise<AboutPage | null> {
     storyParagraph4,
     storyParagraph5,
     "missionImageUrl": missionImage.asset->url,
+    missionTitle,
+    missionStatement,
+    missionPillars,
     valuesTitle,
     valuesIntro,
     values,

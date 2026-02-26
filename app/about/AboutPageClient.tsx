@@ -316,7 +316,7 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
                     color: '#667C58'
                   }}
                 >
-                  Our Mission
+                  {aboutData?.missionTitle || 'Our Mission'}
                 </h2>
                 <p
                   className="text-lg md:text-xl leading-relaxed"
@@ -325,106 +325,46 @@ export function AboutPageClient({ aboutData }: AboutPageClientProps) {
                     color: '#667C58',
                   }}
                 >
-                  To deliver outrageous hospitality by connecting travelers with authentic Colorado experiences.
-                  We believe that the best trips aren&apos;t just about where you go—they&apos;re about who you meet and
-                  the stories you share along the way.
+                  {aboutData?.missionStatement || "To deliver outrageous hospitality by connecting travelers with authentic Colorado experiences. We believe that the best trips aren\u2019t just about where you go\u2014they\u2019re about who you meet and the stories you share along the way."}
                 </p>
                 <div className="space-y-4">
-                  <div className="flex items-start gap-4">
-                    <div
-                      className="w-12 h-12 flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: '#5f7b4d' }}
-                    >
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3
-                        className="text-xl font-bold mb-1"
-                        style={{
-                          fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                          color: '#667C58'
-                        }}
+                  {(aboutData?.missionPillars || [
+                    { title: 'Local Connection', description: "We\u2019re your insider guide to Colorado Springs\u2014from the best hiking trails to hidden local gems." },
+                    { title: 'Adventure Ready', description: 'Your basecamp for exploring Garden of the Gods, Pikes Peak, and everything in between.' },
+                    { title: 'Community First', description: 'A gathering place for travelers and locals alike\u2014because the best experiences happen together.' }
+                  ]).map((pillar, index) => (
+                    <div key={index} className="flex items-start gap-4">
+                      <div
+                        className="w-12 h-12 flex items-center justify-center flex-shrink-0"
+                        style={{ backgroundColor: '#5f7b4d' }}
                       >
-                        Local Connection
-                      </h3>
-                      <p
-                        className="text-base"
-                        style={{
-                          fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                          color: '#667C58',
-                          opacity: 0.9
-                        }}
-                      >
-                        We&apos;re your insider guide to Colorado Springs—from the best hiking trails to hidden local gems.
-                      </p>
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3
+                          className="text-xl font-bold mb-1"
+                          style={{
+                            fontFamily: '"europa", "Hind", system-ui, sans-serif',
+                            color: '#667C58'
+                          }}
+                        >
+                          {pillar.title}
+                        </h3>
+                        <p
+                          className="text-base"
+                          style={{
+                            fontFamily: '"europa", "Hind", system-ui, sans-serif',
+                            color: '#667C58',
+                            opacity: 0.9
+                          }}
+                        >
+                          {pillar.description}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div
-                      className="w-12 h-12 flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: '#5f7b4d' }}
-                    >
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3
-                        className="text-xl font-bold mb-1"
-                        style={{
-                          fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                          color: '#667C58'
-                        }}
-                      >
-                        Adventure Ready
-                      </h3>
-                      <p
-                        className="text-base"
-                        style={{
-                          fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                          color: '#667C58',
-                          opacity: 0.9
-                        }}
-                      >
-                        Your basecamp for exploring Garden of the Gods, Pikes Peak, and everything in between.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div
-                      className="w-12 h-12 flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: '#5f7b4d' }}
-                    >
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3
-                        className="text-xl font-bold mb-1"
-                        style={{
-                          fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                          color: '#667C58'
-                        }}
-                      >
-                        Community First
-                      </h3>
-                      <p
-                        className="text-base"
-                        style={{
-                          fontFamily: '"europa", "Hind", system-ui, sans-serif',
-                          color: '#667C58',
-                          opacity: 0.9
-                        }}
-                      >
-                        A gathering place for travelers and locals alike—because the best experiences happen together.
-                      </p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
 
