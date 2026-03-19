@@ -3,8 +3,6 @@ import { getEventsPage } from '@/lib/sanity/queries';
 import { optimizeSanityData } from '@/lib/sanity/imageTransform';
 import { EventsPageClient } from './EventsPageClient';
 
-// Revalidate every 60 seconds (ISR) - matches rooms page pattern
-export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: 'Events & Meetings',

@@ -451,7 +451,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
 
                   {/* CTA Button - Anchored to bottom */}
                   <a
-                    href={homaData?.brunchMenuPdfUrl || "https://document-tc.galaxy.tf/wdpdf-i5ynhwy6cvn23rwdb6ybfb0d/homa-cafe-bar_cms-document.pdf"}
+                    href={homaData?.brunchMenuPdfUrl || "#menu"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center min-h-[48px] w-full px-6 py-3 text-base font-semibold transition-all duration-300 hover:scale-105 active:scale-95 mt-6"
@@ -641,7 +641,10 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
         </section>
 
         {/* 5. MENU SECTION - Accordion */}
-        <HomaMenuAccordion />
+        <HomaMenuAccordion
+          brunchMenuPdfUrl={homaData?.brunchMenuPdfUrl}
+          cateringMenuPdfUrl={homaData?.cateringMenuPdfUrl}
+        />
 
         {/* 6. FIREPLACE SECTION - Carousel */}
         <section className="py-12 md:py-16" style={{ backgroundColor: KINSHIP_COLORS.latte }}>
@@ -776,7 +779,7 @@ export function HomaPageClient({ homaData }: HomaPageClientProps) {
                     Book the Fireplace
                   </a>
                   <a
-                    href={homaData?.cateringMenuPdfUrl || "/images/HOMA Page/Fall 2025  Kinship Events Catering Menu.pdf"}
+                    href={homaData?.cateringMenuPdfUrl || "#menu"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center min-h-[48px] px-8 py-3 text-base font-semibold transition-all duration-300 hover:scale-105 active:scale-95 border-2"

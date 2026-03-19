@@ -5,7 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { KINSHIP_COLORS, KINSHIP_FONTS } from '@/lib/config/brand';
 import { homaMenuData, type MenuCategory } from './homa-menu-data';
 
-export function HomaMenuAccordion() {
+interface HomaMenuAccordionProps {
+  brunchMenuPdfUrl?: string;
+  cateringMenuPdfUrl?: string;
+}
+
+export function HomaMenuAccordion({ brunchMenuPdfUrl, cateringMenuPdfUrl }: HomaMenuAccordionProps) {
   const [openCategories, setOpenCategories] = useState<Set<string>>(new Set());
 
   const toggleCategory = (categoryId: string) => {
@@ -38,8 +43,9 @@ export function HomaMenuAccordion() {
 
         {/* Dual CTA Menu Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 max-w-4xl mx-auto">
+          {brunchMenuPdfUrl && (
           <a
-            href="https://document-tc.galaxy.tf/wdpdf-i5ynhwy6cvn23rwdb6ybfb0d/homa-cafe-bar_cms-document.pdf"
+            href={brunchMenuPdfUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto"
@@ -59,9 +65,11 @@ export function HomaMenuAccordion() {
               BRUNCH MENU
             </motion.button>
           </a>
+          )}
 
+          {cateringMenuPdfUrl && (
           <a
-            href="/images/HOMA Page/Fall 2025  Kinship Events Catering Menu.pdf"
+            href={cateringMenuPdfUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto"
@@ -81,6 +89,7 @@ export function HomaMenuAccordion() {
               CATERING MENU
             </motion.button>
           </a>
+          )}
         </div>
 
         {/* Menu Categories Accordion */}
@@ -252,8 +261,9 @@ export function HomaMenuAccordion() {
 
         {/* Dual CTA Menu Buttons - Bottom */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12 max-w-4xl mx-auto">
+          {brunchMenuPdfUrl && (
           <a
-            href="https://document-tc.galaxy.tf/wdpdf-i5ynhwy6cvn23rwdb6ybfb0d/homa-cafe-bar_cms-document.pdf"
+            href={brunchMenuPdfUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto"
@@ -273,9 +283,11 @@ export function HomaMenuAccordion() {
               BRUNCH MENU
             </motion.button>
           </a>
+          )}
 
+          {cateringMenuPdfUrl && (
           <a
-            href="/images/HOMA Page/Fall 2025  Kinship Events Catering Menu.pdf"
+            href={cateringMenuPdfUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto"
@@ -295,6 +307,7 @@ export function HomaMenuAccordion() {
               CATERING MENU
             </motion.button>
           </a>
+          )}
         </div>
       </div>
     </section>
